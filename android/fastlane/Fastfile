@@ -1,0 +1,102 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+module Environment
+  DEV = "DEV"
+  UAT = "UAT"
+  SIT = "SIT"
+  PROD = "PROD"
+end
+
+platform :android do
+  desc "Building an apk"
+  lane :buildApk do
+    environment = UI.select("Select your environment: ", [Environment::DEV,Environment::UAT,Environment::SIT,Environment::PROD])
+    UI.success("You have selected '#{environment}' environment")
+    case environment
+    when Environment::DEV
+      devApk
+    when Environment::UAT
+      uatApk
+    when Environment::SIT
+      sitApk
+    when Environment::PROD
+      prodApk
+    end
+  end
+
+  desc "Building an Android App Bundle"
+  lane :appBundle do |options|
+    sh("flutter build appbundle --obfuscate --split-debug-info=symbols --release --flavor prod -t lib/main_prod.dart")
+    sh("mv ../../build/app/outputs/bundle/prodRelease/app-prod-release.aab ~/Downloads/prodAppBundle.aab") if (options[:isMove])
+    # sh("flutter packages pub run sentry_dart_plugin")
+  end
+
+  desc "Building an Beta version to Play Store"
+  lane :beta do
+    appBundle(isMove: false)
+    supply(
+      track: "internal",
+      aab_paths: "../build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+    )
+  end
+
+  desc "Publishing apk to Firebase Distribution"
+  lane :firebaseDistribute do |options|
+    ENV["GOOGLE_APPLICATION_CREDENTIALS"] = "../fastlane-supply.json"
+    output_json_path = "./app/google-services.json"
+    build_output = load_json(json_path: output_json_path)
+    androidAppId = build_output["client"][0]["client_info"]["mobilesdk_app_id"]
+
+    # Prompt error if file not found
+    UI.user_error!("You need to include google-service.json and fastlane-supply.json") if(androidAppId.nil? || ENV["GOOGLE_APPLICATION_CREDENTIALS"].nil?)
+    
+    # Proceed with the code if no error
+    prodApk(isMove: false)
+    firebase_app_distribution(
+      app: androidAppId,
+      groups: (!options[:group].nil? && !options[:group].empty?) ? options[:group] : "",
+      release_notes: (!options[:notes].nil? && !options[:notes].empty?) ? options[:notes] : "",
+      android_artifact_type: "APK",
+      android_artifact_path: "../build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk",
+    )
+  end
+
+  desc "Building a development apk"
+  private_lane :devApk do
+    sh("flutter build apk --obfuscate --split-debug-info=symbols --debug --flavor dev -t lib/main_dev.dart --split-per-abi --target-platform android-arm,android-arm64,android-x64")
+    sh("mv ../../build/app/outputs/flutter-apk/app-arm64-v8a-dev-debug.apk ~/Downloads/dev.apk")
+  end
+  
+  desc "Building a SIT apk"
+  private_lane :sitApk do
+    sh("flutter build apk --profile --flavor sit -t lib/main_sit.dart --split-per-abi --target-platform android-arm,android-arm64,android-x64")
+    sh("mv ../../build/app/outputs/flutter-apk/app-arm64-v8a-sit-profile.apk ~/Downloads/sit.apk")
+  end
+
+  desc "Building a UAT apk"
+  private_lane :uatApk do
+    sh("flutter build apk --profile --flavor uat -t lib/main_uat.dart --split-per-abi --target-platform android-arm,android-arm64,android-x64")
+    sh("mv ../../build/app/outputs/flutter-apk/app-arm64-v8a-uat-profile.apk ~/Downloads/uat.apk")
+  end
+
+  desc "Building a production apk"
+  private_lane :prodApk do |options|
+    sh("flutter build apk --obfuscate --split-debug-info=symbols --release --flavor prod -t lib/main_prod.dart --split-per-abi --target-platform android-arm,android-arm64,android-x64")
+    sh("mv ../../build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk ~/Downloads/release.apk") if (options[:isMove])
+  end
+end
