@@ -72,7 +72,9 @@ class MyTextStyle {
     fontSize: 10,
   );
 }
-
+// 10,12,16,18,24,36
+// 10,12,(14,16),18,20,22,24
+// xxs,xs,s,m,l,xl,xxl,xxxl
 // Extension to help add params in TextStyle
 extension TextStyleHelpers on TextStyle {
   TextStyle c(Color value) => copyWith(color: value);

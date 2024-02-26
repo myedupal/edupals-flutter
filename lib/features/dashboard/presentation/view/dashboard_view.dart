@@ -1,3 +1,4 @@
+import 'package:edupals/core/components/layout_top_bar.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -11,7 +12,6 @@ class DashboardView extends GetResponsiveView<SplashController> {
   DashboardView({super.key}) : super(alwaysUseBuilder: false);
 
   Widget get _challengeBanner => Container(
-        margin: const EdgeInsets.all(AppValues.double20),
         padding: const EdgeInsets.all(AppValues.double20),
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -53,6 +53,14 @@ class DashboardView extends GetResponsiveView<SplashController> {
 
   @override
   Widget builder() => Column(
-        children: [_challengeBanner],
-      ).scaffoldWrapper();
+        children: [
+          const LayoutTopBar()
+              .padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          _challengeBanner
+        ],
+      )
+          .padding(
+            const EdgeInsets.all(AppValues.double20),
+          )
+          .scaffoldWrapper();
 }

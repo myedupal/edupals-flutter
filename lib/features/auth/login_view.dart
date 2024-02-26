@@ -1,4 +1,4 @@
-import 'package:edupals/core/components/base_input.dart';
+import 'package:edupals/core/base/base_input.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
