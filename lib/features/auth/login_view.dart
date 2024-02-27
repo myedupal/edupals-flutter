@@ -13,18 +13,18 @@ class LoginView extends StatelessWidget {
         const SizedBox(
           height: AppValues.double100,
         ),
-        const Column(
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Welcome to edupals",
-              style: MyTextStyle.h3,
+              style: MyTextStyle.xl.bold,
             ),
-            SizedBox(
+            const SizedBox(
               height: AppValues.double40,
             ),
-            BaseInput(
+            const BaseInput(
               label: "How do we address you?",
             )
           ],

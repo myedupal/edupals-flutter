@@ -9,7 +9,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void mainGlobal() {
   dotenv.load(fileName: FlavorConfig.fileName);
-  debugPrint("${FlavorConfig.fileName}");
   runApp(const MyApp());
 }
 

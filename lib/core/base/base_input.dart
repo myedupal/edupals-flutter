@@ -21,8 +21,8 @@ class BaseInput extends StatefulWidget {
       this.inputFormatters,
       this.onClick,
       this.onValueChange,
-      this.textStyle = MyTextStyle.body1,
-      this.labelStyle = MyTextStyle.body1});
+      this.textStyle = MyTextStyle.l,
+      this.labelStyle = MyTextStyle.l});
 
   final String? label;
   final String? value;
@@ -129,7 +129,7 @@ class _BaseInputState extends State<BaseInput> {
               if (widget.label?.isNotEmpty == true)
                 Text(
                   widget.label ?? "",
-                  style: MyTextStyle.body1.c(_focusNode.hasFocus
+                  style: MyTextStyle.l.c(_focusNode.hasFocus
                       ? AppColors.accent500
                       : AppColors.gray600),
                 ),
@@ -158,7 +158,7 @@ class _BaseInputState extends State<BaseInput> {
         if (widget.errorMessage.isNotEmpty)
           Text(
             "* ${widget.errorMessage}",
-            style: MyTextStyle.body1.c(AppColors.red600),
+            style: MyTextStyle.l.c(AppColors.red600),
           ).padding(const EdgeInsets.only(
               left: AppValues.double18, top: AppValues.double12))
       ],

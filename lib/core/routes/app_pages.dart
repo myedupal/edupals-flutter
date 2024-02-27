@@ -1,4 +1,4 @@
-import 'package:edupals/features/dashboard/presentation/view/dashboard_view.dart';
+import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/login_view.dart';
