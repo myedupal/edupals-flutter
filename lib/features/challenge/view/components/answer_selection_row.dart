@@ -33,7 +33,8 @@ class AnswerSelectionRow extends StatelessWidget {
             borderColor: isActive ? AppColors.accent500 : AppColors.gray200,
             padding: const EdgeInsets.symmetric(
                 horizontal: AppValues.double20, vertical: AppValues.double20),
-            color: isActive ? AppColors.accent100 : AppColors.white)
+            color:
+                isActive ? AppColors.accent100 : AppColors.white.withAlpha(90))
         .padding(const EdgeInsets.only(bottom: AppValues.double20));
   }
 }
