@@ -53,18 +53,25 @@ extension ExpandedWidget on Widget {
       ),
       child: this);
 
-  Widget constraintsWrapper(double width) => Center(
-          child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: width,
-        ),
-        child: this,
-      ));
+  Widget constraintsWrapper(double width, [Color? color]) => Container(
+        color: color ?? AppColors.white,
+        child: Center(
+            child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: width,
+          ),
+          child: this,
+        )),
+      );
 
   Widget repaintBoundary() => RepaintBoundary(child: this);
 
-  Widget scaffoldWrapper([bool resizeToAvoidBottomInset = false]) => Scaffold(
+  Widget scaffoldWrapper(
+          {bool? resizeToAvoidBottomInset = false,
+          Color? backgroundColor = AppColors.white}) =>
+      Scaffold(
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        backgroundColor: backgroundColor,
         body: SafeArea(child: this),
       );
 

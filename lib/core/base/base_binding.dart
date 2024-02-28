@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/network/dio_client.dart';
 import 'package:edupals/core/network/utils/connection_checker.dart';
 import 'package:edupals/core/repositories/local_repository.dart';
@@ -20,5 +21,6 @@ class BaseBinding extends Bindings {
         () => DioClientImpl(dio: Get.find(), connectionChecker: Get.find()),
         fenix: true);
     Get.lazyPut<LocalRepository>(() => LocalRepository(), fenix: true);
+    Get.put<MainController>(MainController(), permanent: true);
   }
 }

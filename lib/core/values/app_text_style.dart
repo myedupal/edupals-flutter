@@ -30,6 +30,10 @@ class MyTextStyle {
     fontSize: 32,
     fontWeight: fontWeight,
   );
+  static const TextStyle xl1 = BaseTextStyle(
+    fontSize: 28,
+    fontWeight: fontWeight,
+  );
   static const TextStyle xxxl = BaseTextStyle(
     fontSize: 24,
     fontWeight: fontWeight,
@@ -73,4 +77,5 @@ extension TextStyleHelpers on TextStyle {
   TextStyle get medium => copyWith(fontWeight: FontWeight.w500);
   TextStyle get bold => copyWith(fontWeight: FontWeight.w700);
   TextStyle get underline => copyWith(decoration: TextDecoration.underline);
+  TextStyle h(double value) => copyWith(height: value);
 }

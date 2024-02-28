@@ -1,8 +1,9 @@
+import 'package:edupals/core/components/navbar.dart';
+import 'package:edupals/features/challenge/view/screens/daily_challenge_view.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/login_view.dart';
-import 'package:edupals/features/home/home_view.dart';
 import 'package:edupals/features/splash/presentation/view/splash_view.dart';
 import 'package:get/get.dart';
 
@@ -14,8 +15,10 @@ class AppPages {
         name: Routes.main,
         page: () => const SplashView(),
         binding: SplashBinding()),
-    GetPage(name: Routes.home, page: () => const HomeView()),
+    GetPage(name: Routes.home, page: () => const Navbar()),
     GetPage(name: Routes.dashboard, page: () => DashboardView()),
     GetPage(name: Routes.login, page: () => const LoginView()),
+    GetPage(
+        name: Routes.dailyChallenge, page: () => const DailyChallengeView()),
   ];
 }
