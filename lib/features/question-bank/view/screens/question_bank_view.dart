@@ -1,15 +1,19 @@
+import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/key_value.dart';
 import 'package:edupals/core/components/selection_input.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/view/componenets/treding_column.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class QuestionBankView extends StatelessWidget {
   const QuestionBankView({super.key});
 
   Widget get filterBody => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -28,17 +32,19 @@ class QuestionBankView extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: const SelectionInput(
+                  child: SelectionInput(
                 label: "Paper",
+                data: [KeyValue(label: "Paper 1")],
               ).padding(const EdgeInsets.only(right: AppValues.double15))),
-              const Expanded(
+              Expanded(
                   child: SelectionInput(
                 label: "Season",
+                data: [KeyValue(label: "Winter")],
               ))
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
           SelectionInput(
-            label: "Chapters",
+            label: "Topics",
             data: [
               KeyValue(label: "Arithematics"),
               KeyValue(label: "Polynomial"),
@@ -48,7 +54,12 @@ class QuestionBankView extends StatelessWidget {
           SelectionInput(
             label: "Years",
             data: [KeyValue(label: "2020"), KeyValue(label: "2021")],
-          )
+          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          BaseButton(
+              text: "Search Questions",
+              onClick: () {
+                Get.toNamed(Routes.questionsList);
+              })
         ],
       ).padding(const EdgeInsets.only(top: AppValues.double20));
 
@@ -100,7 +111,7 @@ class QuestionBankView extends StatelessWidget {
                   "Question Bank",
                   style: MyTextStyle.xl1.bold,
                 ),
-                filterBody
+                filterBody,
               ],
             ).padding(const EdgeInsets.only(right: AppValues.double40))),
         Flexible(flex: 4, child: trendingSection)

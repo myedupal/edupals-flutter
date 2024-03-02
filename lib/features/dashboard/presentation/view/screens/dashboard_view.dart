@@ -15,32 +15,38 @@ class DashboardView extends GetResponsiveView<SplashController> {
         children: [
           const ChallengeBanner(),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              for (int i = 0; i < 4; i++)
-                Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Question Flagged",
-                      style: MyTextStyle.s.bold,
-                    ),
-                    Text(
-                      "100",
-                      style: MyTextStyle.xl2.medium,
-                    ).padding(const EdgeInsets.only(top: AppValues.double30)),
-                  ],
-                )
-                        .capsulise(
-                            radius: 15,
-                            color: AppColors.gray100,
-                            padding: const EdgeInsets.all(AppValues.double20))
-                        .padding(
-                            const EdgeInsets.only(right: AppValues.double10))),
-              SizedBox(
-                width: Get.width * 0.2,
-                child: const Text("Breakdown"),
-              )
+              Expanded(
+                  flex: 8,
+                  child: Row(
+                    children: [
+                      for (int i = 0; i < 4; i++)
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Question Flagged",
+                              style: MyTextStyle.s.bold,
+                            ),
+                            Text(
+                              "100",
+                              style: MyTextStyle.xl2.medium,
+                            ).padding(
+                                const EdgeInsets.only(top: AppValues.double30)),
+                          ],
+                        )
+                                .capsulise(
+                                    radius: 15,
+                                    color: AppColors.gray100,
+                                    padding: const EdgeInsets.all(
+                                        AppValues.double20))
+                                .padding(const EdgeInsets.only(
+                                    right: AppValues.double10))),
+                    ],
+                  )),
+              Expanded(flex: 3, child: Container())
             ],
           ).padding(const EdgeInsets.only(top: AppValues.double20))
         ],

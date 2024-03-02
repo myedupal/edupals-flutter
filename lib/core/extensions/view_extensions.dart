@@ -91,4 +91,11 @@ extension ExpandedWidget on Widget {
           ),
           child: this)
       : this;
+
+  Widget addBorder({BorderSide? right}) => Container(
+        decoration: BoxDecoration(
+          border: Border(right: right ?? BorderSide()),
+        ),
+        child: this,
+      );
 }

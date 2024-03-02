@@ -12,6 +12,7 @@ class AppAssets {
   static const downChevronFill = "${_svgImagePath}down_chevron_fill.svg";
   static const backIcon = "${_svgImagePath}ic_back.svg";
   static const cross = "${_svgImagePath}cross.svg";
+  static const addIcon = "${_svgImagePath}ic_add.svg";
 
   String getPath({required String name}) {
     return "$_svgImagePath$name.svg";

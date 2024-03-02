@@ -4,4 +4,5 @@ abstract class Routes {
   static const login = '/login';
   static const dashboard = '/dashboard';
   static const dailyChallenge = '/dailyChallenge';
+  static const questionsList = '/questionsList';
 }

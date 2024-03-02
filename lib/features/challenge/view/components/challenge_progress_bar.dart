@@ -18,6 +18,7 @@ class ChallengeProgressBar extends StatelessWidget {
         const ImageAssetView(
           fileName: AppAssets.backIcon,
           height: AppValues.double15,
+          color: AppColors.gray900,
         )
             .capsulise(
                 radius: 100,

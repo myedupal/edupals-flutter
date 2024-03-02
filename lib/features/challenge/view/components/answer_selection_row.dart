@@ -16,14 +16,14 @@ class AnswerSelectionRow extends StatelessWidget {
         Text(
           "A",
           style: isActive
-              ? MyTextStyle.l.bold.c(AppColors.accent500)
-              : MyTextStyle.l.c(AppColors.gray700),
+              ? MyTextStyle.m.bold.c(AppColors.accent500)
+              : MyTextStyle.m.c(AppColors.gray700),
         ),
         Text(
           "Cambridge A-level",
           style: isActive
-              ? MyTextStyle.l.bold.c(AppColors.accent500)
-              : MyTextStyle.l.c(AppColors.gray700),
+              ? MyTextStyle.m.bold.c(AppColors.accent500)
+              : MyTextStyle.m.c(AppColors.gray700),
         ).padding(const EdgeInsets.only(left: AppValues.double15))
       ],
     )
