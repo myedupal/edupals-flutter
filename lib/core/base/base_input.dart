@@ -21,8 +21,9 @@ class BaseInput extends StatefulWidget {
       this.inputFormatters,
       this.onClick,
       this.onValueChange,
-      this.textStyle = MyTextStyle.l,
-      this.labelStyle = MyTextStyle.l});
+      this.textStyle = MyTextStyle.s,
+      this.controller,
+      this.labelStyle = MyTextStyle.s});
 
   final String? label;
   final String? value;
@@ -34,6 +35,7 @@ class BaseInput extends StatefulWidget {
   final VoidCallback? onClick;
   final TextStyle? textStyle;
   final TextStyle? labelStyle;
+  final TextEditingController? controller;
   final Function(String)? onValueChange;
 
   @override
@@ -42,43 +44,24 @@ class BaseInput extends StatefulWidget {
 
 class _BaseInputState extends State<BaseInput> {
   final FocusNode _focusNode = FocusNode();
-  final _controller = TextEditingController();
-  Color _borderColor = AppColors.gray600;
+  // final widget.controller? = TextEditingController();
+  Color _borderColor = AppColors.gray400;
   bool _showPassword = false;
-  Timer? _checkTypingTimer;
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
       if (widget.value != null) {
-        _controller.text = widget.value ?? "";
+        widget.controller?.text = widget.value ?? "";
       }
     });
-    _controller.addListener(_printLatestValue);
     _focusNode.addListener(() {
       setState(() {
         _borderColor =
-            _focusNode.hasFocus ? AppColors.accent500 : AppColors.gray600;
+            _focusNode.hasFocus ? AppColors.accent500 : AppColors.gray400;
       });
     });
-  }
-
-  void _printLatestValue() {
-    Future.delayed(Duration.zero, () async {
-      resetTimer();
-    });
-  }
-
-  startTimer() {
-    _checkTypingTimer = Timer(const Duration(milliseconds: 500), () {
-      widget.onValueChange?.call(_controller.text);
-    });
-  }
-
-  resetTimer() {
-    _checkTypingTimer?.cancel();
-    startTimer();
   }
 
   @override
@@ -86,7 +69,7 @@ class _BaseInputState extends State<BaseInput> {
     super.didUpdateWidget(oldWidget);
     if (widget.value != oldWidget.value) {
       Future.delayed(Duration.zero, () async {
-        _controller.text = widget.value ?? "";
+        widget.controller?.text = widget.value ?? "";
       });
     }
   }
@@ -129,7 +112,7 @@ class _BaseInputState extends State<BaseInput> {
               if (widget.label?.isNotEmpty == true)
                 Text(
                   widget.label ?? "",
-                  style: MyTextStyle.l.c(_focusNode.hasFocus
+                  style: MyTextStyle.xs.h(0).c(_focusNode.hasFocus
                       ? AppColors.accent500
                       : AppColors.gray600),
                 ),
@@ -143,7 +126,7 @@ class _BaseInputState extends State<BaseInput> {
                     !_showPassword,
                 keyboardType: _keyboardType(),
                 enabled: widget.enabled,
-                controller: _controller,
+                controller: widget.controller,
                 style: widget.textStyle,
                 decoration: const InputDecoration(
                   isDense: true,
@@ -158,7 +141,7 @@ class _BaseInputState extends State<BaseInput> {
         if (widget.errorMessage.isNotEmpty)
           Text(
             "* ${widget.errorMessage}",
-            style: MyTextStyle.l.c(AppColors.red600),
+            style: MyTextStyle.s.c(AppColors.red600),
           ).padding(const EdgeInsets.only(
               left: AppValues.double18, top: AppValues.double12))
       ],

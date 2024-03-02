@@ -9,7 +9,9 @@ class AppAssets {
 
   static const appIcon = "${_svgImagePath}app_logo.svg";
   static const downChevron = "${_svgImagePath}down_chevron.svg";
+  static const downChevronFill = "${_svgImagePath}down_chevron_fill.svg";
   static const backIcon = "${_svgImagePath}ic_back.svg";
+  static const cross = "${_svgImagePath}cross.svg";
 
   String getPath({required String name}) {
     return "$_svgImagePath$name.svg";

@@ -5,11 +5,13 @@ class BaseProgressIndicator extends StatelessWidget {
       {super.key,
       required this.color,
       required this.backgoundColor,
-      required this.fixedPercentage});
+      required this.fixedPercentage,
+      this.height});
 
   final Color color;
   final Color backgoundColor;
   final double fixedPercentage;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class BaseProgressIndicator extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           child: LinearProgressIndicator(
             value: (value.isNaN || value.isInfinite) ? 0 : value,
-            minHeight: 12,
+            minHeight: height ?? 12,
             backgroundColor: backgoundColor,
             color: color,
             semanticsLabel: 'Linear progress indicator',

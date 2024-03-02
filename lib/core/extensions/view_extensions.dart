@@ -1,3 +1,4 @@
+import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -72,9 +73,22 @@ extension ExpandedWidget on Widget {
       Scaffold(
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         backgroundColor: backgroundColor,
-        body: SafeArea(child: this),
+        body: SafeArea(bottom: false, child: this),
       );
 
   Widget ignorePointer([bool ignore = false]) =>
       IgnorePointer(ignoring: ignore, child: this);
+
+  Widget addBackgroundImage({bool isDisplay = true}) => isDisplay
+      ? Container(
+          decoration: const BoxDecoration(
+            color: AppColors.white,
+            image: DecorationImage(
+              alignment: Alignment.bottomCenter,
+              image: AssetImage(AppAssets.layoutBg),
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          child: this)
+      : this;
 }
