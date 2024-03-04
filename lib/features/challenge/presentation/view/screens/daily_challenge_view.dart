@@ -4,8 +4,8 @@ import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
-import 'package:edupals/features/challenge/view/components/answer_selection_row.dart';
-import 'package:edupals/features/challenge/view/components/challenge_progress_bar.dart';
+import 'package:edupals/features/challenge/presentation/view/components/answer_selection_row.dart';
+import 'package:edupals/features/challenge/presentation/view/components/challenge_progress_bar.dart';
 import 'package:flutter/material.dart';
 
 class DailyChallengeView extends StatelessWidget {

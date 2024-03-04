@@ -1,5 +1,6 @@
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
-import 'package:edupals/features/question-bank/view/screens/question_bank_view.dart';
+import 'package:edupals/features/history/presentation/view/screens/history_view.dart';
+import 'package:edupals/features/question-bank/presentation/view/screens/question_bank_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,8 +10,7 @@ class MainController extends GetxController {
   final pagesList = [
     DashboardView(),
     const QuestionBankView(),
-    Container(),
-    Container(),
+    const HistoryView(),
     Container(),
     Container(),
     Container(),
@@ -19,11 +19,11 @@ class MainController extends GetxController {
   final navList = [
     "Dashboard",
     "Question Bank",
-    "Flash Cards",
+    // "Flash Cards",
     "History",
     "Exam Builder",
     "Store",
-    "Tutors",
+    // "Tutors",
     "FAQ"
   ];
 

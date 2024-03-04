@@ -55,6 +55,10 @@ dependencies:
   # TODO: Integrate it (https://pub.dev/packages/freerasp)
   freerasp: ^6.4.0
 
+  # Display list of child chapter
+  # https://github.com/fzyzcjy/flutter_portal
+  flutter_portal: ^1.1.4
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

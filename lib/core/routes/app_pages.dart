@@ -1,7 +1,7 @@
 import 'package:edupals/core/components/navbar.dart';
-import 'package:edupals/features/challenge/view/screens/daily_challenge_view.dart';
+import 'package:edupals/features/challenge/presentation/view/screens/daily_challenge_view.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
-import 'package:edupals/features/question-bank/view/screens/questions_list_view.dart';
+import 'package:edupals/features/question-bank/presentation/view/screens/questions_list_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/login_view.dart';

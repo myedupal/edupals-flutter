@@ -13,6 +13,8 @@ class AppAssets {
   static const backIcon = "${_svgImagePath}ic_back.svg";
   static const cross = "${_svgImagePath}cross.svg";
   static const addIcon = "${_svgImagePath}ic_add.svg";
+  static const flag = "${_svgImagePath}flag.svg";
+  static const flashCard = "${_svgImagePath}flash_cards.svg";
 
   String getPath({required String name}) {
     return "$_svgImagePath$name.svg";
