@@ -7,6 +7,7 @@ class BaseButton extends StatelessWidget {
   final ButtonType type;
   final bool enabled;
   final bool fullWidth;
+  final bool withBorder;
   final VoidCallback onClick;
 
   const BaseButton(
@@ -14,6 +15,7 @@ class BaseButton extends StatelessWidget {
       required this.text,
       this.type = ButtonType.primary,
       this.enabled = true,
+      this.withBorder = false,
       this.fullWidth = false,
       required this.onClick});
 
@@ -52,7 +54,7 @@ class BaseButton extends StatelessWidget {
         backgroundColor = AppColors.white;
         break;
       case ButtonType.white:
-        backgroundColor = AppColors.gray900;
+        backgroundColor = AppColors.accent500;
         break;
       case ButtonType.gray:
         backgroundColor = AppColors.gray900;
@@ -63,6 +65,12 @@ class BaseButton extends StatelessWidget {
 
   Widget _buttonBody() {
     final ButtonStyle style = ElevatedButton.styleFrom(
+        side: type == ButtonType.white
+            ? const BorderSide(
+                width: 1.0,
+                color: AppColors.gray400,
+              )
+            : null,
         elevation: 0,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
@@ -78,7 +86,9 @@ class BaseButton extends StatelessWidget {
             : null,
         style: style,
         child: Text(text.toUpperCase(),
-            style: MyTextStyle.xxs.bold.c(getTextColor())));
+            style: (fullWidth ? MyTextStyle.s : MyTextStyle.xxs)
+                .bold
+                .c(getTextColor())));
   }
 
   @override

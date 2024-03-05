@@ -1,4 +1,5 @@
 import 'package:edupals/config/flavor_config.dart';
+import 'package:edupals/core/base/model/user.dart';
 import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -19,14 +20,12 @@ class SentryService extends GetxService {
       return;
     }
 
-    final String? userId = await localRepository.getUserId();
-
-    final String? name = await localRepository.getName();
+    final User? user = await localRepository.getUser();
 
     /// Report the error to the Sentry.io
     final SentryId sentryId = await Sentry.captureException(error,
         stackTrace: stackTrace, withScope: (scope) {
-      scope.setUser(SentryUser(id: userId, username: name));
+      scope.setUser(SentryUser(id: user?.id ?? "", username: user?.name ?? ""));
     });
 
     if (sentryId.toString().isNotEmpty) {

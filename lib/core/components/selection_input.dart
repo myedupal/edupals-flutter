@@ -1,4 +1,4 @@
-import 'package:edupals/core/base/key_value.dart';
+import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/list_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';

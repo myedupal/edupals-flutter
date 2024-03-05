@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_divider.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -87,9 +88,7 @@ class _BaseAccordionState extends State<BaseAccordion> {
             curve: Curves.easeInOut,
             child: Column(
               children: [
-                const Divider(
-                  color: AppColors.gray200,
-                ),
+                const BaseDivider(),
                 if (_showChild) widget.child ?? Container()
               ],
             ))
