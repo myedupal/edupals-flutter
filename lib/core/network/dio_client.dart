@@ -36,7 +36,7 @@ abstract class DioClient {
       int? timeout});
 
   Future<Response<dynamic>> delete(String uri,
-      {required dynamic body,
+      {dynamic body,
       String? fullUrl,
       Map<String, dynamic>? headers,
       bool authorization = true,
@@ -90,7 +90,7 @@ class DioClientImpl implements DioClient {
   @override
   Future<Response<dynamic>> delete(
     String uri, {
-    required dynamic body,
+    dynamic body,
     String? fullUrl,
     Map<String, dynamic>? headers,
     bool authorization = true,

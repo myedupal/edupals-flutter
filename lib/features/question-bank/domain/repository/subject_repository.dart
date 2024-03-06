@@ -16,7 +16,7 @@ class SubjectRepository {
     await dioClient
         .get(
           "${ApiConstants.getSubjects}$id",
-          authorization: true,
+          authorization: false,
         )
         .handleResponse(
           onSuccess: (value) =>

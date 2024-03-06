@@ -1,8 +1,10 @@
 import 'package:edupals/config/flavor_config.dart';
 import 'package:edupals/core/network/errors/error_handler.dart';
 import 'package:edupals/core/network/errors/failures.dart';
+import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:edupals/core/services/sentry_service.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as getx;
 import 'package:logger/logger.dart';
 
 extension DioResponseExtension<T> on Future<Response<T>> {
@@ -10,9 +12,13 @@ extension DioResponseExtension<T> on Future<Response<T>> {
       {required Function(dynamic) onSuccess,
       required Function(BaseFailure) onError}) async {
     final Logger logger = FlavorConfig.instance.logger;
+    final LocalRepository localRepository = getx.Get.find();
     try {
       final Response response = await this;
-
+      final token = response.headers["authorization"]?[0];
+      if (token != null) {
+        localRepository.setAccessToken(token);
+      }
       onSuccess.call(response.data);
     } on DioException catch (dioError, stackTrace) {
       dioError.type != DioExceptionType.badResponse

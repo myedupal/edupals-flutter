@@ -3,15 +3,15 @@ import 'package:edupals/core/base/base_divider.dart';
 import 'package:edupals/core/base/base_input.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
-import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:edupals/features/auth/presentation/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+class AuthView extends GetView<AuthController> {
+  const AuthView({super.key});
 
   Widget get _loginForm {
     return ListView(
@@ -29,17 +29,19 @@ class LoginView extends StatelessWidget {
             const SizedBox(
               height: AppValues.double40,
             ),
-            const BaseInput(
+            BaseInput(
               label: "Email Address",
+              controller: controller.emailController,
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-            const BaseInput(
+            BaseInput(
               label: "Password",
+              controller: controller.passwordController,
               keyboardType: KeyboardType.password,
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
             BaseButton(
               text: "Login",
               onClick: () {
-                Get.offAllNamed(Routes.home);
+                controller.login();
               },
               fullWidth: true,
             ),

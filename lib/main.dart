@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-void mainGlobal() {
-  dotenv.load(fileName: FlavorConfig.fileName);
+void mainGlobal() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: FlavorConfig.fileName);
   runApp(const MyApp());
 }
 

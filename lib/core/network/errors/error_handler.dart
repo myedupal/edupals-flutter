@@ -1,5 +1,4 @@
 import 'package:edupals/config/flavor_config.dart';
-import 'package:edupals/core/network/errors/extra_model.dart';
 import 'package:edupals/core/network/errors/failures.dart';
 import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:edupals/core/routes/app_routes.dart';
@@ -45,17 +44,12 @@ class ErrorHandler {
     // -1 is just a fancy way of saying the statusCode is not found
     int? statusCode = -1;
     String? serverMessage = '';
-    ExtraModel? extra;
 
     try {
       statusCode = int.tryParse(response?.data['statusCode'] ?? "0");
-      serverMessage = response?.data['statusMessage'] ??
+      serverMessage = response?.data['error_messages'][0] ??
           response?.data['error']['message'] ??
           '';
-
-      extra = response?.data['extra'] != null
-          ? ExtraModel.fromJson(response?.data['extra'])
-          : null;
     } catch (e, s) {
       logger.i('$e');
       logger.i(s.toString());
@@ -70,7 +64,7 @@ class ErrorHandler {
     }
 
     return ApiFailure(
-        message: serverMessage ?? '', statusCode: statusCode, extra: extra);
+        message: serverMessage ?? '', statusCode: statusCode, extra: null);
   }
 
   Future forceLogout() async {

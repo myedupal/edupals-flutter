@@ -7,4 +7,6 @@ abstract class ApiConstants {
   // API lists
   static const version = '/api/v1';
   static const getSubjects = '$version/web/subjects/';
+  static const getLogin = '$version/user/sign_in';
+  static const getLogout = '$version/user/sign_out';
 }
