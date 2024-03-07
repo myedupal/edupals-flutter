@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -20,7 +21,8 @@ class ImageAssetView extends StatelessWidget {
   final double? width;
 
   Widget get getImage {
-    final String mimType = fileName.split('.').last;
+    final String mimType =
+        fileName.contains("https://") ? "url" : fileName.split('.').last;
 
     if (mimType.isEmpty) {
       return Icon(
@@ -36,7 +38,7 @@ class ImageAssetView extends StatelessWidget {
           fileName,
           height: height,
           width: width,
-          fit: fit ?? BoxFit.contain,
+          fit: fit ?? BoxFit.fitHeight,
           colorFilter:
               color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
         );
@@ -50,6 +52,15 @@ class ImageAssetView extends StatelessWidget {
           width: width,
           color: color,
           scale: scale,
+        );
+      case 'url':
+        return CachedNetworkImage(
+          // placeholder: (context, url) => Center(child: _buildLoadingImage()),
+          imageUrl: fileName,
+          fit: fit,
+          height: height,
+          width: width,
+          color: color,
         );
       default:
         return Icon(

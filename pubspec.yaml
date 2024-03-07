@@ -30,6 +30,10 @@ dependencies:
   # Calling API
   dio: ^5.4.0
 
+  # Helper methods
+  collection: ^1.17.0
+  universal_io: ^2.2.0
+
   # Lottie
   lottie: ^2.4.0
 
@@ -50,6 +54,9 @@ dependencies:
 
   # Get App Info
   package_info_plus: ^5.0.1
+
+   # Cache Image
+  cached_network_image: ^3.3.0
 
   # Free rasp (Thread Detection)
   # TODO: Integrate it (https://pub.dev/packages/freerasp)

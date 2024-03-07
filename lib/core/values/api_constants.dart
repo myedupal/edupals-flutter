@@ -9,4 +9,5 @@ abstract class ApiConstants {
   static const getSubjects = '$version/web/subjects/';
   static const getLogin = '$version/user/sign_in';
   static const getLogout = '$version/user/sign_out';
+  static const getQuestions = '$version/user/questions';
 }

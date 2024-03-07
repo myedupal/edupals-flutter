@@ -19,7 +19,7 @@ class HttpRequestHeaderInterceptor extends Interceptor {
         ApiConstants.contentTypeJson;
     options.headers['X-Channel'] = 'MA';
     if (requiresToken) {
-      options.headers[HttpHeaders.authorizationHeader] = 'Bearer $accessToken';
+      options.headers[HttpHeaders.authorizationHeader] = '$accessToken';
     }
 
     return handler.next(options);

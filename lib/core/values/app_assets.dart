@@ -15,6 +15,8 @@ class AppAssets {
   static const addIcon = "${_svgImagePath}ic_add.svg";
   static const flag = "${_svgImagePath}flag.svg";
   static const flashCard = "${_svgImagePath}flash_cards.svg";
+  static const leftChevron = "${_svgImagePath}left_chevron.svg";
+  static const rightChevron = "${_svgImagePath}right_chevron.svg";
 
   String getPath({required String name}) {
     return "$_svgImagePath$name.svg";

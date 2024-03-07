@@ -11,6 +11,7 @@ class BaseAccordion extends StatefulWidget {
   const BaseAccordion({
     super.key,
     this.title,
+    this.sideTitle,
     this.subtitle,
     this.child,
     this.trailingWidget,
@@ -18,6 +19,7 @@ class BaseAccordion extends StatefulWidget {
     this.showHighlight = true,
   });
 
+  final String? sideTitle;
   final String? title;
   final String? subtitle;
   final Widget? child;
@@ -50,15 +52,16 @@ class _BaseAccordionState extends State<BaseAccordion> {
               Expanded(
                   child: Row(
                 children: [
-                  Text(
-                    "Arithematics",
-                    style: MyTextStyle.xxs.bold.c(AppColors.accent500),
-                  ).capsulise(
-                      radius: 100,
-                      color: AppColors.accent100,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: AppValues.double2,
-                          horizontal: AppValues.double10)),
+                  if (widget.sideTitle?.isEmpty == false)
+                    Text(
+                      widget.sideTitle ?? "",
+                      style: MyTextStyle.xxs.bold.c(AppColors.accent500),
+                    ).capsulise(
+                        radius: 100,
+                        color: AppColors.accent100,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: AppValues.double2,
+                            horizontal: AppValues.double10)),
                   Flexible(
                       child: Text(
                     widget.title ?? "",

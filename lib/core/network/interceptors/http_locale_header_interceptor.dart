@@ -1,6 +1,6 @@
 import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HttpLocaleHeaderInterceptor extends Interceptor {
@@ -9,7 +9,7 @@ class HttpLocaleHeaderInterceptor extends Interceptor {
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final Locale? locale = await localRepository.getLanguage();
+    // final Locale? locale = await localRepository.getLanguage();
 
     // if (locale == Apptranslations.localeEN) {
     //   options.headers['x-locale'] = 'en';

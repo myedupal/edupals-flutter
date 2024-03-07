@@ -2,6 +2,7 @@ import 'package:edupals/core/components/navbar.dart';
 import 'package:edupals/features/auth/presentation/binding/auth_binding.dart';
 import 'package:edupals/features/challenge/presentation/view/screens/daily_challenge_view.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
+import 'package:edupals/features/question-bank/presentation/binding/questions_list_binding.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/questions_list_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
 import 'package:edupals/core/routes/app_routes.dart';
@@ -23,7 +24,10 @@ class AppPages {
         name: Routes.login,
         page: () => const AuthView(),
         binding: AuthBinding()),
-    GetPage(name: Routes.questionsList, page: () => const QuestionsListView()),
+    GetPage(
+        name: Routes.questionsList,
+        page: () => const QuestionsListView(),
+        binding: QuestionsListBinding()),
     GetPage(
         name: Routes.dailyChallenge, page: () => const DailyChallengeView()),
   ];

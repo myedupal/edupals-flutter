@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 class QuestionBankBinding extends Bindings {
   @override
   void dependencies() {
-    // Register datasource
-    Get.put<QuestionBankController>(QuestionBankController());
+    // Register Repository
     Get.lazyPut<SubjectRepository>(() => SubjectRepository());
+    // Register Controller
+    Get.put<QuestionBankController>(QuestionBankController());
   }
 }
