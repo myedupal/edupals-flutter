@@ -47,16 +47,20 @@ class QuestionsListController extends BaseController {
     setLoading();
     await questionsRepo.getQuestions(
         queryParams: QueryParams(
-          //   examId: [
+          // examId: [
           //   "f9f2a4e9-485c-4c6b-b48d-62012438237a",
           //   "a8f7cbb0-07a0-4622-836e-2d00e7f1fecb"
           // ],
-          subjectId: "6d0ca8ec-962e-4007-8d09-73d2530fa418",
+          topicId: [
+            "9e23d733-6e23-45cf-95cf-a2c9ad1a391a",
+            "c94367ad-acd7-4285-8898-f1f08d854889"
+          ],
+          // subjectId: "6d0ca8ec-962e-4007-8d09-73d2530fa418",
           items: 100,
         ),
         onSuccess: (value) {
           questionsList?.value = value ?? [];
-          questionsList?.sort(compareQuestions);
+          // questionsList?.sort(compareQuestions);
           for (int i = 0; i < (questionsList?.length ?? 0); i++) {
             final topic = topicList?.firstWhereOrNull(
                 (element) => element?.id == value?[i].topics?[0].id);

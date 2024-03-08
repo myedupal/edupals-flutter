@@ -54,7 +54,7 @@ class DailyChallengeView extends StatelessWidget {
               left: AppValues.double30,
               right: AppValues.double30))
           .scaffoldWrapper(backgroundColor: Colors.transparent)
-          .constraintsWrapper(800, Colors.transparent),
+          .constraintsWrapper(width: 800, color: Colors.transparent),
     );
   }
 }

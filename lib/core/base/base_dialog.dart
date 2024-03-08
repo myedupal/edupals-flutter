@@ -26,6 +26,7 @@ class BaseDialog {
           Text(
             subtitle ?? "",
             style: MyTextStyle.m,
+            textAlign: TextAlign.center,
           ),
           BaseButton(
                   text: "Noted",
@@ -37,9 +38,14 @@ class BaseDialog {
                   top: AppValues.double20, bottom: AppValues.double10))
         ],
       )
-          .padding(const EdgeInsets.symmetric(horizontal: AppValues.double30))
-          .constraintsWrapper(500)
+          .padding(const EdgeInsets.symmetric(horizontal: AppValues.double10))
+          .constraintsWrapper(width: 400, isCenter: false)
           .dialogWrapper(),
     );
+  }
+
+  static customise({required Widget child}) {
+    Get.dialog(
+        child.constraintsWrapper(width: 600, isCenter: false).dialogWrapper());
   }
 }

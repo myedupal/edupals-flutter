@@ -29,9 +29,15 @@ extension ExpandedWidget on Widget {
           double? radius = 100,
           Color? color = AppColors.gray900,
           bool? border = false,
-          Color? borderColor = AppColors.gray200}) =>
+          Color? borderColor = AppColors.gray200,
+          double? width,
+          double? height,
+          Alignment? alignment}) =>
       Container(
           padding: padding,
+          width: width,
+          height: height,
+          alignment: alignment,
           decoration: BoxDecoration(
               border: border ?? true
                   ? Border.all(color: borderColor ?? AppColors.gray100)
@@ -54,11 +60,18 @@ extension ExpandedWidget on Widget {
       ),
       child: this);
 
-  Widget constraintsWrapper(double width, [Color? color]) => Container(
+  Widget constraintsWrapper(
+          {double? width,
+          double? height,
+          Color? color,
+          bool isCenter = true}) =>
+      Container(
         color: color ?? AppColors.white,
+        alignment: isCenter ? Alignment.center : null,
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: width,
+            maxHeight: height ?? double.infinity,
+            maxWidth: width ?? double.infinity,
           ),
           child: this,
         ),

@@ -27,7 +27,7 @@ class QueryParams {
   String? query;
   String? fromDate;
   String? toDate;
-  String? topicId;
+  List<String>? topicId;
   String? subjectId;
   String? paperId;
   List<String>? examId;
@@ -49,6 +49,7 @@ class QueryParams {
         "from_date": fromDate,
         "to_date": toDate,
         "exam_id[]": examId,
+        "topic_id[]": topicId,
         "subject_id": subjectId,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");

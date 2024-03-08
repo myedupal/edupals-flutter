@@ -16,6 +16,7 @@ class AuthView extends GetView<AuthController> {
 
   Widget get _loginForm {
     return ListView(
+      physics: const BouncingScrollPhysics(),
       children: [
         const SizedBox(
           height: AppValues.double100,
@@ -82,11 +83,14 @@ class AuthView extends GetView<AuthController> {
                 const Text(
                   "Terms",
                   style: MyTextStyle.xs,
-                )
+                ),
               ],
             ).padding(const EdgeInsets.only(top: AppValues.double30))
           ],
-        ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double80))
+        ).padding(EdgeInsets.symmetric(
+            horizontal: Get.context?.isPhone == true
+                ? AppValues.double30
+                : AppValues.double80))
       ],
     );
   }
@@ -95,7 +99,8 @@ class AuthView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Obx(() => Row(
           children: [
-            const ImageAssetView(fileName: AppAssets.authBg),
+            if (!context.isPhone && context.isLandscape)
+              const ImageAssetView(fileName: AppAssets.authBg),
             Expanded(child: _loginForm)
           ],
         )

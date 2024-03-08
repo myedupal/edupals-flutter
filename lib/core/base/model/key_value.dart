@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class KeyValue {
   KeyValue(
       {this.label,
+      this.sublabel,
       this.id,
       this.date,
       this.type,
@@ -31,6 +32,7 @@ class KeyValue {
   bool? isEmpty = false;
   bool? isAction = false;
   String? label;
+  String? sublabel;
   String? logo;
   String? key;
   String? errorMessage;

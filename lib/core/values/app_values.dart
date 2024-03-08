@@ -26,6 +26,12 @@ abstract class AppValues {
   static const double double80 = 80;
   static const double double90 = 90;
   static const double double100 = 100;
+  static const double double120 = 120;
+  static const double double140 = 140;
+  static const double double150 = 150;
+  static const double double160 = 160;
+  static const double double170 = 170;
+  static const double double180 = 180;
   static const double double200 = 200;
 
   static const int loggerLineLength = 120;

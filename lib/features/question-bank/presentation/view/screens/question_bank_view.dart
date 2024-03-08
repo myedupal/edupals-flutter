@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/base_button.dart';
+import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/components/selection_input.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
@@ -7,6 +8,7 @@ import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/domain/repository/subject_repository.dart';
 import 'package:edupals/features/question-bank/presentation/controller/question_bank_controller.dart';
+import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/treding_column.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,12 +25,34 @@ class QuestionBankView extends GetView<QuestionBankController> {
                   child: SelectionInput(
                 label: "Revision Type",
                 data: [KeyValue(label: "Yearly")],
-              ).padding(const EdgeInsets.only(right: AppValues.double15))),
+              )
+                      .padding(const EdgeInsets.only(right: AppValues.double15))
+                      .onTap(() {
+                BaseDialog.customise(
+                    child: SelectionDialog(
+                  numberOfColumn: 2,
+                  childRatio: 4,
+                  selectionList: [
+                    KeyValue(label: "Yearly", key: "yearly"),
+                    KeyValue(label: "Topical", key: "topical")
+                  ],
+                ));
+              })),
               Expanded(
                   child: SelectionInput(
                 label: "Subject",
                 data: [KeyValue(label: "Mathematics")],
-              ))
+              ).onTap(() {
+                BaseDialog.customise(
+                    child: SelectionDialog(
+                  childRatio: 3,
+                  numberOfColumn: 2,
+                  selectionList: controller.subjectList
+                      ?.map((element) =>
+                          KeyValue(label: element.name, key: element.id))
+                      .toList(),
+                ));
+              }))
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
           Row(
