@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 
 class ImageAssetView extends StatelessWidget {
   const ImageAssetView(
@@ -61,6 +62,17 @@ class ImageAssetView extends StatelessWidget {
           height: height,
           width: width,
           color: color,
+        );
+      case 'json':
+      case 'zip':
+        return SizedBox(
+          width: width,
+          height: height,
+          child: Lottie.asset(
+            fileName,
+            fit: BoxFit.cover,
+            repeat: true,
+          ),
         );
       default:
         return Icon(

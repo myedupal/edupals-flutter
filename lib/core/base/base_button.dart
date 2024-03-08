@@ -1,6 +1,8 @@
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
+import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class BaseButton extends StatelessWidget {
   final String text;
@@ -9,15 +11,18 @@ class BaseButton extends StatelessWidget {
   final bool fullWidth;
   final bool withBorder;
   final VoidCallback onClick;
+  final bool isLoading;
 
-  const BaseButton(
-      {super.key,
-      required this.text,
-      this.type = ButtonType.primary,
-      this.enabled = true,
-      this.withBorder = false,
-      this.fullWidth = false,
-      required this.onClick});
+  const BaseButton({
+    super.key,
+    required this.text,
+    this.type = ButtonType.primary,
+    this.enabled = true,
+    this.withBorder = false,
+    this.fullWidth = false,
+    required this.onClick,
+    this.isLoading = false,
+  });
 
   Color getButtonColor() {
     Color backgroundColor = AppColors.gray900;
@@ -85,10 +90,15 @@ class BaseButton extends StatelessWidget {
               }
             : null,
         style: style,
-        child: Text(text.toUpperCase(),
-            style: (fullWidth ? MyTextStyle.s : MyTextStyle.xxs)
-                .bold
-                .c(getTextColor())));
+        child: isLoading
+            ? SizedBox(
+                height: AppValues.double20,
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: AppColors.white, size: 25))
+            : Text(text.toUpperCase(),
+                style: (fullWidth ? MyTextStyle.s : MyTextStyle.xxs)
+                    .bold
+                    .c(getTextColor())));
   }
 
   @override

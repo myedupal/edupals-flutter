@@ -94,6 +94,7 @@ flutter:
     - assets/fonts/
     - assets/images/png/
     - assets/images/svg/
+    - assets/images/lottie/
     - .env.uat
     - .env.dev
     - .env.prod

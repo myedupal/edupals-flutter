@@ -1,6 +1,8 @@
 import 'package:edupals/core/components/base_accordion.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
@@ -88,19 +90,35 @@ class QuestionsListView extends GetView<QuestionsListController> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const QuestionsListTopBar(),
         Expanded(
-            child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(flex: 3, child: chapterList),
-            Expanded(flex: 8, child: questionDetails),
-            actionList
-          ],
-        ).padding(const EdgeInsets.symmetric(
-                horizontal: AppValues.double10, vertical: AppValues.double25)))
+            child: Obx(() => controller.viewState == ViewState.loading
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: Get.width * 0.1,
+                      ),
+                      ImageAssetView(
+                        fileName: AppAssets.questionLoadingLottie,
+                        width: Get.width * 0.25,
+                      ),
+                      Text(
+                        "We are preparing the best for you...",
+                        style: MyTextStyle.l.bold,
+                      )
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(flex: 3, child: chapterList),
+                      Expanded(flex: 8, child: questionDetails),
+                      actionList
+                    ],
+                  ).padding(const EdgeInsets.symmetric(
+                    horizontal: AppValues.double10,
+                    vertical: AppValues.double25))))
       ],
     ).padding(const EdgeInsets.all(AppValues.double10)).scaffoldWrapper();
   }

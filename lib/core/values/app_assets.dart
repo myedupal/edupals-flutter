@@ -1,6 +1,7 @@
 class AppAssets {
   static const _pngImagePath = 'assets/images/png/';
   static const _svgImagePath = 'assets/images/svg/';
+  static const _lottiePath = 'assets/images/lottie/';
 
   static const authBg = "${_pngImagePath}auth_bg.png";
   static const dashboardChallengeBg = "${_pngImagePath}dashboard_challenge.png";
@@ -17,6 +18,10 @@ class AppAssets {
   static const flashCard = "${_svgImagePath}flash_cards.svg";
   static const leftChevron = "${_svgImagePath}left_chevron.svg";
   static const rightChevron = "${_svgImagePath}right_chevron.svg";
+
+  //Lottie
+  static const errorLottie = "${_lottiePath}error.json";
+  static const questionLoadingLottie = "${_lottiePath}question_loading.json";
 
   String getPath({required String name}) {
     return "$_svgImagePath$name.svg";

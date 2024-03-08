@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
@@ -5,7 +6,7 @@ import 'package:edupals/features/question-bank/domain/repository/user_questions_
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class QuestionsListController extends GetxController {
+class QuestionsListController extends BaseController {
   final UserQuestionsRepository questionsRepo = Get.find();
   final RxList<Question>? questionsList = <Question>[].obs;
   final RxList<Topic?>? topicList = <Topic>[].obs;
@@ -43,6 +44,7 @@ class QuestionsListController extends GetxController {
   }
 
   Future<void> getQuestions() async {
+    setLoading();
     await questionsRepo.getQuestions(
         queryParams: QueryParams(
           //   examId: [
@@ -64,6 +66,7 @@ class QuestionsListController extends GetxController {
           }
           selectedQuestion.value = questionsList?.first;
           debugPrint("${topicList?.length ?? 0}");
+          setSuccess();
         },
         onError: (error) {});
   }

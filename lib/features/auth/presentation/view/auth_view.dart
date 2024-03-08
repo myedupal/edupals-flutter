@@ -2,6 +2,7 @@ import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/base_divider.dart';
 import 'package:edupals/core/base/base_input.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -40,6 +41,7 @@ class AuthView extends GetView<AuthController> {
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
             BaseButton(
               text: "Login",
+              isLoading: controller.viewState == ViewState.loading,
               onClick: () {
                 controller.login();
               },
@@ -91,11 +93,13 @@ class AuthView extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const ImageAssetView(fileName: AppAssets.authBg),
-        Expanded(child: _loginForm)
-      ],
-    ).scaffoldWrapper(topSafe: false);
+    return Obx(() => Row(
+          children: [
+            const ImageAssetView(fileName: AppAssets.authBg),
+            Expanded(child: _loginForm)
+          ],
+        )
+            .ignorePointer(controller.viewState == ViewState.loading)
+            .scaffoldWrapper(topSafe: false));
   }
 }

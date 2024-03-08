@@ -56,13 +56,12 @@ extension ExpandedWidget on Widget {
 
   Widget constraintsWrapper(double width, [Color? color]) => Container(
         color: color ?? AppColors.white,
-        child: Center(
-            child: ConstrainedBox(
+        child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: width,
           ),
           child: this,
-        )),
+        ),
       );
 
   Widget repaintBoundary() => RepaintBoundary(child: this);
@@ -99,4 +98,15 @@ extension ExpandedWidget on Widget {
         ),
         child: this,
       );
+
+  Widget dialogWrapper(
+          {bool withPadding = true, EdgeInsets? customPadding}) =>
+      Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          elevation: 0.0,
+          child: padding(withPadding
+              ? customPadding ??
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
+              : EdgeInsets.zero));
 }
