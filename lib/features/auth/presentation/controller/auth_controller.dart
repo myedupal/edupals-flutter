@@ -11,19 +11,29 @@ class AuthController extends BaseController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool validInput() {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      BaseDialog.showError(subtitle: "Emaill and password cannot be empty.");
+      return false;
+    }
+    return true;
+  }
+
   Future<void> login() async {
-    setLoading();
-    await authRepo.login(
-        user: User(
-            email: emailController.value.text,
-            password: passwordController.value.text),
-        onSuccess: (value) {
-          setSuccess();
-          Get.offAllNamed(Routes.home);
-        },
-        onError: (error) {
-          setSuccess();
-          BaseDialog.showError(subtitle: error.message);
-        });
+    if (validInput()) {
+      setLoading();
+      await authRepo.login(
+          user: User(
+              email: emailController.value.text,
+              password: passwordController.value.text),
+          onSuccess: (value) {
+            setSuccess();
+            Get.offAllNamed(Routes.home);
+          },
+          onError: (error) {
+            setSuccess();
+            BaseDialog.showError(subtitle: error.message);
+          });
+    }
   }
 }

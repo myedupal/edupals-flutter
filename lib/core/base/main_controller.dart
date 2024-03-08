@@ -38,11 +38,15 @@ class MainController extends GetxController {
 
   // Include logout
   Future<void> logout() async {
-    await authRepo.logout(
-        onSuccess: (value) {
-          localRepo.clearStorage();
-          Get.offAllNamed(Routes.login);
-        },
-        onError: (error) {});
+    await authRepo.logout(onSuccess: (value) {
+      clearSession();
+    }, onError: (error) {
+      clearSession();
+    });
+  }
+
+  void clearSession() {
+    localRepo.clearStorage();
+    Get.offAllNamed(Routes.login);
   }
 }
