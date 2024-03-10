@@ -15,12 +15,16 @@ class SelectionDialog extends GetView<SelectionDialogController> {
     this.isMultiSelect = true,
     this.numberOfColumn = 4,
     this.childRatio = 1.2,
+    this.title = "item",
+    this.emitData,
   });
 
   final List<KeyValue>? selectionList;
   final bool isMultiSelect;
   final int numberOfColumn;
   final double childRatio;
+  final String title;
+  final Function(List<KeyValue?>?)? emitData;
 
   Widget selectionColumn(
       {String? title, String? subtitle, bool isSelected = false}) {
@@ -48,7 +52,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
             AppValues.double15, AppValues.double15, AppValues.double15, 0));
   }
 
-  Widget get dataList => Obx(() => GridView.count(
+  Widget get dataList => GridView.count(
         padding: const EdgeInsets.symmetric(vertical: AppValues.double20),
         primary: false,
         crossAxisCount: Get.context?.isPhone == true
@@ -67,43 +71,56 @@ class SelectionDialog extends GetView<SelectionDialogController> {
                     subtitle: e.sublabel,
                     isSelected: selectedData != null)
                 .onTap(() {
-              controller.selectData(value: e);
+              controller.selectData(value: e, isMultiSelect: isMultiSelect);
             });
           }),
         ],
       ).constraintsWrapper(
           height: Get.context?.isLandscape == true
               ? Get.height * 0.7
-              : Get.width * 0.7));
+              : Get.width * 0.7);
 
   @override
   Widget build(BuildContext context) {
     Get.put(SelectionDialogController());
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
+    return Obx(() => Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "You have selected 2 Topics",
-              style: MyTextStyle.l.bold,
-            ),
-            const Text(
-              "Chapter 1, Chapter 2",
-              style: MyTextStyle.s,
-            ),
+            AnimatedSize(
+                alignment: Alignment.topLeft,
+                duration: const Duration(milliseconds: 300),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "You have selected ${controller.selectedList?.length} $title",
+                      style: MyTextStyle.l.bold,
+                    ),
+                    if ((controller.selectedList?.length ?? 0) > 0)
+                      Text(
+                        controller.selectedList
+                                ?.map((element) => element?.label)
+                                .join(", ") ??
+                            "",
+                        style: MyTextStyle.s,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                )),
+            dataList,
+            Row(
+              children: [
+                const Spacer(),
+                BaseButton(
+                    text: "Done Selection",
+                    onClick: () {
+                      emitData?.call(controller.selectedList);
+                      Get.back();
+                    })
+              ],
+            )
           ],
-        ),
-        dataList,
-        Row(
-          children: [
-            const Spacer(),
-            BaseButton(text: "Done Selection", onClick: () {})
-          ],
-        )
-      ],
-    );
+        ));
   }
 }

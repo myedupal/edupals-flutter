@@ -7,6 +7,7 @@ import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/domain/repository/subject_repository.dart';
+import 'package:edupals/features/question-bank/domain/repository/topic_repository.dart';
 import 'package:edupals/features/question-bank/presentation/controller/question_bank_controller.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/treding_column.dart';
@@ -16,7 +17,70 @@ import 'package:get/get.dart';
 class QuestionBankView extends GetView<QuestionBankController> {
   const QuestionBankView({super.key});
 
-  Widget get filterBody => Column(
+  void showRevisionDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      isMultiSelect: false,
+      numberOfColumn: 2,
+      childRatio: 4,
+      selectionList: [
+        KeyValue(label: "Yearly", key: "yearly"),
+        KeyValue(label: "Topical", key: "topical")
+      ],
+      emitData: (data) {
+        debugPrint("${data?.map((e) => e?.label)}");
+      },
+    ));
+  }
+
+  void showSubjectDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      isMultiSelect: false,
+      title: "Subject",
+      childRatio: 3,
+      numberOfColumn: 2,
+      selectionList: controller.subjectList
+          ?.map((element) => KeyValue(label: element.name, key: element.id))
+          .toList(),
+      emitData: (data) {
+        controller.onSelectSubject(value: data?.first);
+        debugPrint("${data?.map((e) => e?.label)}");
+      },
+    ));
+  }
+
+  void showPaperDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      isMultiSelect: false,
+      title: "Paper",
+      childRatio: 3,
+      numberOfColumn: 2,
+      selectionList: controller.paperList ?? [],
+      emitData: (data) {
+        debugPrint("${data?.map((e) => e?.label)}");
+      },
+    ));
+  }
+
+  void showTopicDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      isMultiSelect: true,
+      title: "Topic",
+      childRatio: 3,
+      numberOfColumn: 2,
+      selectionList: controller.topicList
+          ?.map((element) => KeyValue(label: element.name, key: element.id))
+          .toList(),
+      emitData: (data) {
+        debugPrint("${data?.map((e) => e?.label)}");
+      },
+    ));
+  }
+
+  Widget get filterBody => Obx(() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -27,32 +91,12 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 data: [KeyValue(label: "Yearly")],
               )
                       .padding(const EdgeInsets.only(right: AppValues.double15))
-                      .onTap(() {
-                BaseDialog.customise(
-                    child: SelectionDialog(
-                  numberOfColumn: 2,
-                  childRatio: 4,
-                  selectionList: [
-                    KeyValue(label: "Yearly", key: "yearly"),
-                    KeyValue(label: "Topical", key: "topical")
-                  ],
-                ));
-              })),
+                      .onTap(showRevisionDialog)),
               Expanded(
                   child: SelectionInput(
                 label: "Subject",
-                data: [KeyValue(label: "Mathematics")],
-              ).onTap(() {
-                BaseDialog.customise(
-                    child: SelectionDialog(
-                  childRatio: 3,
-                  numberOfColumn: 2,
-                  selectionList: controller.subjectList
-                      ?.map((element) =>
-                          KeyValue(label: element.name, key: element.id))
-                      .toList(),
-                ));
-              }))
+                data: [controller.selectedSubject.value!],
+              ).onTap(showSubjectDialog))
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
           Row(
@@ -61,7 +105,9 @@ class QuestionBankView extends GetView<QuestionBankController> {
                   child: SelectionInput(
                 label: "Paper",
                 data: [KeyValue(label: "Paper 1")],
-              ).padding(const EdgeInsets.only(right: AppValues.double15))),
+              )
+                      .padding(const EdgeInsets.only(right: AppValues.double15))
+                      .onTap(showPaperDialog)),
               Expanded(
                   child: SelectionInput(
                 label: "Season",
@@ -76,7 +122,9 @@ class QuestionBankView extends GetView<QuestionBankController> {
               KeyValue(label: "Polynomial"),
               KeyValue(label: "Algebra")
             ],
-          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          )
+              .padding(const EdgeInsets.only(bottom: AppValues.double20))
+              .onTap(showTopicDialog),
           SelectionInput(
             label: "Years",
             data: [KeyValue(label: "2020"), KeyValue(label: "2021")],
@@ -87,7 +135,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 Get.toNamed(Routes.questionsList);
               })
         ],
-      ).padding(const EdgeInsets.only(top: AppValues.double20));
+      ).padding(const EdgeInsets.only(top: AppValues.double20)));
 
   Widget get trendingSection => ListView(shrinkWrap: true, children: [
         Text(
@@ -126,6 +174,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut<SubjectRepository>(() => SubjectRepository());
+    Get.lazyPut<TopicRepository>(() => TopicRepository());
     Get.put<QuestionBankController>(QuestionBankController());
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
