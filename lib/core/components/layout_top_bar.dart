@@ -20,7 +20,7 @@ class LayoutTopBar extends StatelessWidget {
                 left: AppValues.double10, right: AppValues.double20)),
         Row(children: [
           Text(
-            "Cambridge IGCSE",
+            "Cambridge A Level",
             style: MyTextStyle.s.bold,
           ),
           const ImageAssetView(fileName: AppAssets.downChevron)

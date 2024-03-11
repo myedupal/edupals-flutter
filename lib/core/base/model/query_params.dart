@@ -33,7 +33,7 @@ class QueryParams {
   List<String>? examId;
   String? zone;
   String? season;
-  String? year;
+  List<String>? year;
   bool? active;
   bool? isActive;
 
@@ -44,13 +44,17 @@ class QueryParams {
         "is_active": isActive.toString(),
         "sort_by": sortBy,
         "sort_order": sortOrder,
-        "status[]": status,
+        "status[]": status?.isNotEmpty == true ? status : null,
         "query": query,
         "from_date": fromDate,
         "to_date": toDate,
-        "exam_id[]": examId,
-        "topic_id[]": topicId,
+        // Question List
+        "exam_id[]": examId?.isNotEmpty == true ? examId : null,
+        "topic_id[]": topicId?.isNotEmpty == true ? topicId : null,
+        "year[]": year?.isNotEmpty == true ? year : null,
         "subject_id": subjectId,
+        "season": season,
+        "zone": zone,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 }

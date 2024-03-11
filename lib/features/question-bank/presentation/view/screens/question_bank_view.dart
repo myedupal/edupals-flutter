@@ -3,7 +3,6 @@ import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/components/selection_input.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
-import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/domain/repository/subject_repository.dart';
@@ -21,14 +20,11 @@ class QuestionBankView extends GetView<QuestionBankController> {
     BaseDialog.customise(
         child: SelectionDialog(
       isMultiSelect: false,
+      childRatio: 3,
       numberOfColumn: 2,
-      childRatio: 4,
-      selectionList: [
-        KeyValue(label: "Yearly", key: "yearly"),
-        KeyValue(label: "Topical", key: "topical")
-      ],
+      selectionList: controller.revisionType,
       emitData: (data) {
-        debugPrint("${data?.map((e) => e?.label)}");
+        controller.onSelectRevisionType(value: data?.first);
       },
     ));
   }
@@ -37,15 +33,14 @@ class QuestionBankView extends GetView<QuestionBankController> {
     BaseDialog.customise(
         child: SelectionDialog(
       isMultiSelect: false,
-      title: "Subject",
-      childRatio: 3,
+      title: "subject",
+      childRatio: 2.2,
       numberOfColumn: 2,
       selectionList: controller.subjectList
           ?.map((element) => KeyValue(label: element.name, key: element.id))
           .toList(),
       emitData: (data) {
         controller.onSelectSubject(value: data?.first);
-        debugPrint("${data?.map((e) => e?.label)}");
       },
     ));
   }
@@ -54,12 +49,12 @@ class QuestionBankView extends GetView<QuestionBankController> {
     BaseDialog.customise(
         child: SelectionDialog(
       isMultiSelect: false,
-      title: "Paper",
-      childRatio: 3,
-      numberOfColumn: 2,
+      title: "paper",
+      childRatio: 1.5,
+      numberOfColumn: 4,
       selectionList: controller.paperList ?? [],
       emitData: (data) {
-        debugPrint("${data?.map((e) => e?.label)}");
+        controller.onSelectPaper(value: data?.first);
       },
     ));
   }
@@ -67,75 +62,124 @@ class QuestionBankView extends GetView<QuestionBankController> {
   void showTopicDialog() {
     BaseDialog.customise(
         child: SelectionDialog(
-      isMultiSelect: true,
-      title: "Topic",
-      childRatio: 3,
+      title: "topic",
+      childRatio: 2,
       numberOfColumn: 2,
       selectionList: controller.topicList
-          ?.map((element) => KeyValue(label: element.name, key: element.id))
+          ?.map((element) => KeyValue(
+              label: element.getChapter,
+              sublabel: element.getShortName,
+              key: element.id))
           .toList(),
       emitData: (data) {
-        debugPrint("${data?.map((e) => e?.label)}");
+        controller.onSelectTopics(value: data);
       },
     ));
   }
 
-  Widget get filterBody => Obx(() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                  child: SelectionInput(
-                label: "Revision Type",
-                data: [KeyValue(label: "Yearly")],
-              )
-                      .padding(const EdgeInsets.only(right: AppValues.double15))
-                      .onTap(showRevisionDialog)),
-              Expanded(
-                  child: SelectionInput(
-                label: "Subject",
-                data: [controller.selectedSubject.value!],
-              ).onTap(showSubjectDialog))
-            ],
-          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          Row(
-            children: [
-              Expanded(
-                  child: SelectionInput(
-                label: "Paper",
-                data: [KeyValue(label: "Paper 1")],
-              )
-                      .padding(const EdgeInsets.only(right: AppValues.double15))
-                      .onTap(showPaperDialog)),
-              Expanded(
-                  child: SelectionInput(
-                label: "Season",
-                data: [KeyValue(label: "Winter")],
-              ))
-            ],
-          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          SelectionInput(
-            label: "Topics",
-            data: [
-              KeyValue(label: "Arithematics"),
-              KeyValue(label: "Polynomial"),
-              KeyValue(label: "Algebra")
-            ],
-          )
-              .padding(const EdgeInsets.only(bottom: AppValues.double20))
-              .onTap(showTopicDialog),
-          SelectionInput(
-            label: "Years",
-            data: [KeyValue(label: "2020"), KeyValue(label: "2021")],
-          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          BaseButton(
-              text: "Search Questions",
-              onClick: () {
-                Get.toNamed(Routes.questionsList);
-              })
-        ],
-      ).padding(const EdgeInsets.only(top: AppValues.double20)));
+  void showYearDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      title: "year",
+      childRatio: 1.5,
+      numberOfColumn: 4,
+      selectionList: controller.yearsList,
+      emitData: (data) {
+        controller.onSelectYears(value: data);
+      },
+    ));
+  }
+
+  void showSeasonDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      isMultiSelect: false,
+      title: "season",
+      childRatio: 1.5,
+      numberOfColumn: 4,
+      selectionList: controller.season,
+      emitData: (data) {
+        controller.onSelectSeason(value: data?.first);
+      },
+    ));
+  }
+
+  Widget get filterBody => Obx(() {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                    child: SelectionInput(
+                  label: "Revision Type",
+                  data: controller.selectedRevisionType.value,
+                )
+                        .padding(
+                            const EdgeInsets.only(right: AppValues.double15))
+                        .onTap(showRevisionDialog)),
+                Expanded(
+                    child: SelectionInput(
+                  label: "Subject",
+                  data: controller.selectedSubject.value,
+                ).onTap(showSubjectDialog))
+              ],
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            Row(
+              children: [
+                Expanded(
+                    child: SelectionInput(
+                  label: "Paper",
+                  data: controller.selectedPaper.value,
+                )
+                        .padding(
+                            const EdgeInsets.only(right: AppValues.double15))
+                        .onTap(() {
+                  controller.selectedSubject.value == null
+                      ? controller.triggerError(
+                          error: "You have to select subject first")
+                      : showPaperDialog();
+                })),
+                Expanded(
+                    child: SelectionInput(
+                  label: "Season",
+                  data: controller.selectedSeason.value,
+                ).onTap(showSeasonDialog))
+              ],
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            SelectionInput(
+              label: "Topics",
+              isMultiSelect: true,
+              dataList: [...?controller.selectedTopics],
+              onRemove: (id) {
+                controller.onRemoveTopic(id);
+              },
+            )
+                .padding(const EdgeInsets.only(bottom: AppValues.double20))
+                .onTap(() {
+              controller.selectedSubject.value == null
+                  ? controller.triggerError(
+                      error: "You have to select subject first")
+                  : showTopicDialog();
+            }),
+            SelectionInput(
+              label: "Years",
+              isMultiSelect: true,
+              dataList: [...?controller.selectedYears],
+              onRemove: (id) {
+                controller.onRemoveYear(id);
+              },
+            )
+                .padding(const EdgeInsets.only(bottom: AppValues.double20))
+                .onTap(showYearDialog),
+            BaseButton(
+                text: "Search Questions",
+                onClick: () {
+                  controller.navigatePage();
+                })
+          ],
+        ).padding(const EdgeInsets.only(top: AppValues.double20));
+      });
 
   Widget get trendingSection => ListView(shrinkWrap: true, children: [
         Text(

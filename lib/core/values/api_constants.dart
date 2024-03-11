@@ -11,4 +11,5 @@ abstract class ApiConstants {
   static const getLogin = '$version/user/sign_in';
   static const getLogout = '$version/user/sign_out';
   static const getQuestions = '$version/user/questions';
+  static const getCurriculums = '$version/user/curriculums';
 }

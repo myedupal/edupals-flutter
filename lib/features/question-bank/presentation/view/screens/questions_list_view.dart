@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/components/base_accordion.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/enum/view_state.dart';
@@ -15,6 +16,60 @@ import 'package:get/get.dart';
 
 class QuestionsListView extends GetView<QuestionsListController> {
   const QuestionsListView({super.key});
+
+  Widget get pageBody {
+    return Obx(() {
+      switch (controller.viewState) {
+        case ViewState.loading:
+          return Column(
+            children: [
+              SizedBox(
+                height: Get.width * 0.1,
+              ),
+              ImageAssetView(
+                fileName: AppAssets.questionLoadingLottie,
+                width: Get.width * 0.25,
+              ),
+              Text(
+                "We are preparing the best for you...",
+                style: MyTextStyle.l.bold,
+              )
+            ],
+          );
+        case ViewState.noData:
+          return Column(
+            children: [
+              SizedBox(
+                height: Get.width * 0.1,
+              ),
+              ImageAssetView(
+                fileName: AppAssets.noDataLottie,
+                width: Get.width * 0.25,
+              ),
+              Text(
+                "There is no question for you...",
+                style: MyTextStyle.l.bold,
+              ),
+              BaseButton(
+                  text: "Go Back",
+                  onClick: () {
+                    Get.back();
+                  }).padding(const EdgeInsets.only(top: AppValues.double20))
+            ],
+          );
+        default:
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(flex: 3, child: chapterList),
+              Expanded(flex: 8, child: questionDetails),
+              actionList
+            ],
+          ).padding(const EdgeInsets.symmetric(
+              horizontal: AppValues.double10, vertical: AppValues.double25));
+      }
+    });
+  }
 
   Widget get actionList => QuestionActionList(
         action: (value) {
@@ -91,34 +146,10 @@ class QuestionsListView extends GetView<QuestionsListController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const QuestionsListTopBar(),
-        Expanded(
-            child: Obx(() => controller.viewState == ViewState.loading
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: Get.width * 0.1,
-                      ),
-                      ImageAssetView(
-                        fileName: AppAssets.questionLoadingLottie,
-                        width: Get.width * 0.25,
-                      ),
-                      Text(
-                        "We are preparing the best for you...",
-                        style: MyTextStyle.l.bold,
-                      )
-                    ],
-                  )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(flex: 3, child: chapterList),
-                      Expanded(flex: 8, child: questionDetails),
-                      actionList
-                    ],
-                  ).padding(const EdgeInsets.symmetric(
-                    horizontal: AppValues.double10,
-                    vertical: AppValues.double25))))
+        QuestionsListTopBar(
+          titleList: ["Cambridge A Level", ...?controller.argument.titleList],
+        ),
+        Expanded(child: pageBody)
       ],
     ).padding(const EdgeInsets.all(AppValues.double10)).scaffoldWrapper();
   }

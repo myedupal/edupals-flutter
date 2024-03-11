@@ -9,11 +9,19 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 
 class SelectionInput extends StatelessWidget {
-  const SelectionInput({super.key, this.label, this.data, this.onRemove});
+  const SelectionInput(
+      {super.key,
+      this.label,
+      this.dataList,
+      this.data,
+      this.onRemove,
+      this.isMultiSelect = false});
 
-  final List<KeyValue>? data;
+  final List<KeyValue>? dataList;
+  final KeyValue? data;
   final String? label;
   final Function(String id)? onRemove;
+  final bool isMultiSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -35,40 +43,44 @@ class SelectionInput extends StatelessWidget {
                       label ?? "",
                       style: MyTextStyle.xs.h(0).c(AppColors.gray600),
                     ),
-                  (data?.length ?? 0) < 2
-                      ? Text(data?.first.label ?? "",
-                          style: MyTextStyle.s.medium.c(AppColors.gray900))
-                      : Wrap(
-                          spacing: 5, // gap between adjacent chips
-                          runSpacing: 5, // gap between lines
-                          children: <Widget>[
-                            ...?data?.mapIndexed((index, item) => Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      item.label ?? "",
-                                      style: MyTextStyle.xxs.bold
-                                          .c(AppColors.accent500),
-                                    ),
-                                    const ImageAssetView(
-                                            fileName: AppAssets.cross)
-                                        .padding(const EdgeInsets.only(
-                                            left: AppValues.double5))
-                                  ],
-                                )
-                                    .capsulise(
-                                        radius: 100,
-                                        color: AppColors.accent100,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: AppValues.double2,
-                                            horizontal: AppValues.double10))
-                                    .padding(const EdgeInsets.only(
-                                        top: AppValues.double5))
-                                    .onTap(() {
-                                  onRemove?.call(item.key ?? "");
-                                }))
-                          ],
-                        )
+                  if (isMultiSelect)
+                    dataList?.isEmpty == true
+                        ? Text("",
+                            style: MyTextStyle.s.medium.c(AppColors.gray900))
+                        : Wrap(
+                            spacing: 5, // gap between adjacent chips
+                            runSpacing: 5, // gap between lines
+                            children: <Widget>[
+                              ...?dataList?.mapIndexed((index, item) => Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        item.label ?? "",
+                                        style: MyTextStyle.xxs.bold
+                                            .c(AppColors.accent500),
+                                      ),
+                                      const ImageAssetView(
+                                              fileName: AppAssets.cross)
+                                          .padding(const EdgeInsets.only(
+                                              left: AppValues.double5))
+                                    ],
+                                  )
+                                      .capsulise(
+                                          radius: 100,
+                                          color: AppColors.accent100,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: AppValues.double2,
+                                              horizontal: AppValues.double10))
+                                      .padding(const EdgeInsets.only(
+                                          top: AppValues.double5))
+                                      .onTap(() {
+                                    onRemove?.call(item.key ?? "");
+                                  }))
+                            ],
+                          )
+                  else
+                    Text(data != null ? data?.label ?? "" : "",
+                        style: MyTextStyle.s.medium.c(AppColors.gray900))
                 ])),
             const ImageAssetView(fileName: AppAssets.downChevronFill)
           ],

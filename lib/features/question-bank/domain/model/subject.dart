@@ -1,4 +1,4 @@
-import 'package:edupals/features/question-bank/domain/model/curriculum.dart';
+import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/question-bank/domain/model/paper.dart';
 
 class SubjectWrapper {

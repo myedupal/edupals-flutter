@@ -24,7 +24,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
   final int numberOfColumn;
   final double childRatio;
   final String title;
-  final Function(List<KeyValue?>?)? emitData;
+  final Function(List<KeyValue>?)? emitData;
 
   Widget selectionColumn(
       {String? title, String? subtitle, bool isSelected = false}) {
@@ -32,6 +32,17 @@ class SelectionDialog extends GetView<SelectionDialogController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: AppValues.double10),
+          width: AppValues.double10,
+          height: AppValues.double10,
+          decoration: BoxDecoration(
+              border: !isSelected
+                  ? Border.all(color: AppColors.gray400, width: 1.4)
+                  : null,
+              color: isSelected ? AppColors.accent500 : AppColors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(100))),
+        ),
         Text(
           title ?? "",
           style: MyTextStyle.m.bold
@@ -65,7 +76,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
         children: [
           ...?selectionList?.map((e) {
             final selectedData = controller.selectedList
-                ?.firstWhereOrNull((element) => element?.key == e.key);
+                ?.firstWhereOrNull((element) => element.key == e.key);
             return selectionColumn(
                     title: e.label,
                     subtitle: e.sublabel,
@@ -100,7 +111,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
                     if ((controller.selectedList?.length ?? 0) > 0)
                       Text(
                         controller.selectedList
-                                ?.map((element) => element?.label)
+                                ?.map((element) => element.label)
                                 .join(", ") ??
                             "",
                         style: MyTextStyle.s,
@@ -115,7 +126,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
                 BaseButton(
                     text: "Done Selection",
                     onClick: () {
-                      emitData?.call(controller.selectedList);
+                      emitData?.call(controller.selectedList ?? []);
                       Get.back();
                     })
               ],

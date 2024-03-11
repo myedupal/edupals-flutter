@@ -33,6 +33,26 @@ class Topic {
     this.subjectId,
   });
 
+  String? get getChapter {
+    int hyphenIndex = name?.indexOf('-') ?? -1;
+    if (hyphenIndex != -1) {
+      String chNumber = name?.substring(0, hyphenIndex).trim() ?? "";
+      return chNumber;
+    } else {
+      return "";
+    }
+  }
+
+  String? get getShortName {
+    int hyphenIndex = name?.indexOf('-') ?? -1;
+    if (hyphenIndex != -1) {
+      String chapterName = name?.substring(hyphenIndex + 1).trim() ?? "";
+      return chapterName;
+    } else {
+      return "";
+    }
+  }
+
   factory Topic.fromJson(Map<String, dynamic> json) => Topic(
         id: json["id"],
         name: json["name"],

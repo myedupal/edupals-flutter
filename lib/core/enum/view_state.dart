@@ -1,1 +1,1 @@
-enum ViewState { initial, loading, success, error, noInternet }
+enum ViewState { initial, loading, success, error, noInternet, noData }

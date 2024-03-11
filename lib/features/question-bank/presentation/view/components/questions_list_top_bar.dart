@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -8,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class QuestionsListTopBar extends StatelessWidget {
-  const QuestionsListTopBar({super.key});
+  const QuestionsListTopBar({super.key, this.titleList});
+
+  final List<String>? titleList;
 
   Widget titleRow({String? title, bool displayDivider = true}) => Row(
         children: [
@@ -44,19 +47,22 @@ class QuestionsListTopBar extends StatelessWidget {
                 .onTap(() {
               Get.back();
             }),
-            IntrinsicHeight(
-                child: Row(children: [
-              titleRow(title: "Cambridge IGCSE"),
-              titleRow(title: "Topical"),
-              titleRow(title: "Mathematics"),
-              titleRow(title: "Paper 2"),
-              titleRow(title: "Summer Season", displayDivider: false),
-            ]).capsulise(
-                    radius: 100,
-                    color: AppColors.white,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: AppValues.double10,
-                        horizontal: AppValues.double15))),
+            if (titleList?.isNotEmpty == true)
+              IntrinsicHeight(
+                  child: Row(children: [
+                ...?titleList?.mapIndexed(
+                  (i, e) {
+                    return titleRow(
+                        title: e,
+                        displayDivider: i != (titleList?.length ?? 0) - 1);
+                  },
+                )
+              ]).capsulise(
+                      radius: 100,
+                      color: AppColors.white,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: AppValues.double10,
+                          horizontal: AppValues.double15))),
           ],
         )),
         Row(

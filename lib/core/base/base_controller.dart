@@ -19,6 +19,8 @@ abstract class BaseController extends GetxController {
 
   ViewState setSuccess() => updateViewState(ViewState.success);
 
+  ViewState setNoData() => updateViewState(ViewState.noData);
+
   // ViewState setError() => updateViewState(ViewState.error);
 
   ViewState setNoInternet() => updateViewState(ViewState.noInternet);
