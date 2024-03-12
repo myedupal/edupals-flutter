@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:edupals/core/base/model/user.dart';
 import 'package:edupals/core/services/secure_storage_service.dart';
 import 'package:edupals/core/values/app_strings.dart';
+import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
+import 'package:flutter/material.dart';
 
 class LocalRepository {
   final SecureStorageService secureStorageService = SecureStorageService();
@@ -11,6 +13,7 @@ class LocalRepository {
   final String accessTokenKey = AppStrings.storageAccessToken;
   final String languageKey = AppStrings.storageLanguage;
   final String user = AppStrings.storageUser;
+  final String curriculum = "curriculum";
 
   Future<void> clearStorage() async {
     await Future.wait([
@@ -36,8 +39,20 @@ class LocalRepository {
         jsonDecode(await secureStorageService.getString(user) ?? ""));
   }
 
+  Future<Curriculum?> getCurriculum() async {
+    final storageCurriculum =
+        await secureStorageService.getString(curriculum) ?? "";
+    return storageCurriculum.isEmpty == true
+        ? null
+        : Curriculum.fromJson(jsonDecode(storageCurriculum));
+  }
+
   Future<void> setUser(String? value) async {
     return await secureStorageService.setString(user, value ?? '');
+  }
+
+  Future<void> setCurriculum(String? value) async {
+    return await secureStorageService.setString(curriculum, value ?? '');
   }
 
   Future<void> setAccessToken(String? accessToken) async {

@@ -106,6 +106,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
 
   Widget get filterBody => Obx(() {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -122,7 +123,14 @@ class QuestionBankView extends GetView<QuestionBankController> {
                     child: SelectionInput(
                   label: "Subject",
                   data: controller.selectedSubject.value,
-                ).onTap(showSubjectDialog))
+                ).onTap(() {
+                  if (controller.isAbleSelectSubject()) {
+                    showSubjectDialog();
+                  } else {
+                    controller.triggerError(
+                        error: "Please select a curriculum first");
+                  }
+                }))
               ],
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
             Row(
@@ -147,31 +155,31 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 ).onTap(showSeasonDialog))
               ],
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-            SelectionInput(
-              label: "Topics",
-              isMultiSelect: true,
-              dataList: [...?controller.selectedTopics],
-              onRemove: (id) {
-                controller.onRemoveTopic(id);
-              },
-            )
-                .padding(const EdgeInsets.only(bottom: AppValues.double20))
-                .onTap(() {
-              controller.selectedSubject.value == null
-                  ? controller.triggerError(
-                      error: "You have to select subject first")
-                  : showTopicDialog();
-            }),
-            SelectionInput(
-              label: "Years",
-              isMultiSelect: true,
-              dataList: [...?controller.selectedYears],
-              onRemove: (id) {
-                controller.onRemoveYear(id);
-              },
-            )
-                .padding(const EdgeInsets.only(bottom: AppValues.double20))
-                .onTap(showYearDialog),
+            if (controller.selectedRevisionType.value?.key == "topical") ...[
+              SelectionInput(
+                label: "Topics",
+                isMultiSelect: true,
+                dataList: [...?controller.selectedTopics],
+                onRemove: (id) {
+                  controller.onRemoveTopic(id);
+                },
+              ).onTap(() {
+                controller.selectedSubject.value == null
+                    ? controller.triggerError(
+                        error: "You have to select subject first")
+                    : showTopicDialog();
+              }).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+              SelectionInput(
+                label: "Years",
+                isMultiSelect: true,
+                dataList: [...?controller.selectedYears],
+                onRemove: (id) {
+                  controller.onRemoveYear(id);
+                },
+              )
+                  .onTap(showYearDialog)
+                  .padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            ],
             BaseButton(
                 text: "Search Questions",
                 onClick: () {
@@ -223,7 +231,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
+        Flexible(
             flex: 7,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

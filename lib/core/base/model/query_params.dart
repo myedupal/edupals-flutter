@@ -17,6 +17,7 @@ class QueryParams {
     this.topicId,
     this.year,
     this.zone,
+    this.curriculumId,
   });
 
   int? page;
@@ -36,6 +37,7 @@ class QueryParams {
   List<String>? year;
   bool? active;
   bool? isActive;
+  String? curriculumId;
 
   Map<String, dynamic> toJson() => {
         "page": page.toString(),
@@ -55,6 +57,7 @@ class QueryParams {
         "subject_id": subjectId,
         "season": season,
         "zone": zone,
+        "curriculum_id": curriculumId
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 }

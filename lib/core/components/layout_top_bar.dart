@@ -8,7 +8,7 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LayoutTopBar extends StatelessWidget {
+class LayoutTopBar extends GetView<MainController> {
   const LayoutTopBar({super.key});
 
   @override
@@ -18,18 +18,28 @@ class LayoutTopBar extends StatelessWidget {
         const ImageAssetView(fileName: AppAssets.appIcon).padding(
             const EdgeInsets.only(
                 left: AppValues.double10, right: AppValues.double20)),
-        Row(children: [
-          Text(
-            "Cambridge A Level",
-            style: MyTextStyle.s.bold,
-          ),
-          const ImageAssetView(fileName: AppAssets.downChevron)
-              .padding(const EdgeInsets.only(left: AppValues.double10))
-        ]).capsulise(
-            radius: 100,
-            color: AppColors.white,
-            padding: const EdgeInsets.symmetric(
-                vertical: AppValues.double10, horizontal: AppValues.double10)),
+        Obx(() {
+          final selectedCurriculum = controller.selectedCurriculum.value;
+          return Row(children: [
+            Text(
+              selectedCurriculum != null
+                  ? "${selectedCurriculum.board} ${selectedCurriculum.name ?? ""}"
+                  : "Select A Curriculum",
+              style: MyTextStyle.s.bold,
+            ),
+            const ImageAssetView(fileName: AppAssets.downChevron)
+                .padding(const EdgeInsets.only(left: AppValues.double10))
+          ])
+              .capsulise(
+                  radius: 100,
+                  color: AppColors.white,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: AppValues.double10,
+                      horizontal: AppValues.double10))
+              .onTap(() {
+            controller.showCurriculumDialog();
+          });
+        }),
         const Spacer(),
         Row(
           children: [
@@ -37,7 +47,7 @@ class LayoutTopBar extends StatelessWidget {
               "LV.13",
               style: MyTextStyle.xxs.bold.c(AppColors.white),
             ).onTap(() {
-              Get.find<MainController>().logout();
+              controller.logout();
             })
           ],
         ).capsulise(

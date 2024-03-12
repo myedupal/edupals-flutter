@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/base_dialog.dart';
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/core/extensions/string_extensions.dart';
@@ -13,11 +14,12 @@ import 'package:get/get.dart';
 class QuestionBankController extends GetxController {
   final SubjectRepository subjectRepo = Get.find();
   final TopicRepository topicRepo = Get.find();
+  final MainController mainController = Get.find();
   final RxList<Subject>? subjectList = <Subject>[].obs;
   final RxList<Topic>? topicList = <Topic>[].obs;
   final List<KeyValue> revisionType = [
-    KeyValue(label: "Yearly", key: "yearly"),
-    KeyValue(label: "Topical", key: "topical")
+    KeyValue(label: "Topical", key: "topical"),
+    KeyValue(label: "Yearly", key: "yearly")
   ];
   final List<KeyValue> season = [
     KeyValue(label: "Summer", key: "summer"),
@@ -59,6 +61,8 @@ class QuestionBankController extends GetxController {
 
   void onSelectRevisionType({KeyValue? value}) {
     selectedRevisionType.value = value;
+    selectedYears?.value = [];
+    selectedTopics?.value = [];
   }
 
   void onSelectYears({List<KeyValue>? value}) {
@@ -101,6 +105,10 @@ class QuestionBankController extends GetxController {
         : Get.toNamed(Routes.questionsList, arguments: argument);
   }
 
+  bool isAbleSelectSubject() {
+    return mainController.selectedCurriculum.value != null;
+  }
+
   void triggerError({String? error}) {
     BaseDialog.showError(subtitle: error);
   }
@@ -122,6 +130,8 @@ class QuestionBankController extends GetxController {
 
   Future<void> getSubjects() async {
     await subjectRepo.getSubjects(
+        queryParams: QueryParams(
+            curriculumId: mainController.selectedCurriculum.value?.id),
         onSuccess: (value) {
           subjectList?.value = value ?? [];
         },
