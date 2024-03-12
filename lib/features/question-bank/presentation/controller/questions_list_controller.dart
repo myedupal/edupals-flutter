@@ -1,21 +1,26 @@
 import 'package:edupals/core/base/base_controller.dart';
+import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
 import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class QuestionsListController extends BaseController {
   final UserQuestionsRepository questionsRepo = Get.find();
   final QuestionBankArgument argument = Get.arguments;
-  final RxList<Question>? questionsList = <Question>[].obs;
-  final RxList<Topic?>? topicList = <Topic>[].obs;
+  QueryParams? questionListParams;
+  RxList<Question> questionsList = <Question>[].obs;
+  RxList<Topic?>? topicList = <Topic?>[].obs;
   Rx<Question?> selectedQuestion = Question().obs;
+  RxInt questionTotalPage = 1.obs;
 
   @override
   void onInit() {
     super.onInit();
+    if (argument.queryParams != null) {
+      questionListParams = argument.queryParams;
+    }
     getQuestions();
   }
 
@@ -25,44 +30,54 @@ class QuestionsListController extends BaseController {
 
   void questionAction(String action) {
     final filteredQuestionIndex = questionsList
-        ?.indexWhere((element) => element.id == selectedQuestion.value?.id);
+        .indexWhere((element) => element.id == selectedQuestion.value?.id);
     switch (action) {
       case "back":
         if (filteredQuestionIndex != 0) {
-          selectedQuestion.value =
-              questionsList?[(filteredQuestionIndex ?? 0) - 1];
+          selectedQuestion.value = questionsList[(filteredQuestionIndex) - 1];
         }
       case "next":
-        if (filteredQuestionIndex != (questionsList?.length ?? 0) - 1) {
-          selectedQuestion.value =
-              questionsList?[(filteredQuestionIndex ?? 0) + 1];
+        if (filteredQuestionIndex != (questionsList.length) - 1) {
+          selectedQuestion.value = questionsList[(filteredQuestionIndex) + 1];
         }
     }
   }
 
-  Future<void> getQuestions() async {
-    setLoading();
+  Future<void> getQuestions({bool loadMore = false}) async {
+    int page = questionListParams?.page ?? 1;
+    if (loadMore) {
+      questionListParams?.page = page + 1;
+    } else {
+      setLoading();
+    }
     await questionsRepo.getQuestions(
-        queryParams: argument.queryParams,
+        queryParams: questionListParams,
         onSuccess: (value) {
-          debugPrint("Questions data ${value.pages} ${value.counts}");
-          questionsList?.value = value.data ?? [];
-          if (questionsList?.isNotEmpty == true) {
-            for (int i = 0; i < (questionsList?.length ?? 0); i++) {
-              final topic = topicList?.firstWhereOrNull(
-                  (element) => element?.id == value.data?[i].topics?[0].id);
-              if (topic == null) {
-                topicList?.add(value.data?[i].topics?[0]);
-              }
-            }
-            selectedQuestion.value = questionsList?.first;
-            setSuccess();
-          } else {
-            setNoData();
-          }
-          debugPrint("${topicList?.length ?? 0}");
+          loadMore
+              ? questionsList = (questionsList) + (value.data ?? [])
+              : questionsList.value = value.data ?? [];
+
+          questionsList.isNotEmpty == true
+              ? {
+                  processData(),
+                  questionTotalPage.value = int.parse(value.pages ?? "1"),
+                  setSuccess()
+                }
+              : setNoData();
         },
         onError: (error) {});
+  }
+
+  void processData() {
+    topicList?.value = [];
+    for (int i = 0; i < (questionsList.length); i++) {
+      final topic = topicList?.firstWhereOrNull(
+          (element) => element?.id == questionsList[i].topics?.first.id);
+      if (topic == null) {
+        topicList?.add(questionsList[i].topics?.first);
+      }
+    }
+    selectedQuestion.value = questionsList.first;
   }
 
   int compareQuestions(Question a, Question b) {

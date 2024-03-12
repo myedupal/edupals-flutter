@@ -1,5 +1,6 @@
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -7,6 +8,7 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/presentation/view/components/answer_selection_row.dart';
 import 'package:edupals/features/challenge/presentation/view/components/challenge_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DailyChallengeView extends StatelessWidget {
   const DailyChallengeView({super.key});
@@ -39,14 +41,27 @@ class DailyChallengeView extends StatelessWidget {
                     fileName: AppAssets.mockQuestion,
                   ).padding(
                       const EdgeInsets.symmetric(vertical: AppValues.double30)),
+                ],
+              ),
+              const SizedBox(
+                height: AppValues.double50,
+              ),
+              Row(
+                children: [
                   for (int i = 0; i < 5; i++)
-                    AnswerSelectionRow(
+                    Expanded(
+                        child: AnswerSelectionRow(
                       isActive: i == 0,
                     )
+                            .padding(const EdgeInsets.only(
+                                right: AppValues.double30))
+                            .onTap(() {
+                      Get.toNamed(Routes.challengeComplete);
+                    }))
                 ],
-              )
+              ),
             ],
-          ))
+          )),
         ],
       )
           .padding(const EdgeInsets.only(

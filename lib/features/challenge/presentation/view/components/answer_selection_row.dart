@@ -5,13 +5,17 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 
 class AnswerSelectionRow extends StatelessWidget {
-  const AnswerSelectionRow({super.key, this.isActive = false});
+  const AnswerSelectionRow(
+      {super.key, this.isActive = false, this.isFull = false});
 
   final bool isActive;
+  final bool isFull;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment:
+          isFull ? MainAxisAlignment.start : MainAxisAlignment.center,
       children: [
         Text(
           "A",
@@ -19,12 +23,13 @@ class AnswerSelectionRow extends StatelessWidget {
               ? MyTextStyle.m.bold.c(AppColors.accent500)
               : MyTextStyle.m.c(AppColors.gray700),
         ),
-        Text(
-          "Cambridge A-level",
-          style: isActive
-              ? MyTextStyle.m.bold.c(AppColors.accent500)
-              : MyTextStyle.m.c(AppColors.gray700),
-        ).padding(const EdgeInsets.only(left: AppValues.double15))
+        if (isFull)
+          Text(
+            "Cambridge A-level",
+            style: isActive
+                ? MyTextStyle.m.bold.c(AppColors.accent500)
+                : MyTextStyle.m.c(AppColors.gray700),
+          ).padding(const EdgeInsets.only(left: AppValues.double15))
       ],
     )
         .capsulise(

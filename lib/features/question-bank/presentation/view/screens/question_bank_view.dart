@@ -122,6 +122,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 Expanded(
                     child: SelectionInput(
                   label: "Subject",
+                  isRequired: true,
                   data: controller.selectedSubject.value,
                 ).onTap(() {
                   if (controller.isAbleSelectSubject()) {
@@ -138,6 +139,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 Expanded(
                     child: SelectionInput(
                   label: "Paper",
+                  isRequired: true,
                   data: controller.selectedPaper.value,
                 )
                         .padding(
@@ -151,6 +153,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 Expanded(
                     child: SelectionInput(
                   label: "Season",
+                  isRequired: true,
                   data: controller.selectedSeason.value,
                 ).onTap(showSeasonDialog))
               ],
@@ -237,7 +240,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Question Bank",
+                  "Questions Bank",
                   style: MyTextStyle.xl1.bold,
                 ),
                 filterBody,

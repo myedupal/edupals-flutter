@@ -7,6 +7,7 @@ class AppAssets {
   static const dashboardChallengeBg = "${_pngImagePath}dashboard_challenge.png";
   static const layoutBg = "${_pngImagePath}layout_background.png";
   static const mockQuestion = "${_pngImagePath}mock_question.png";
+  static const staticConfetti = "${_pngImagePath}static_confetti.png";
 
   static const appIcon = "${_svgImagePath}app_logo.svg";
   static const downChevron = "${_svgImagePath}down_chevron.svg";

@@ -90,6 +90,7 @@ class QuestionBankController extends GetxController {
           "${selectedSeason.value?.label ?? ""} Season"
         ],
         queryParams: QueryParams(
+          page: 1,
           items: 100,
           sortBy: "topic",
           subjectId: selectedSubject.value?.key,
@@ -101,7 +102,7 @@ class QuestionBankController extends GetxController {
     (selectedSubject.value == null ||
             selectedPaper.value == null ||
             selectedSeason.value == null)
-        ? triggerError(error: "Please select something")
+        ? triggerError(error: "Please select all required field")
         : Get.toNamed(Routes.questionsList, arguments: argument);
   }
 

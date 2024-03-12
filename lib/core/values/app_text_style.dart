@@ -17,7 +17,7 @@ class BaseTextStyle extends TextStyle {
         );
 }
 
-enum MyFontWeight { regular, medium, bold, semibold }
+enum MyFontWeight { regular, medium, bold, semibold, extraBold }
 
 class MyTextStyle {
   static const FontWeight fontWeight = FontWeight.w400;
@@ -76,6 +76,7 @@ extension TextStyleHelpers on TextStyle {
   TextStyle get regular => copyWith(fontWeight: FontWeight.w400);
   TextStyle get medium => copyWith(fontWeight: FontWeight.w500);
   TextStyle get bold => copyWith(fontWeight: FontWeight.w700);
+  TextStyle get extraBold => copyWith(fontWeight: FontWeight.w800);
   TextStyle get underline => copyWith(decoration: TextDecoration.underline);
   TextStyle h(double value) => copyWith(height: value);
 }

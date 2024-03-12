@@ -5,4 +5,5 @@ abstract class Routes {
   static const dashboard = '/dashboard';
   static const dailyChallenge = '/dailyChallenge';
   static const questionsList = '/questionsList';
+  static const challengeComplete = '/challengeComplete';
 }

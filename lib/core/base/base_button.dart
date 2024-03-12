@@ -97,7 +97,7 @@ class BaseButton extends StatelessWidget {
                     color: AppColors.white, size: 25))
             : Text(text.toUpperCase(),
                 style: (fullWidth ? MyTextStyle.s : MyTextStyle.xxs)
-                    .bold
+                    .extraBold
                     .c(getTextColor())));
   }
 

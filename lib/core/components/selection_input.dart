@@ -15,13 +15,15 @@ class SelectionInput extends StatelessWidget {
       this.dataList,
       this.data,
       this.onRemove,
-      this.isMultiSelect = false});
+      this.isMultiSelect = false,
+      this.isRequired = false});
 
   final List<KeyValue>? dataList;
   final KeyValue? data;
   final String? label;
   final Function(String id)? onRemove;
   final bool isMultiSelect;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,19 @@ class SelectionInput extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   if (label?.isNotEmpty == true)
-                    Text(
-                      label ?? "",
-                      style: MyTextStyle.xs.h(0).c(AppColors.gray600),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          label ?? "",
+                          style: MyTextStyle.xs.h(0).c(AppColors.gray600),
+                        ),
+                        if (isRequired)
+                          Text(
+                            "*",
+                            style: MyTextStyle.xs.h(0).c(AppColors.red600),
+                          )
+                      ],
                     ),
                   if (isMultiSelect)
                     dataList?.isEmpty == true

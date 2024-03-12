@@ -17,6 +17,13 @@ import 'package:get/get.dart';
 class QuestionsListView extends GetView<QuestionsListController> {
   const QuestionsListView({super.key});
 
+  void _loadMoreData() {
+    if ((controller.questionTotalPage >
+        (controller.questionListParams?.page ?? 1))) {
+      controller.getQuestions(loadMore: true);
+    }
+  }
+
   Widget get pageBody {
     return Obx(() {
       switch (controller.viewState) {
@@ -113,16 +120,17 @@ class QuestionsListView extends GetView<QuestionsListController> {
                 shrinkWrap: true,
                 itemCount: topicList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  debugPrint(
-                      "Refresh ${index == ((topicList?.length ?? 0) - 1)}");
+                  if (index == (topicList?.length ?? 0) - 1) {
+                    _loadMoreData();
+                  }
                   final currentTopic = topicList?[index];
-                  final filteredQuestions = controller.questionsList?.where(
+                  final filteredQuestions = controller.questionsList.where(
                       (question) =>
                           question.topics?.first.id == currentTopic?.id);
                   return Obx(() => BaseAccordion(
                         title: currentTopic?.name ?? "",
                         child: Column(children: [
-                          ...?filteredQuestions?.map((e) {
+                          ...filteredQuestions.map((e) {
                             return QuestionsListColumn(
                                     question: e,
                                     isActive:
