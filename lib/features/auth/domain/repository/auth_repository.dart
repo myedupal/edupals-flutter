@@ -21,7 +21,7 @@ class AuthRepository {
           authorization: false,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(User.fromJson(value)),
+          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
           onError: onError,
         );
   }

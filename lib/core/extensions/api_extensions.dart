@@ -1,4 +1,5 @@
 import 'package:edupals/config/flavor_config.dart';
+import 'package:edupals/core/base/model/tuple_response.dart';
 import 'package:edupals/core/network/errors/error_handler.dart';
 import 'package:edupals/core/network/errors/failures.dart';
 import 'package:edupals/core/repositories/local_repository.dart';
@@ -9,7 +10,7 @@ import 'package:logger/logger.dart';
 
 extension DioResponseExtension<T> on Future<Response<T>> {
   Future handleResponse(
-      {required Function(dynamic) onSuccess,
+      {required Function(TupleResponse data) onSuccess,
       required Function(BaseFailure) onError}) async {
     final Logger logger = FlavorConfig.instance.logger;
     final LocalRepository localRepository = getx.Get.find();
@@ -19,7 +20,10 @@ extension DioResponseExtension<T> on Future<Response<T>> {
       if (token != null) {
         localRepository.setAccessToken(token);
       }
-      onSuccess.call(response.data);
+      onSuccess.call(TupleResponse(
+          data: response.data,
+          pages: response.headers["total-pages"]?[0] ?? "",
+          counts: response.headers["total-count"]?[0] ?? ""));
     } on DioException catch (dioError, stackTrace) {
       dioError.type != DioExceptionType.badResponse
           ? await SentryService.reportError(

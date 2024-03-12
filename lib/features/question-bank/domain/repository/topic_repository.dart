@@ -20,7 +20,7 @@ class TopicRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(TopicWrapper.fromJson(value).topic),
+              onSuccess.call(TopicWrapper.fromJson(value.data).topic),
           onError: onError,
         );
   }
@@ -37,7 +37,7 @@ class TopicRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(TopicWrapper.fromJson(value).topics),
+              onSuccess.call(TopicWrapper.fromJson(value.data).topics),
           onError: onError,
         );
   }

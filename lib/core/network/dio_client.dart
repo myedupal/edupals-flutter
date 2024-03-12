@@ -78,8 +78,8 @@ class DioClientImpl implements DioClient {
       requestHeader: !FlavorConfig
           .isProduction, // print requestHeader if only on DEV or UAT environment
       requestBody: true,
-      responseBody: !FlavorConfig
-          .isProduction, // print responseBody if only on DEV or UAT environment
+      responseBody:
+          false, // print responseBody if only on DEV or UAT environment
       responseHeader: !FlavorConfig.isProduction,
       error: true,
       compact: true,

@@ -106,39 +106,36 @@ class QuestionsListView extends GetView<QuestionsListController> {
           const TrendingColumn(
             percentage: 50,
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          Expanded(
-              child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  children: [
-                Obx(() {
-                  return Column(
-                    children: [
-                      ...?controller.topicList?.map(
-                        (element) {
-                          final filteredQuestions = controller.questionsList
-                              ?.where((question) =>
-                                  question.topics?.first.id == element?.id);
-                          return BaseAccordion(
-                            title: element?.name ?? "",
-                            child: Column(children: [
-                              ...?filteredQuestions?.map((e) =>
-                                  QuestionsListColumn(
-                                          question: e,
-                                          isActive: controller
-                                                  .selectedQuestion.value?.id ==
-                                              e.id)
-                                      .onTap(() {
-                                    controller.onSelectQuestion(question: e);
-                                  }))
-                            ]),
-                          );
-                        },
-                      )
-                    ],
-                  );
-                }),
-              ]))
+          Expanded(child: Obx(() {
+            final topicList = controller.topicList;
+            return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: topicList?.length ?? 0,
+                itemBuilder: (context, index) {
+                  debugPrint(
+                      "Refresh ${index == ((topicList?.length ?? 0) - 1)}");
+                  final currentTopic = topicList?[index];
+                  final filteredQuestions = controller.questionsList?.where(
+                      (question) =>
+                          question.topics?.first.id == currentTopic?.id);
+                  return Obx(() => BaseAccordion(
+                        title: currentTopic?.name ?? "",
+                        child: Column(children: [
+                          ...?filteredQuestions?.map((e) {
+                            return QuestionsListColumn(
+                                    question: e,
+                                    isActive:
+                                        controller.selectedQuestion.value?.id ==
+                                            e.id)
+                                .onTap(() {
+                              controller.onSelectQuestion(question: e);
+                            });
+                          })
+                        ]),
+                      ));
+                });
+          }))
         ],
       );
 

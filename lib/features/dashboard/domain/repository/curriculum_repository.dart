@@ -20,7 +20,7 @@ class CurriculumRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(CurriculumWrapper.fromJson(value).curriculum),
+              onSuccess.call(CurriculumWrapper.fromJson(value.data).curriculum),
           onError: onError,
         );
   }
@@ -37,7 +37,7 @@ class CurriculumRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(CurriculumWrapper.fromJson(value).curriculums),
+              onSuccess.call(CurriculumWrapper.fromJson(value.data).curriculums),
           onError: onError,
         );
   }

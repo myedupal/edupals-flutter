@@ -45,13 +45,14 @@ class QuestionsListController extends BaseController {
     await questionsRepo.getQuestions(
         queryParams: argument.queryParams,
         onSuccess: (value) {
-          questionsList?.value = value ?? [];
+          debugPrint("Questions data ${value.pages} ${value.counts}");
+          questionsList?.value = value.data ?? [];
           if (questionsList?.isNotEmpty == true) {
             for (int i = 0; i < (questionsList?.length ?? 0); i++) {
               final topic = topicList?.firstWhereOrNull(
-                  (element) => element?.id == value?[i].topics?[0].id);
+                  (element) => element?.id == value.data?[i].topics?[0].id);
               if (topic == null) {
-                topicList?.add(value?[i].topics?[0]);
+                topicList?.add(value.data?[i].topics?[0]);
               }
             }
             selectedQuestion.value = questionsList?.first;

@@ -20,7 +20,7 @@ class SubjectRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(SubjectWrapper.fromJson(value).subject),
+              onSuccess.call(SubjectWrapper.fromJson(value.data).subject),
           onError: onError,
         );
   }
@@ -37,7 +37,7 @@ class SubjectRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(SubjectWrapper.fromJson(value).subjects),
+              onSuccess.call(SubjectWrapper.fromJson(value.data).subjects),
           onError: onError,
         );
   }

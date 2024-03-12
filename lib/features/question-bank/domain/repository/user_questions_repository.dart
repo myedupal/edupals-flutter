@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/core/base/model/tuple_response.dart';
 import 'package:edupals/core/extensions/api_extensions.dart';
 import 'package:edupals/core/network/dio_client.dart';
 import 'package:edupals/core/network/errors/failures.dart';
@@ -20,14 +21,14 @@ class UserQuestionsRepository {
         )
         .handleResponse(
           onSuccess: (value) =>
-              onSuccess.call(QuestionWrapper.fromJson(value).question),
+              onSuccess.call(QuestionWrapper.fromJson(value.data).question),
           onError: onError,
         );
   }
 
   Future<void> getQuestions(
       {QueryParams? queryParams,
-      required Function(List<Question>?) onSuccess,
+      required Function(TupleResponse<List<Question>?>) onSuccess,
       required Function(BaseFailure) onError}) async {
     await dioClient
         .get(
@@ -36,8 +37,10 @@ class UserQuestionsRepository {
           authorization: true,
         )
         .handleResponse(
-          onSuccess: (value) =>
-              onSuccess.call(QuestionWrapper.fromJson(value).questions),
+          onSuccess: (value) => onSuccess.call(TupleResponse(
+              data: QuestionWrapper.fromJson(value.data).questions,
+              pages: value.pages,
+              counts: value.counts)),
           onError: onError,
         );
   }
