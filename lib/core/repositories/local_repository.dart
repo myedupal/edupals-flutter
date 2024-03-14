@@ -35,8 +35,10 @@ class LocalRepository {
   }
 
   Future<User?> getUser() async {
-    return User.fromJson(
-        jsonDecode(await secureStorageService.getString(user) ?? ""));
+    final storageUser = await secureStorageService.getString(user) ?? "";
+    return storageUser.isEmpty == true
+        ? null
+        : User.fromJson(jsonDecode(storageUser));
   }
 
   Future<Curriculum?> getCurriculum() async {

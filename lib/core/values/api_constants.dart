@@ -8,8 +8,10 @@ abstract class ApiConstants {
   static const version = '/api/v1';
   static const getSubjects = '$version/web/subjects/';
   static const getTopics = '$version/web/topics/';
+  static const getCurriculums = '$version/web/curriculums';
+
   static const getLogin = '$version/user/sign_in';
   static const getLogout = '$version/user/sign_out';
   static const getQuestions = '$version/user/questions';
-  static const getCurriculums = '$version/web/curriculums';
+  static const getChallenges = '$version/user/daily_challenges';
 }

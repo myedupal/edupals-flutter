@@ -96,7 +96,6 @@ class DioClientImpl implements DioClient {
     bool authorization = true,
     int? timeout,
   }) async {
-    await _throwExceptionIfNoConnection();
     final Map<String, dynamic> extra = {
       'url': fullUrl ?? dio.options.baseUrl,
       'authorization': authorization
@@ -120,7 +119,6 @@ class DioClientImpl implements DioClient {
       ProgressCallback? onReceiveProgress,
       bool authorization = true,
       int? timeout}) async {
-    await _throwExceptionIfNoConnection();
     final Map<String, dynamic> extra = {
       'url': fullUrl ?? dio.options.baseUrl,
       'authorization': authorization
@@ -149,7 +147,6 @@ class DioClientImpl implements DioClient {
       ProgressCallback? onReceiveProgress,
       bool authorization = true,
       int? timeout}) async {
-    await _throwExceptionIfNoConnection();
     final Map<String, dynamic> extra = {
       'url': fullUrl ?? dio.options.baseUrl,
       'authorization': authorization
@@ -175,7 +172,6 @@ class DioClientImpl implements DioClient {
       ProgressCallback? onReceiveProgress,
       bool authorization = true,
       int? timeout}) async {
-    await _throwExceptionIfNoConnection();
     final Map<String, dynamic> extra = {
       'url': fullUrl ?? dio.options.baseUrl,
       'authorization': authorization
@@ -202,7 +198,6 @@ class DioClientImpl implements DioClient {
       ProgressCallback? onReceiveProgress,
       bool authorization = true,
       int? timeout}) async {
-    await _throwExceptionIfNoConnection();
     final Map<String, dynamic> extra = {
       'url': fullUrl ?? dio.options.baseUrl,
       'authorization': authorization
@@ -218,13 +213,5 @@ class DioClientImpl implements DioClient {
         options: Options(headers: headers, extra: extra),
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress);
-  }
-
-  /// helper function to check if mobile has connection before making API request
-  Future<void> _throwExceptionIfNoConnection() async {
-    if (await connectionChecker.isConnected() == NetworkStatus.offline) {
-      // throw NoInternetConnectionException(
-      //     message: AppStrings.noInternetConnection);
-    }
   }
 }
