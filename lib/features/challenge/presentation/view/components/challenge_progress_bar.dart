@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChallengeProgressBar extends StatelessWidget {
-  const ChallengeProgressBar({super.key});
+  const ChallengeProgressBar({super.key, this.progress = 0});
+
+  final double progress;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,11 @@ class ChallengeProgressBar extends StatelessWidget {
             .onTap(() {
           Get.back();
         }),
-        const Expanded(
+        Expanded(
             child: BaseProgressIndicator(
                 color: AppColors.accent500,
                 backgoundColor: AppColors.gray100,
-                fixedPercentage: 0.4)),
+                fixedPercentage: progress)),
         Transform.translate(
           offset: const Offset(-5, 0),
           child: const ImageAssetView(

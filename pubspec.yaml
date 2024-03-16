@@ -66,6 +66,12 @@ dependencies:
   # https://github.com/fzyzcjy/flutter_portal
   flutter_portal: ^1.1.4
 
+  # Dart localization
+  intl: ^0.18.0
+
+  # Shimmering
+  card_loading: ^0.3.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

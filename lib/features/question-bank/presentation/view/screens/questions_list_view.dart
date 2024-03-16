@@ -1,6 +1,6 @@
-import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/components/base_accordion.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -44,26 +44,7 @@ class QuestionsListView extends GetView<QuestionsListController> {
             ],
           );
         case ViewState.noData:
-          return Column(
-            children: [
-              SizedBox(
-                height: Get.width * 0.1,
-              ),
-              ImageAssetView(
-                fileName: AppAssets.noDataLottie,
-                width: Get.width * 0.25,
-              ),
-              Text(
-                "There is no question for you...",
-                style: MyTextStyle.l.bold,
-              ),
-              BaseButton(
-                  text: "Go Back",
-                  onClick: () {
-                    Get.back();
-                  }).padding(const EdgeInsets.only(top: AppValues.double20))
-            ],
-          );
+          return const NoDataView(message: "There is no question for you...");
         default:
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,

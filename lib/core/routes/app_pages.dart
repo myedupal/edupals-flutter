@@ -1,5 +1,6 @@
 import 'package:edupals/core/components/navbar.dart';
 import 'package:edupals/features/auth/presentation/binding/auth_binding.dart';
+import 'package:edupals/features/challenge/presentation/binding/daily_challenge_binding.dart';
 import 'package:edupals/features/challenge/presentation/view/screens/challenge_complete_view.dart';
 import 'package:edupals/features/challenge/presentation/view/screens/daily_challenge_view.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
@@ -30,7 +31,9 @@ class AppPages {
         page: () => const QuestionsListView(),
         binding: QuestionsListBinding()),
     GetPage(
-        name: Routes.dailyChallenge, page: () => const DailyChallengeView()),
+        name: Routes.dailyChallenge,
+        page: () => const DailyChallengeView(),
+        binding: DailyChallengeBinding()),
     GetPage(
         name: Routes.challengeComplete,
         page: () => const ChallengeCompleteView()),

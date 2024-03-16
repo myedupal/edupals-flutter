@@ -19,6 +19,9 @@ class AppAssets {
   static const flashCard = "${_svgImagePath}flash_cards.svg";
   static const leftChevron = "${_svgImagePath}left_chevron.svg";
   static const rightChevron = "${_svgImagePath}right_chevron.svg";
+  static const sortFull = "${_svgImagePath}sort_full.svg";
+  static const history = "${_svgImagePath}history.svg";
+  static const imageError = "${_svgImagePath}image_error.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";

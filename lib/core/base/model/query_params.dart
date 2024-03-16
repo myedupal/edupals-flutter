@@ -39,6 +39,18 @@ class QueryParams {
   bool? isActive;
   String? curriculumId;
 
+  factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
+        page: json["page"],
+        items: json["items"],
+        sortBy: json["sort_by"],
+        sortOrder: json["sort_order"],
+        subjectId: json["subject_id"],
+        examId: json["exam_id"],
+        zone: json["zone"],
+        season: json["season"],
+        year: json["year"],
+      );
+
   Map<String, dynamic> toJson() => {
         "page": page.toString(),
         "items": items.toString(),

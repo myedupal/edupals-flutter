@@ -18,6 +18,7 @@ class LocalRepository {
   Future<void> clearStorage() async {
     await Future.wait([
       secureStorageService.delete(accessTokenKey),
+      secureStorageService.delete(user)
     ]);
   }
 

@@ -1,4 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:edupals/core/components/shimmer.dart';
+import 'package:edupals/core/values/app_assets.dart';
+import 'package:edupals/core/values/app_colors.dart';
+import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
@@ -56,12 +60,21 @@ class ImageAssetView extends StatelessWidget {
         );
       case 'url':
         return CachedNetworkImage(
-          // placeholder: (context, url) => Center(child: _buildLoadingImage()),
+          placeholder: (context, url) => const Shimmer.rounded(
+            height: AppValues.double100,
+            width: double.infinity,
+          ),
           imageUrl: fileName,
           fit: fit,
           height: height,
           width: width,
           color: color,
+          errorWidget: (context, url, error) {
+            return const ImageAssetView(
+              fileName: AppAssets.imageError,
+              color: AppColors.gray500,
+            );
+          },
         );
       case 'json':
       case 'zip':

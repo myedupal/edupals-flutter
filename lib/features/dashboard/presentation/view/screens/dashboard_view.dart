@@ -1,13 +1,13 @@
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/dashboard/presentation/view/components/challenge_banner.dart';
-import 'package:edupals/features/splash/presentation/controller/splash_controller.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DashboardView extends GetResponsiveView<SplashController> {
+class DashboardView extends GetResponsiveView<MainController> {
   DashboardView({super.key}) : super(alwaysUseBuilder: false);
 
   @override
