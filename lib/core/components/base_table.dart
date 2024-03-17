@@ -7,6 +7,7 @@ import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BaseTable<T extends TableConvertible> extends StatelessWidget {
   const BaseTable({super.key, this.column, this.dataList});
@@ -17,7 +18,11 @@ class BaseTable<T extends TableConvertible> extends StatelessWidget {
   Widget bodyWrapper(Widget Function(TableColumn) widget) {
     return Row(children: [
       ...?column?.map((e) => Expanded(
-          flex: e.expanded ? (column?.length ?? 1) : 1,
+          flex: e.expanded
+              ? (column?.length ?? 1)
+              : Get.context?.isLandscape == true
+                  ? 1
+                  : 2,
           child: widget
               .call(e)
               .padding(const EdgeInsets.only(right: AppValues.double20))))
@@ -33,7 +38,7 @@ class BaseTable<T extends TableConvertible> extends StatelessWidget {
               children: [
                 Text(
                   "${e.name}",
-                  style: MyTextStyle.s,
+                  style: MyTextStyle.xs,
                 ),
                 if (e.ableSort)
                   const ImageAssetView(
@@ -57,7 +62,7 @@ class BaseTable<T extends TableConvertible> extends StatelessWidget {
                       Text(
                         dataList?[dataIndex].toTable()[e.selector].toString() ??
                             "",
-                        style: MyTextStyle.s,
+                        style: MyTextStyle.xs,
                       )).padding(const EdgeInsets.all(AppValues.double5));
                 }))
       ],

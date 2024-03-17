@@ -54,7 +54,7 @@ class HistoryView extends StatelessWidget {
                 Expanded(
                     child: const Text(
                   "Mathematics",
-                  style: MyTextStyle.s,
+                  style: MyTextStyle.xs,
                 ).padding(const EdgeInsets.only(left: AppValues.double10)))
               ],
             ),
@@ -62,7 +62,10 @@ class HistoryView extends StatelessWidget {
           TableColumn(
             name: "Progress",
             column: (data, index) {
-              return const Text("100/100");
+              return const Text(
+                "100/100",
+                style: MyTextStyle.xs,
+              );
             },
           ),
           TableColumn(
@@ -78,7 +81,7 @@ class HistoryView extends StatelessWidget {
                 children: [
                   Text(
                     "Resume",
-                    style: MyTextStyle.xs.bold,
+                    style: MyTextStyle.xxs.bold,
                     textAlign: TextAlign.center,
                   ).capsulise(
                       radius: 100,
@@ -86,7 +89,7 @@ class HistoryView extends StatelessWidget {
                       borderColor: AppColors.gray500,
                       color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: AppValues.double20,
+                          horizontal: AppValues.double15,
                           vertical: AppValues.double5))
                 ],
               );
