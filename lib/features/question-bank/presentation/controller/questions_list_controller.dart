@@ -1,5 +1,8 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/features/history/domain/model/activity.dart';
+import 'package:edupals/features/history/domain/repository.dart/activity_question_repository.dart';
+import 'package:edupals/features/history/domain/repository.dart/activity_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
@@ -8,6 +11,8 @@ import 'package:get/get.dart';
 
 class QuestionsListController extends BaseController {
   final UserQuestionsRepository questionsRepo = Get.find();
+  final ActivityQuestionRepository activityQuestionRepo = Get.find();
+  final ActivityRepository activityRepo = Get.find();
   final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
   RxList<Question> questionsList = <Question>[].obs;
@@ -55,7 +60,7 @@ class QuestionsListController extends BaseController {
         onSuccess: (value) {
           loadMore
               ? questionsList = (questionsList) + (value.data ?? [])
-              : questionsList.value = value.data ?? [];
+              : {questionsList.value = value.data ?? [], createActivity()};
 
           questionsList.isNotEmpty == true
               ? {
@@ -65,6 +70,19 @@ class QuestionsListController extends BaseController {
                 }
               : setNoData();
         },
+        onError: (error) {});
+  }
+
+  Future<void> createActivity() async {
+    await activityRepo.createActivity(
+        activity: Activity(
+          subjectId: questionListParams?.subjectId,
+          activityType: argument.revisionType,
+          topicIds: questionListParams?.topicId,
+          paperIds: [questionListParams?.paperId ?? ""],
+          metadata: questionListParams,
+        ),
+        onSuccess: (value) {},
         onError: (error) {});
   }
 

@@ -83,6 +83,7 @@ class QuestionBankController extends GetxController {
 
   void navigatePage() {
     final QuestionBankArgument argument = QuestionBankArgument(
+        revisionType: selectedRevisionType.value?.key,
         titleList: [
           selectedRevisionType.value?.label ?? "",
           selectedSubject.value?.label ?? "",

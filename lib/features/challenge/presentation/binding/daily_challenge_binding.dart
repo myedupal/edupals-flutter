@@ -6,6 +6,6 @@ class DailyChallengeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => ChallengeRepository());
-    Get.put<DailyChallengeController>(DailyChallengeController());
+    Get.lazyPut<DailyChallengeController>(() => DailyChallengeController());
   }
 }

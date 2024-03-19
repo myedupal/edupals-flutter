@@ -8,6 +8,6 @@ class QuestionsListBinding extends Bindings {
     // Register Repository
     Get.lazyPut<UserQuestionsRepository>(() => UserQuestionsRepository());
     // Register Controller
-    Get.put<QuestionsListController>(QuestionsListController());
+    Get.lazyPut<QuestionsListController>(() => QuestionsListController());
   }
 }

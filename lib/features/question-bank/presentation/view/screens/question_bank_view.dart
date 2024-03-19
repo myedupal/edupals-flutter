@@ -230,7 +230,7 @@ class QuestionBankView extends GetView<QuestionBankController> {
   Widget build(BuildContext context) {
     Get.lazyPut<SubjectRepository>(() => SubjectRepository());
     Get.lazyPut<TopicRepository>(() => TopicRepository());
-    Get.put<QuestionBankController>(QuestionBankController());
+    Get.lazyPut<QuestionBankController>(() => QuestionBankController());
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

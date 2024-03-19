@@ -25,7 +25,7 @@ extension DateTimeExtension on DateTime {
   }
 }
 
-extension StringExtension on String {
+extension DateExtension on String {
   String formatDateString({String? pattern = 'dd-MM-yyyy'}) {
     DateTime dateTime = DateTime.parse(this);
     return dateTime.formatDateTime(pattern: pattern);

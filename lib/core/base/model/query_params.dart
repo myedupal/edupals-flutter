@@ -40,8 +40,8 @@ class QueryParams {
   String? curriculumId;
 
   factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
-        page: json["page"],
-        items: json["items"],
+        page: int.parse(json["page"] ?? "1"),
+        items: int.parse(json["items"] ?? "100"),
         sortBy: json["sort_by"],
         sortOrder: json["sort_order"],
         subjectId: json["subject_id"],
@@ -69,6 +69,18 @@ class QueryParams {
         "subject_id": subjectId,
         "season": season,
         "zone": zone,
+        "curriculum_id": curriculumId
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
+
+  Map<String, dynamic> toMetadata() => {
+        "page": page.toString(),
+        "items": items.toString(),
+        "sort_by": sortBy,
+        "sort_order": sortOrder,
+        "years": year?.isNotEmpty == true ? year : null,
+        "seasons": season?.isNotEmpty == true ? [season] : null,
+        "zones": season?.isNotEmpty == true ? [zone] : null,
         "curriculum_id": curriculumId
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");

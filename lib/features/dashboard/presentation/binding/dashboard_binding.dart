@@ -5,6 +5,6 @@ class DashboardBinding extends Bindings {
   @override
   void dependencies() {
     // Register datasource
-    Get.put<DashboardController>(DashboardController());
+    Get.lazyPut<DashboardController>(() => DashboardController());
   }
 }
