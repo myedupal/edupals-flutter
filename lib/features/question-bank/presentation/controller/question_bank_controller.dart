@@ -36,6 +36,10 @@ class QuestionBankController extends GetxController {
   void onInit() {
     super.onInit();
     selectedRevisionType.value = revisionType.first;
+    mainController.selectedCurriculum.stream.listen((value) {
+      getSubjects();
+      resetFilter();
+    });
     getSubjects();
   }
 

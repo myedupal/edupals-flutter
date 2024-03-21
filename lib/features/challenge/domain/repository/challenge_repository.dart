@@ -16,7 +16,7 @@ class ChallengeRepository {
     await dioClient
         .get(
           "${ApiConstants.getChallenges}$id",
-          authorization: false,
+          authorization: true,
         )
         .handleResponse(
           onSuccess: (value) =>

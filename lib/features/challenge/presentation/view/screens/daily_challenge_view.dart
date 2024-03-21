@@ -27,37 +27,41 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
               progress: controller.getProgress,
             ),
           ),
-          Expanded(
-              child: ListView(
-            physics: const BouncingScrollPhysics(),
-            children: [
-              Column(
-                children: [
-                  const ImageAssetView(
-                    fileName: AppAssets.mockQuestion,
-                  ).padding(
-                      const EdgeInsets.symmetric(vertical: AppValues.double30)),
-                ],
-              ),
-              const SizedBox(
-                height: AppValues.double50,
-              ),
-              Row(
-                children: [
-                  for (int i = 0; i < 5; i++)
-                    Expanded(
-                        child: AnswerSelectionRow(
-                      isActive: i == 0,
-                    )
-                            .padding(const EdgeInsets.only(
-                                right: AppValues.double30))
-                            .onTap(() {
-                      Get.toNamed(Routes.challengeComplete);
-                    }))
-                ],
-              ),
-            ],
-          )),
+          Obx(() => controller.questionList?.isNotEmpty == true
+              ? Expanded(
+                  child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    Column(
+                      children: [
+                        ImageAssetView(
+                          fileName: controller.questionList?.first
+                                  .questionImages?.first.image?.url ??
+                              "",
+                        ).padding(const EdgeInsets.symmetric(
+                            vertical: AppValues.double30)),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: AppValues.double50,
+                    ),
+                    Row(
+                      children: [
+                        for (int i = 0; i < 5; i++)
+                          Expanded(
+                              child: AnswerSelectionRow(
+                            isActive: i == 0,
+                          )
+                                  .padding(const EdgeInsets.only(
+                                      right: AppValues.double30))
+                                  .onTap(() {
+                            Get.toNamed(Routes.challengeComplete);
+                          }))
+                      ],
+                    ),
+                  ],
+                ))
+              : Container()),
         ],
       ));
 

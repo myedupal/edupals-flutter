@@ -100,7 +100,8 @@ class _BaseInputState extends State<BaseInput> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(AppValues.double12),
+          padding: const EdgeInsets.fromLTRB(AppValues.double12,
+              AppValues.double8, AppValues.double12, AppValues.double14),
           decoration: BoxDecoration(
             border: Border.all(color: _borderColor),
             borderRadius: BorderRadius.circular(5),
@@ -112,7 +113,7 @@ class _BaseInputState extends State<BaseInput> {
               if (widget.label?.isNotEmpty == true)
                 Text(
                   widget.label ?? "",
-                  style: MyTextStyle.xs.h(0).c(_focusNode.hasFocus
+                  style: MyTextStyle.xs.h(2).c(_focusNode.hasFocus
                       ? AppColors.accent500
                       : AppColors.gray600),
                 ),

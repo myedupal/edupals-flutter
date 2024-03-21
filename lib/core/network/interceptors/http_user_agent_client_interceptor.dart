@@ -7,10 +7,10 @@ class HttpUserAgentClientInterceptor extends Interceptor {
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     // Add User-Agent Client Hints
-    final Map<String, String> userAgentClintHintsData =
-        await userAgentClientHintsHeader();
 
     if (!kIsWeb) {
+      final Map<String, String> userAgentClintHintsData =
+          await userAgentClientHintsHeader();
       options.headers.addAll({
         'User-Agent': await userAgent(),
         'Sec-CH-UA-Mobile': userAgentClintHintsData['Sec-CH-UA-Mobile'],

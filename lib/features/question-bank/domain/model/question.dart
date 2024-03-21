@@ -35,7 +35,7 @@ class Question {
   String? id;
   String? number;
   String? questionType;
-  dynamic text;
+  String? text;
   String? examId;
   String? subjectId;
   Exam? exam;

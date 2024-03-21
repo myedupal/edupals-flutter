@@ -192,39 +192,41 @@ class QuestionBankView extends GetView<QuestionBankController> {
         ).padding(const EdgeInsets.only(top: AppValues.double20));
       });
 
-  Widget get trendingSection => ListView(shrinkWrap: true, children: [
-        Text(
-          "Trending Yearly",
-          style: MyTextStyle.xl.bold,
-        ),
-        Column(
+  Widget get trendingSection => ListView(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
           children: [
-            const TrendingColumn(
-              percentage: 50,
-            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-            const TrendingColumn(
-              percentage: 30,
-            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-            const TrendingColumn(
-              percentage: 10,
+            Text(
+              "Trending Yearly",
+              style: MyTextStyle.xl.bold,
             ),
-          ],
-        ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20)),
-        Text(
-          "Trending Topical",
-          style: MyTextStyle.xl.bold,
-        ),
-        Column(
-          children: [
-            const TrendingColumn(
-              percentage: 30,
-            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-            const TrendingColumn(
-              percentage: 10,
+            Column(
+              children: [
+                for (int i = 0; i < 2; i++)
+                  const TrendingColumn(
+                    withProgress: false,
+                    title: "Mathematics",
+                    value: "3 Chapters",
+                    subvalue: "From 2020 - 2023",
+                  ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+              ],
+            ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20)),
+            Text(
+              "Trending Topical",
+              style: MyTextStyle.xl.bold,
             ),
-          ],
-        ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20)),
-      ]);
+            Column(
+              children: [
+                for (int i = 0; i < 3; i++)
+                  const TrendingColumn(
+                    percentage: 20,
+                    title: "Sociology",
+                    value: "4 Chapters",
+                    subvalue: "From 2019 - 2021",
+                  ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+              ],
+            ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20)),
+          ]);
 
   @override
   Widget build(BuildContext context) {

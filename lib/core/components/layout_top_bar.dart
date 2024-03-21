@@ -44,7 +44,7 @@ class LayoutTopBar extends GetView<MainController> {
         Row(
           children: [
             Text(
-              "LV.13",
+              "Logout",
               style: MyTextStyle.xxs.bold.c(AppColors.white),
             ).onTap(() {
               controller.logout();

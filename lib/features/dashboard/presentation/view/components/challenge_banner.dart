@@ -1,11 +1,9 @@
 import 'package:edupals/core/extensions/view_extensions.dart';
-import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ChallengeBanner extends StatelessWidget {
   const ChallengeBanner({super.key});
@@ -51,16 +49,16 @@ class ChallengeBanner extends StatelessWidget {
           ),
           Text(
             "Start your challenge",
-            style: MyTextStyle.xs.bold.c(AppColors.accent500),
+            style: MyTextStyle.xs.bold.c(AppColors.gray300),
           )
               .capsulise(
                   radius: 100,
-                  color: AppColors.white,
+                  color: AppColors.gray100,
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppValues.double20,
                       vertical: AppValues.double12))
               .onTap(() {
-            Get.toNamed(Routes.dailyChallenge);
+            // Get.toNamed(Routes.dailyChallenge);
           })
         ],
       ),

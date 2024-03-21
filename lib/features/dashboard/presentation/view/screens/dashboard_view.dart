@@ -10,6 +10,29 @@ import 'package:get/get.dart';
 class DashboardView extends GetResponsiveView<MainController> {
   DashboardView({super.key}) : super(alwaysUseBuilder: false);
 
+  Widget dashboardColumn({String? title, String? value, String? subvalue}) {
+    return Expanded(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title ?? "",
+          style: MyTextStyle.s.bold,
+        ),
+        const Spacer(),
+        Text(
+          value ?? "",
+          style: MyTextStyle.xl2.medium,
+        ).padding(const EdgeInsets.only(top: AppValues.double30)),
+      ],
+    )
+            .capsulise(
+                radius: 15,
+                color: AppColors.gray100,
+                padding: const EdgeInsets.all(AppValues.double20))
+            .padding(const EdgeInsets.only(right: AppValues.double10)));
+  }
+
   @override
   Widget builder() => Column(
         children: [
@@ -19,33 +42,18 @@ class DashboardView extends GetResponsiveView<MainController> {
             children: [
               Expanded(
                   flex: 8,
-                  child: Row(
+                  child: IntrinsicHeight(
+                      child: Row(
                     children: [
-                      for (int i = 0; i < 4; i++)
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Question Flagged",
-                              style: MyTextStyle.s.bold,
-                            ),
-                            Text(
-                              "100",
-                              style: MyTextStyle.xl2.medium,
-                            ).padding(
-                                const EdgeInsets.only(top: AppValues.double30)),
-                          ],
-                        )
-                                .capsulise(
-                                    radius: 15,
-                                    color: AppColors.gray100,
-                                    padding: const EdgeInsets.all(
-                                        AppValues.double20))
-                                .padding(const EdgeInsets.only(
-                                    right: AppValues.double10))),
+                      dashboardColumn(
+                          title: "Average time spent 10 questions",
+                          value: "100"),
+                      dashboardColumn(
+                          title: "Total question attempt", value: "100/100"),
+                      dashboardColumn(title: "Accuracy", value: "50/100"),
+                      dashboardColumn(title: "Question flagged", value: "100"),
                     ],
-                  )),
+                  ))),
               Expanded(flex: 3, child: Container())
             ],
           ).padding(const EdgeInsets.only(top: AppValues.double20))

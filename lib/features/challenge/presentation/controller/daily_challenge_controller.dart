@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/base_controller.dart';
+import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/challenge/domain/model/challenge.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_submission.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
@@ -31,11 +32,23 @@ class DailyChallengeController extends BaseController {
 
   Future<void> getChallenges() async {
     await challengeRepo.getChallenges(
+        queryParams: QueryParams(
+            fromStartAt: "2024-03-01T00:00:00+08:00",
+            toStartAt: "2024-03-31T00:00:00+08:00"),
         onSuccess: (value) {
           challengeList?.value = value ?? [];
           if (challengeList?.isNotEmpty == true) {
-            questionList?.value = value?.first.questions ?? [];
+            getChallenge(id: value?.first.id ?? "");
           }
+        },
+        onError: (error) {});
+  }
+
+  Future<void> getChallenge({required String id}) async {
+    await challengeRepo.getChallenge(
+        id: id,
+        onSuccess: (value) {
+          questionList?.value = value?.questions ?? [];
         },
         onError: (error) {});
   }

@@ -33,6 +33,21 @@ class QuestionsListController extends BaseController {
     selectedQuestion.value = question;
   }
 
+  String? get yearsRange {
+    String finalRange = "-";
+    final paramsYears = questionListParams?.year;
+    paramsYears?.sort();
+    switch (paramsYears?.length) {
+      case 0:
+        finalRange = "-";
+      case 1:
+        finalRange = "${paramsYears?.first} Year";
+      default:
+        finalRange = "From ${paramsYears?.first} to ${paramsYears?.last}";
+    }
+    return finalRange;
+  }
+
   void questionAction(String action) {
     final filteredQuestionIndex = questionsList
         .indexWhere((element) => element.id == selectedQuestion.value?.id);

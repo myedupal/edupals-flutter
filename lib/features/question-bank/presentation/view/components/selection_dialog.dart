@@ -130,7 +130,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
                       Get.back();
                     })
               ],
-            )
+            ).padding(const EdgeInsets.only(top: AppValues.double10))
           ],
         ));
   }

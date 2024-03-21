@@ -22,8 +22,11 @@ class HistoryView extends GetView<HistoryController> {
                 for (int i = 0; i < 10; i++)
                   SizedBox(
                     width: Get.width * 0.3,
-                    child: const TrendingColumn().padding(
-                        const EdgeInsets.only(right: AppValues.double20)),
+                    child: const TrendingColumn(
+                      title: "Mathematics",
+                      value: "3 Chapters",
+                      subvalue: "From 2020 - 2023",
+                    ).padding(const EdgeInsets.only(right: AppValues.double20)),
                   )
               ],
             )

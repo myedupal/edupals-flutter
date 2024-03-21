@@ -108,8 +108,11 @@ class BaseButton extends StatelessWidget {
             constraints: const BoxConstraints(
               minWidth: double.infinity,
             ),
-            child: _buttonBody())
-        : _buttonBody();
+            child: SizedBox(
+              height: AppValues.double60,
+              child: _buttonBody(),
+            ))
+        : SizedBox(height: AppValues.double60, child: _buttonBody());
   }
 }
 

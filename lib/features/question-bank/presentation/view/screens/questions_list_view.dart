@@ -91,8 +91,11 @@ class QuestionsListView extends GetView<QuestionsListController> {
 
   Widget get chapterList => Column(
         children: [
-          const TrendingColumn(
-            percentage: 50,
+          TrendingColumn(
+            percentage: 0,
+            title: controller.argument.titleList?[1] ?? "",
+            value: "${controller.topicList?.length ?? 0} Chapters ",
+            subvalue: "${controller.yearsRange}",
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
           Expanded(child: Obx(() {
             final topicList = controller.topicList;
