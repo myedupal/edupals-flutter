@@ -44,9 +44,11 @@ jobs:
       
       - name: Create env file
         run: |
-          rm -f .env
-          touch .env
-          echo "${{ secrets.env_file }}" >> .env
+          rm -f .env.prod
+          touch .env.prod
+          touch .env.dev
+          touch .env.uat
+          echo "${{ secrets.env_file }}" >> .env.prod
       - name: Install dependencies
         run: flutter pub get
       
@@ -54,7 +56,7 @@ jobs:
       #   run: flutter test
       
       - name: Build web
-        run: flutter build web
+        run: flutter build web -t lib/main_prod.dart
         
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
