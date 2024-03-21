@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          flutter-version: '3.16.6'
           cache: true
       
       - name: Create env file
@@ -49,6 +49,10 @@ jobs:
           touch .env.dev
           touch .env.uat
           echo "${{ secrets.env_file }}" >> .env.prod
+
+      - name: Clear cache
+        run: flutter clean
+
       - name: Install dependencies
         run: flutter pub get
       
