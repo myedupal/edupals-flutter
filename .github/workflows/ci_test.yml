@@ -27,7 +27,9 @@ jobs:
       - name: Create env file
         run: |
           rm -f .env
-          touch .env
+          touch .env.prod
+          touch .env.dev
+          touch .env.uat
           echo "${{ secrets.env_file }}" >> .env
       - name: Install dependencies
         run: flutter pub get
