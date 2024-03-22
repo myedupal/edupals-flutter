@@ -23,7 +23,7 @@ class LayoutTopBar extends GetView<MainController> {
           return Row(children: [
             Text(
               selectedCurriculum != null
-                  ? "${selectedCurriculum.board} ${selectedCurriculum.name ?? ""}"
+                  ? selectedCurriculum.getFullName
                   : "Select A Curriculum",
               style: MyTextStyle.s.bold,
             ),

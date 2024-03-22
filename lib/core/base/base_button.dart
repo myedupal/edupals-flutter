@@ -109,10 +109,10 @@ class BaseButton extends StatelessWidget {
               minWidth: double.infinity,
             ),
             child: SizedBox(
-              height: AppValues.double60,
+              height: AppValues.double55,
               child: _buttonBody(),
             ))
-        : SizedBox(height: AppValues.double60, child: _buttonBody());
+        : SizedBox(height: AppValues.double55, child: _buttonBody());
   }
 }
 

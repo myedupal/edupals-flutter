@@ -108,7 +108,8 @@ class Activity extends TableConvertible {
         "metadata": metadata?.toMetadata(),
         "topic_ids": topicIds,
         "paper_ids": paperIds,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 
   @override
   Map<String, dynamic> toTable() => {

@@ -1,7 +1,6 @@
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
-import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -21,10 +20,12 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
           Text(
             "Your Daily Challenge",
             style: MyTextStyle.xl1.bold,
-          ).padding(const EdgeInsets.symmetric(vertical: AppValues.double30)),
+          ).padding(const EdgeInsets.only(
+              bottom: AppValues.double20, top: AppValues.double20)),
           Obx(
             () => ChallengeProgressBar(
               progress: controller.getProgress,
+              onBack: () => controller.onBack(),
             ),
           ),
           Obx(() => controller.questionList?.isNotEmpty == true
@@ -35,33 +36,33 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
                     Column(
                       children: [
                         ImageAssetView(
-                          fileName: controller.questionList?.first
-                                  .questionImages?.first.image?.url ??
+                          fileName: controller.currentQuestion?.questionImages
+                                  ?.first.image?.url ??
                               "",
                         ).padding(const EdgeInsets.symmetric(
                             vertical: AppValues.double30)),
                       ],
                     ),
-                    const SizedBox(
-                      height: AppValues.double50,
-                    ),
-                    Row(
-                      children: [
-                        for (int i = 0; i < 5; i++)
-                          Expanded(
-                              child: AnswerSelectionRow(
-                            isActive: i == 0,
-                          )
-                                  .padding(const EdgeInsets.only(
-                                      right: AppValues.double30))
-                                  .onTap(() {
-                            Get.toNamed(Routes.challengeComplete);
-                          }))
-                      ],
-                    ),
                   ],
                 ))
               : Container()),
+          Row(
+            children: [
+              for (int i = 0; i < 4; i++)
+                Expanded(
+                    child: AnswerSelectionRow(
+                  title: "A",
+                  isActive: i == 0,
+                )
+                        .padding(
+                            const EdgeInsets.only(right: AppValues.double30))
+                        .onTap(() {
+                  // Get.toNamed(Routes.challengeComplete);
+                  controller.nextQuestion();
+                }))
+            ],
+          ).padding(const EdgeInsets.only(
+              top: AppValues.double10, bottom: AppValues.double30)),
         ],
       ));
 

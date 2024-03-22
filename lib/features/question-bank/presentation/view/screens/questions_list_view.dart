@@ -136,7 +136,11 @@ class QuestionsListView extends GetView<QuestionsListController> {
     return Column(
       children: [
         QuestionsListTopBar(
-          titleList: ["Cambridge A Level", ...?controller.argument.titleList],
+          titleList: [
+            controller.mainController.selectedCurriculum.value?.getFullName ??
+                "",
+            ...?controller.argument.titleList
+          ],
         ),
         Expanded(child: pageBody)
       ],

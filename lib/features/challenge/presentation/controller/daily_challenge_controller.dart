@@ -22,8 +22,10 @@ class DailyChallengeController extends BaseController {
   }
 
   double get getProgress {
-    return currentIndex / (questionList?.length ?? 0);
+    return currentIndex / ((questionList?.length ?? 0) - 1);
   }
+
+  Question? get currentQuestion => questionList?[currentIndex.value];
 
   void onSubmitAnswer() {
     // add answer in answeredlist and keep calling updaate challenge submission
@@ -51,5 +53,15 @@ class DailyChallengeController extends BaseController {
           questionList?.value = value?.questions ?? [];
         },
         onError: (error) {});
+  }
+
+  void nextQuestion() {
+    currentIndex.value < ((questionList?.length ?? 0) - 1)
+        ? currentIndex += 1
+        : null;
+  }
+
+  void onBack() {
+    currentIndex.value > 0 ? currentIndex -= 1 : Get.back();
   }
 }

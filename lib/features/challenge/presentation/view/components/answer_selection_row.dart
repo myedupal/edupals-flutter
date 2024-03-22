@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 
 class AnswerSelectionRow extends StatelessWidget {
   const AnswerSelectionRow(
-      {super.key, this.isActive = false, this.isFull = false});
+      {super.key, this.isActive = false, this.isFull = false, this.title});
 
   final bool isActive;
   final bool isFull;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class AnswerSelectionRow extends StatelessWidget {
           isFull ? MainAxisAlignment.start : MainAxisAlignment.center,
       children: [
         Text(
-          "A",
+          title ?? "",
           style: isActive
               ? MyTextStyle.m.bold.c(AppColors.accent500)
               : MyTextStyle.m.c(AppColors.gray700),

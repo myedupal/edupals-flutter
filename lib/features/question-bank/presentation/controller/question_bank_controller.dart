@@ -140,6 +140,7 @@ class QuestionBankController extends GetxController {
             curriculumId: mainController.selectedCurriculum.value?.id),
         onSuccess: (value) {
           subjectList?.value = value ?? [];
+          selectedSubject.value = null;
         },
         onError: (error) {});
   }

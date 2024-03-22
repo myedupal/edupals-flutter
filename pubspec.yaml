@@ -14,6 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_web_plugins:
+    sdk: flutter
+
    # Declare env file
   flutter_dotenv: ^5.1.0
   
@@ -76,8 +79,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_core: ^2.25.4
-  flutter_web_plugins:
-    sdk: flutter
 
 dev_dependencies:
   flutter_test:

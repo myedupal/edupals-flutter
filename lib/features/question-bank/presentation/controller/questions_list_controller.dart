@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/base_controller.dart';
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
 import 'package:edupals/features/history/domain/repository.dart/activity_question_repository.dart';
@@ -13,6 +14,7 @@ class QuestionsListController extends BaseController {
   final UserQuestionsRepository questionsRepo = Get.find();
   final ActivityQuestionRepository activityQuestionRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
+  final MainController mainController = Get.find();
   final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
   RxList<Question> questionsList = <Question>[].obs;

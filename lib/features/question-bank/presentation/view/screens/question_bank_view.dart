@@ -172,17 +172,17 @@ class QuestionBankView extends GetView<QuestionBankController> {
                         error: "You have to select subject first")
                     : showTopicDialog();
               }).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-              SelectionInput(
-                label: "Years",
-                isMultiSelect: true,
-                dataList: [...?controller.selectedYears],
-                onRemove: (id) {
-                  controller.onRemoveYear(id);
-                },
-              )
-                  .onTap(showYearDialog)
-                  .padding(const EdgeInsets.only(bottom: AppValues.double20)),
             ],
+            SelectionInput(
+              label: "Years",
+              isMultiSelect: true,
+              dataList: [...?controller.selectedYears],
+              onRemove: (id) {
+                controller.onRemoveYear(id);
+              },
+            )
+                .onTap(showYearDialog)
+                .padding(const EdgeInsets.only(bottom: AppValues.double20)),
             BaseButton(
                 text: "Search Questions",
                 onClick: () {
