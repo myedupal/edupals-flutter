@@ -99,6 +99,7 @@ class QuestionBankController extends GetxController {
           items: 100,
           sortBy: "topic",
           subjectId: selectedSubject.value?.key,
+          paperId: selectedPaper.value?.key ?? "",
           topicId: selectedTopics?.map((element) => element.key ?? "").toList(),
           year: selectedYears?.map((element) => element.key ?? "").toList(),
           season: selectedSeason.value?.key?.toCapitalized(),

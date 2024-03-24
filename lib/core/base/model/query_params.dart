@@ -69,6 +69,7 @@ class QueryParams {
         "from_date": fromDate,
         "to_date": toDate,
         // Question List
+        "paper_id": paperId,
         "exam_id[]": examId?.isNotEmpty == true ? examId : null,
         "topic_id[]": topicId?.isNotEmpty == true ? topicId : null,
         "year[]": year?.isNotEmpty == true ? year : null,

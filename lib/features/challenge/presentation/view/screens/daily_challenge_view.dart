@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
@@ -8,6 +9,7 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/presentation/controller/daily_challenge_controller.dart';
 import 'package:edupals/features/challenge/presentation/view/components/answer_selection_row.dart';
 import 'package:edupals/features/challenge/presentation/view/components/challenge_progress_bar.dart';
+import 'package:edupals/features/challenge/presentation/view/components/image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,8 +41,17 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
                           fileName: controller.currentQuestion?.questionImages
                                   ?.first.image?.url ??
                               "",
-                        ).padding(const EdgeInsets.symmetric(
-                            vertical: AppValues.double30)),
+                        )
+                            .padding(const EdgeInsets.symmetric(
+                                vertical: AppValues.double30))
+                            .onTap(() {
+                          BaseDialog.customise(
+                              isBase: true,
+                              child: ImageViewer(
+                                imageUrl: controller.currentQuestion
+                                    ?.questionImages?.first.image?.url,
+                              ));
+                        }),
                       ],
                     ),
                   ],
