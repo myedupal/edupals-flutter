@@ -77,15 +77,30 @@ class QuestionBankView extends GetView<QuestionBankController> {
     ));
   }
 
-  void showYearDialog() {
+  void showYearDialog({bool isMultipleSelect = true}) {
     BaseDialog.customise(
         child: SelectionDialog(
+      isMultiSelect: isMultipleSelect,
       title: "year",
       childRatio: 1.5,
       numberOfColumn: 4,
       selectionList: controller.yearsList,
       emitData: (data) {
         controller.onSelectYears(value: data);
+      },
+    ));
+  }
+
+  void showZoneDialog() {
+    BaseDialog.customise(
+        child: SelectionDialog(
+      isMultiSelect: false,
+      title: "zone",
+      childRatio: 1.5,
+      numberOfColumn: 4,
+      selectionList: controller.zoneList,
+      emitData: (data) {
+        controller.onSelectZone(value: data?.first);
       },
     ));
   }
@@ -131,9 +146,20 @@ class QuestionBankView extends GetView<QuestionBankController> {
                     controller.triggerError(
                         error: "Please select a curriculum first");
                   }
-                }))
+                })),
               ],
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            SelectionInput(
+              label: "Zone",
+              isRequired: controller.isYearly,
+              isMultiSelect: false,
+              data: controller.selectedZone.value,
+            ).onTap(() {
+              controller.selectedSubject.value == null
+                  ? controller.triggerError(
+                      error: "You have to select subject first")
+                  : showZoneDialog();
+            }).padding(const EdgeInsets.only(bottom: AppValues.double20)),
             Row(
               children: [
                 Expanded(
@@ -175,13 +201,19 @@ class QuestionBankView extends GetView<QuestionBankController> {
             ],
             SelectionInput(
               label: "Years",
-              isMultiSelect: true,
+              isRequired: controller.isYearly,
+              isMultiSelect: !controller.isYearly,
               dataList: [...?controller.selectedYears],
+              data: controller.selectedYears?.isNotEmpty == true
+                  ? controller.selectedYears?.first
+                  : null,
               onRemove: (id) {
                 controller.onRemoveYear(id);
               },
             )
-                .onTap(showYearDialog)
+                .onTap(() => showYearDialog(
+                    isMultipleSelect:
+                        controller.selectedRevisionType.value?.key != "yearly"))
                 .padding(const EdgeInsets.only(bottom: AppValues.double20)),
             BaseButton(
                 text: "Search Questions",

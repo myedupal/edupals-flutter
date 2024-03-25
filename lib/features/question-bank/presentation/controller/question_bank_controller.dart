@@ -25,8 +25,14 @@ class QuestionBankController extends GetxController {
     KeyValue(label: "Summer", key: "summer"),
     KeyValue(label: "Winter", key: "winter")
   ];
+  final List<KeyValue> zoneList = [
+    KeyValue(label: "Zone 1", key: "1"),
+    KeyValue(label: "Zone 2", key: "2"),
+    KeyValue(label: "Zone 3", key: "3")
+  ];
   RxList<KeyValue>? selectedTopics = <KeyValue>[].obs;
   RxList<KeyValue>? selectedYears = <KeyValue>[].obs;
+  Rx<KeyValue?> selectedZone = KeyValue().obs;
   Rx<KeyValue?> selectedRevisionType = KeyValue().obs;
   Rx<KeyValue?> selectedSeason = Rx<KeyValue?>(null);
   Rx<KeyValue?> selectedSubject = Rx<KeyValue?>(null);
@@ -42,6 +48,8 @@ class QuestionBankController extends GetxController {
     });
     getSubjects();
   }
+
+  bool get isYearly => selectedRevisionType.value?.key == "yearly";
 
   void resetFilter() {
     selectedPaper.value = KeyValue();
@@ -73,6 +81,10 @@ class QuestionBankController extends GetxController {
     selectedYears?.value = value ?? [];
   }
 
+  void onSelectZone({KeyValue? value}) {
+    selectedZone.value = value;
+  }
+
   void onSelectSeason({KeyValue? value}) {
     selectedSeason.value = value;
   }
@@ -83,6 +95,20 @@ class QuestionBankController extends GetxController {
 
   void onRemoveYear(String? key) {
     selectedYears?.removeWhere((element) => element.key == key);
+  }
+
+  bool validateYearly() {
+    return (selectedSubject.value == null ||
+        selectedPaper.value == null ||
+        selectedSeason.value == null ||
+        selectedYears?.isNotEmpty == false ||
+        selectedZone.value == null);
+  }
+
+  bool validateMonthly() {
+    return (selectedSubject.value == null ||
+        selectedPaper.value == null ||
+        selectedSeason.value == null);
   }
 
   void navigatePage() {
@@ -98,6 +124,7 @@ class QuestionBankController extends GetxController {
           page: 1,
           items: 100,
           sortBy: "topic",
+          zone: selectedZone.value?.key,
           subjectId: selectedSubject.value?.key,
           paperId: selectedPaper.value?.key ?? "",
           topicId: selectedTopics?.map((element) => element.key ?? "").toList(),
@@ -105,9 +132,7 @@ class QuestionBankController extends GetxController {
           season: selectedSeason.value?.key?.toCapitalized(),
         ));
 
-    (selectedSubject.value == null ||
-            selectedPaper.value == null ||
-            selectedSeason.value == null)
+    (isYearly ? validateYearly() : validateMonthly())
         ? triggerError(error: "Please select all required field")
         : Get.toNamed(Routes.questionsList, arguments: argument);
   }

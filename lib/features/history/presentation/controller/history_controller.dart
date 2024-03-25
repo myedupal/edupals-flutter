@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class HistoryController extends BaseController {
   final ActivityRepository acitvityRepo = Get.find();
-  QueryParams? activityListParams;
+  QueryParams? activityListParams = QueryParams(items: 100, page: 1);
   RxList<Activity> activityList = <Activity>[].obs;
   RxInt activityTotalPage = 1.obs;
 

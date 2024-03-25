@@ -7,10 +7,12 @@ import 'package:edupals/features/history/domain/repository.dart/activity_reposit
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
+import 'package:edupals/features/question-bank/domain/repository/exam_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
 import 'package:get/get.dart';
 
 class QuestionsListController extends BaseController {
+  final ExamRepository examRepo = Get.find();
   final UserQuestionsRepository questionsRepo = Get.find();
   final ActivityQuestionRepository activityQuestionRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
@@ -28,12 +30,14 @@ class QuestionsListController extends BaseController {
     if (argument.queryParams != null) {
       questionListParams = argument.queryParams;
     }
-    getQuestions();
+    (argument.revisionType == "yearly") ? getExam() : getQuestions();
   }
 
   void onSelectQuestion({required Question question}) {
     selectedQuestion.value = question;
   }
+
+  bool get isYearly => argument.revisionType == "yearly";
 
   String? get yearsRange {
     String finalRange = "-";
@@ -90,6 +94,21 @@ class QuestionsListController extends BaseController {
         onError: (error) {});
   }
 
+  Future<void> getExam() async {
+    setLoading();
+    await examRepo.getExams(
+        queryParams: questionListParams,
+        onSuccess: (value) {
+          (value?.isNotEmpty == true)
+              ? {
+                  questionListParams?.examId = [value?.first.id ?? ""],
+                  getQuestions()
+                }
+              : setNoData();
+        },
+        onError: (error) {});
+  }
+
   Future<void> createActivity() async {
     await activityRepo.createActivity(
         activity: Activity(
@@ -98,6 +117,7 @@ class QuestionsListController extends BaseController {
           topicIds: questionListParams?.topicId,
           paperIds: [questionListParams?.paperId ?? ""],
           metadata: questionListParams,
+          examId: questionListParams?.examId?.first,
         ),
         onSuccess: (value) {},
         onError: (error) {});
