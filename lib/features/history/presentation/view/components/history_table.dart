@@ -70,6 +70,7 @@ class HistoryTable extends GetView<HistoryController> {
                                 horizontal: AppValues.double15,
                                 vertical: AppValues.double5))
                         .onTap(() {
+                      // controller.deleteActivity(id: data.id);
                       controller.navigatePage(activity: data);
                     })
                   ],

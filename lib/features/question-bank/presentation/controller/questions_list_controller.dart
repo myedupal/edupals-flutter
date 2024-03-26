@@ -31,6 +31,7 @@ class QuestionsListController extends BaseController {
   RxList<Topic?>? topicList = <Topic?>[].obs;
   Rx<Question?> selectedQuestion = Question().obs;
   RxInt questionTotalPage = 1.obs;
+  RxInt currentReadNumber = 0.obs;
   Rx<Activity?> currentActivity = Rx<Activity?>(null);
   bool isHistory = false;
 
@@ -53,6 +54,11 @@ class QuestionsListController extends BaseController {
     (argument.revisionType == "yearly" && argument.isHistory == false)
         ? getExam()
         : getQuestions();
+    final activity = argument.activity;
+    if (activity != null) {
+      currentActivity.value = activity;
+      currentReadNumber.value = activity.activityQuestionsCount ?? 0;
+    }
   }
 
   // Timer Function
@@ -81,17 +87,20 @@ class QuestionsListController extends BaseController {
 
   bool get isYearly => argument.revisionType == "yearly";
 
+  double get getProgress =>
+      currentReadNumber / (currentActivity.value?.questionsCount ?? 0);
+
   String? get yearsRange {
     String finalRange = "-";
     final paramsYears = questionListParams?.year;
     paramsYears?.sort();
-    switch (paramsYears?.length) {
-      case 0:
-        finalRange = "-";
+    switch (paramsYears?.length ?? 0) {
       case 1:
         finalRange = "${paramsYears?.first} Year";
-      default:
+      case > 2:
         finalRange = "From ${paramsYears?.first} to ${paramsYears?.last}";
+      default:
+        finalRange = "-";
     }
     return finalRange;
   }
@@ -178,7 +187,9 @@ class QuestionsListController extends BaseController {
           activityId: currentActivity.value?.id,
           questionId: selectedQuestion.value?.id,
         ),
-        onSuccess: (value) {},
+        onSuccess: (value) {
+          currentReadNumber.value += 1;
+        },
         onError: (error) {});
   }
 
@@ -189,8 +200,11 @@ class QuestionsListController extends BaseController {
           int.parse(a.number ?? "1").compareTo(int.parse(b.number ?? "1")));
     } else {
       for (int i = 0; i < (questionsList.length); i++) {
-        final topic = topicList?.firstWhereOrNull(
-            (element) => element?.id == questionsList[i].topics?.first.id);
+        if (questionsList[i].topics?.isEmpty == true) {
+          questionsList[i].topics = [Topic(id: "No Topic", name: "No Topic")];
+        }
+        final topic = topicList?.firstWhereOrNull((element) =>
+            element?.id == (questionsList[i].topics?.first.id ?? ""));
         if (topic == null) {
           topicList?.add(questionsList[i].topics?.first);
         }

@@ -23,7 +23,7 @@ class ChapterDisplayList extends GetView<QuestionsListController> {
       children: [
         TrendingColumn(
           percentage: 0,
-          title: controller.argument.titleList?[1] ?? "",
+          title: controller.questionsList.first.subject?.name ?? "",
           value: "${controller.topicList?.length ?? 0} Chapters ",
           subvalue: "${controller.yearsRange}",
         ).padding(const EdgeInsets.only(bottom: AppValues.double20)),

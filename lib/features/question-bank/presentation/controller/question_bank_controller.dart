@@ -32,8 +32,8 @@ class QuestionBankController extends GetxController {
   ];
   RxList<KeyValue>? selectedTopics = <KeyValue>[].obs;
   RxList<KeyValue>? selectedYears = <KeyValue>[].obs;
-  Rx<KeyValue?> selectedZone = KeyValue().obs;
-  Rx<KeyValue?> selectedRevisionType = KeyValue().obs;
+  Rx<KeyValue?> selectedZone = Rx<KeyValue?>(null);
+  Rx<KeyValue?> selectedRevisionType = Rx<KeyValue?>(null);
   Rx<KeyValue?> selectedSeason = Rx<KeyValue?>(null);
   Rx<KeyValue?> selectedSubject = Rx<KeyValue?>(null);
   Rx<KeyValue?> selectedPaper = Rx<KeyValue?>(null);
@@ -52,7 +52,7 @@ class QuestionBankController extends GetxController {
   bool get isYearly => selectedRevisionType.value?.key == "yearly";
 
   void resetFilter() {
-    selectedPaper.value = KeyValue();
+    selectedPaper.value = null;
     selectedTopics?.value = [];
     selectedYears?.value = [];
   }
@@ -124,14 +124,14 @@ class QuestionBankController extends GetxController {
           page: 1,
           items: 100,
           sortBy: "topic",
-          zone: selectedZone.value?.key != null
+          zone: selectedZone.value != null
               ? [selectedZone.value?.key ?? ""]
               : null,
           subjectId: selectedSubject.value?.key,
           paperId: selectedPaper.value?.key ?? "",
           topicId: selectedTopics?.map((element) => element.key ?? "").toList(),
           year: selectedYears?.map((element) => element.key ?? "").toList(),
-          season: selectedZone.value?.key != null
+          season: selectedSeason.value != null
               ? [selectedSeason.value?.key?.toCapitalized() ?? ""]
               : null,
         ));

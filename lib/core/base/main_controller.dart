@@ -47,6 +47,7 @@ class MainController extends GetxController {
   ];
 
   Widget get getCurrentPage => pagesList[selectedNavIndex.value];
+  String get currentNavName => navList[selectedNavIndex.value];
 
   @override
   void onInit() {

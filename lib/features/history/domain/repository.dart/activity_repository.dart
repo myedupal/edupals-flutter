@@ -63,4 +63,19 @@ class ActivityRepository {
           onError: onError,
         );
   }
+
+  Future<void> deleteActivity(
+      {required String id,
+      required Function(bool?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .delete(
+          "${ApiConstants.getActivities}$id",
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) => onSuccess.call(true),
+          onError: onError,
+        );
+  }
 }

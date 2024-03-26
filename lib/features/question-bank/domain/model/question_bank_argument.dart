@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/features/history/domain/model/activity.dart';
 
 class QuestionBankArgument {
   String? title;
@@ -6,6 +7,7 @@ class QuestionBankArgument {
   String? revisionType;
   List<String>? titleList;
   QueryParams? queryParams;
+  Activity? activity;
 
   QuestionBankArgument({
     this.queryParams,
@@ -13,5 +15,6 @@ class QuestionBankArgument {
     this.title,
     this.revisionType,
     this.titleList,
+    this.activity,
   });
 }
