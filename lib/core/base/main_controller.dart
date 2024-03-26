@@ -117,4 +117,8 @@ class MainController extends GetxController {
     localRepo.clearStorage();
     Get.offAllNamed(Routes.login);
   }
+
+  void onTerminateStopWatch({String? time}) {
+    debugPrint("Last Time ${time}");
+  }
 }

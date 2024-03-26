@@ -31,10 +31,11 @@ class TrendingColumn extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            Flexible(
+                child: Text(
               title ?? "",
               style: MyTextStyle.m.bold,
-            ),
+            )),
             if (ableStart)
               Text(
                 "Start now",

@@ -124,12 +124,16 @@ class QuestionBankController extends GetxController {
           page: 1,
           items: 100,
           sortBy: "topic",
-          zone: selectedZone.value?.key,
+          zone: selectedZone.value?.key != null
+              ? [selectedZone.value?.key ?? ""]
+              : null,
           subjectId: selectedSubject.value?.key,
           paperId: selectedPaper.value?.key ?? "",
           topicId: selectedTopics?.map((element) => element.key ?? "").toList(),
           year: selectedYears?.map((element) => element.key ?? "").toList(),
-          season: selectedSeason.value?.key?.toCapitalized(),
+          season: selectedZone.value?.key != null
+              ? [selectedSeason.value?.key?.toCapitalized() ?? ""]
+              : null,
         ));
 
     (isYearly ? validateYearly() : validateMonthly())

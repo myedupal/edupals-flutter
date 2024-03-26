@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
+import 'package:edupals/features/history/domain/model/activity_question.dart';
 import 'package:edupals/features/history/domain/repository.dart/activity_question_repository.dart';
 import 'package:edupals/features/history/domain/repository.dart/activity_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
@@ -12,17 +14,35 @@ import 'package:edupals/features/question-bank/domain/repository/user_questions_
 import 'package:get/get.dart';
 
 class QuestionsListController extends BaseController {
+  // Controller and repository DI
   final ExamRepository examRepo = Get.find();
   final UserQuestionsRepository questionsRepo = Get.find();
   final ActivityQuestionRepository activityQuestionRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
   final MainController mainController = Get.find();
+  // Timer State
+  Stopwatch stopwatch = Stopwatch();
+  late Timer _timer;
+  RxString formattedTime = '00:00:00'.obs;
+  // General State
   final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
   RxList<Question> questionsList = <Question>[].obs;
   RxList<Topic?>? topicList = <Topic?>[].obs;
   Rx<Question?> selectedQuestion = Question().obs;
   RxInt questionTotalPage = 1.obs;
+  Rx<Activity?> currentActivity = Rx<Activity?>(null);
+  bool isHistory = false;
+
+  @override
+  void onClose() {
+    if (stopwatch.isRunning) {
+      stopwatch.stop();
+      _timer.cancel(); // Stop the timer when the page is closed
+      mainController.onTerminateStopWatch(time: formattedTime.value);
+    }
+    super.onClose();
+  }
 
   @override
   void onInit() {
@@ -30,11 +50,33 @@ class QuestionsListController extends BaseController {
     if (argument.queryParams != null) {
       questionListParams = argument.queryParams;
     }
-    (argument.revisionType == "yearly") ? getExam() : getQuestions();
+    (argument.revisionType == "yearly" && argument.isHistory == false)
+        ? getExam()
+        : getQuestions();
+  }
+
+  // Timer Function
+  void startStopwatch() {
+    stopwatch.start();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      formattedTime.value = stopwatch.elapsed.toString().split('.')[0];
+    });
+  }
+
+  String? stopStopwatch() {
+    stopwatch.stop();
+    _timer.cancel();
+    return formattedTime.value;
+  }
+
+  void resetStopwatch() {
+    stopwatch.reset();
+    formattedTime.value = '00:00:00';
   }
 
   void onSelectQuestion({required Question question}) {
     selectedQuestion.value = question;
+    createActivityQuestion();
   }
 
   bool get isYearly => argument.revisionType == "yearly";
@@ -81,7 +123,12 @@ class QuestionsListController extends BaseController {
         onSuccess: (value) {
           loadMore
               ? questionsList = (questionsList) + (value.data ?? [])
-              : {questionsList.value = value.data ?? [], createActivity()};
+              : {
+                  questionsList.value = value.data ?? [],
+                  if (questionsList.isNotEmpty == true &&
+                      argument.isHistory == false)
+                    createActivity()
+                };
 
           questionsList.isNotEmpty == true
               ? {
@@ -119,17 +166,34 @@ class QuestionsListController extends BaseController {
           metadata: questionListParams,
           examId: questionListParams?.examId?.first,
         ),
+        onSuccess: (value) {
+          currentActivity.value = value;
+        },
+        onError: (error) {});
+  }
+
+  Future<void> createActivityQuestion() async {
+    await activityQuestionRepo.createActivityQuestion(
+        activityQuestion: ActivityQuestion(
+          activityId: currentActivity.value?.id,
+          questionId: selectedQuestion.value?.id,
+        ),
         onSuccess: (value) {},
         onError: (error) {});
   }
 
   void processData() {
     topicList?.value = [];
-    for (int i = 0; i < (questionsList.length); i++) {
-      final topic = topicList?.firstWhereOrNull(
-          (element) => element?.id == questionsList[i].topics?.first.id);
-      if (topic == null) {
-        topicList?.add(questionsList[i].topics?.first);
+    if (isYearly) {
+      questionsList.sort((a, b) =>
+          int.parse(a.number ?? "1").compareTo(int.parse(b.number ?? "1")));
+    } else {
+      for (int i = 0; i < (questionsList.length); i++) {
+        final topic = topicList?.firstWhereOrNull(
+            (element) => element?.id == questionsList[i].topics?.first.id);
+        if (topic == null) {
+          topicList?.add(questionsList[i].topics?.first);
+        }
       }
     }
     selectedQuestion.value = questionsList.first;

@@ -1,4 +1,3 @@
-import 'package:edupals/core/components/base_accordion.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/enum/view_state.dart';
@@ -7,22 +6,15 @@ import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
+import 'package:edupals/features/question-bank/presentation/view/components/chapter_display_list.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/question_action_list.dart';
-import 'package:edupals/features/question-bank/presentation/view/components/questions_list_column.dart';
+import 'package:edupals/features/question-bank/presentation/view/components/question_display_list.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/questions_list_top_bar.dart';
-import 'package:edupals/features/question-bank/presentation/view/components/treding_column.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class QuestionsListView extends GetView<QuestionsListController> {
   const QuestionsListView({super.key});
-
-  void _loadMoreData() {
-    if ((controller.questionTotalPage >
-        (controller.questionListParams?.page ?? 1))) {
-      controller.getQuestions(loadMore: true);
-    }
-  }
 
   Widget get pageBody {
     return Obx(() {
@@ -49,7 +41,9 @@ class QuestionsListView extends GetView<QuestionsListController> {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(flex: 3, child: chapterList),
+              controller.isYearly
+                  ? const Expanded(flex: 1, child: QuestionDisplayList())
+                  : const Expanded(flex: 3, child: ChapterDisplayList()),
               Expanded(flex: 8, child: questionDetails),
               actionList
             ],
@@ -88,48 +82,6 @@ class QuestionsListView extends GetView<QuestionsListController> {
           ],
         ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double40));
       });
-
-  Widget get chapterList => Column(
-        children: [
-          TrendingColumn(
-            percentage: 0,
-            title: controller.argument.titleList?[1] ?? "",
-            value: "${controller.topicList?.length ?? 0} Chapters ",
-            subvalue: "${controller.yearsRange}",
-          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          Expanded(child: Obx(() {
-            final topicList = controller.topicList;
-            return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: topicList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  if (index == (topicList?.length ?? 0) - 1) {
-                    _loadMoreData();
-                  }
-                  final currentTopic = topicList?[index];
-                  final filteredQuestions = controller.questionsList.where(
-                      (question) =>
-                          question.topics?.first.id == currentTopic?.id);
-                  return Obx(() => BaseAccordion(
-                        title: currentTopic?.name ?? "",
-                        child: Column(children: [
-                          ...filteredQuestions.map((e) {
-                            return QuestionsListColumn(
-                                    question: e,
-                                    isActive:
-                                        controller.selectedQuestion.value?.id ==
-                                            e.id)
-                                .onTap(() {
-                              controller.onSelectQuestion(question: e);
-                            });
-                          })
-                        ]),
-                      ));
-                });
-          }))
-        ],
-      );
 
   @override
   Widget build(BuildContext context) {

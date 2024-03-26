@@ -56,5 +56,6 @@ class ActivityQuestion {
         "question_id": questionId,
         "created_at": createdAt,
         "updated_at": updatedAt,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }
