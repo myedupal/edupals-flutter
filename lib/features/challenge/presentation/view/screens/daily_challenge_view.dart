@@ -59,18 +59,17 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
               : Container()),
           Row(
             children: [
-              for (int i = 0; i < 4; i++)
-                Expanded(
-                    child: AnswerSelectionRow(
-                  title: "A",
-                  isActive: i == 0,
-                )
-                        .padding(
-                            const EdgeInsets.only(right: AppValues.double30))
-                        .onTap(() {
-                  // Get.toNamed(Routes.challengeComplete);
-                  controller.nextQuestion();
-                }))
+              ...["A", "B", "C", "D"].map((e) => Expanded(
+                      child: AnswerSelectionRow(
+                    title: e,
+                    isActive: false,
+                  )
+                          .padding(
+                              const EdgeInsets.only(right: AppValues.double30))
+                          .onTap(() {
+                    // Get.toNamed(Routes.challengeComplete);
+                    controller.nextQuestion();
+                  })))
             ],
           ).padding(const EdgeInsets.only(
               top: AppValues.double10, bottom: AppValues.double30)),

@@ -11,6 +11,7 @@ import 'package:edupals/features/question-bank/domain/model/question_bank_argume
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
 import 'package:edupals/features/question-bank/domain/repository/exam_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class QuestionsListController extends BaseController {
@@ -21,7 +22,7 @@ class QuestionsListController extends BaseController {
   final ActivityRepository activityRepo = Get.find();
   final MainController mainController = Get.find();
   // Timer State
-  Stopwatch stopwatch = Stopwatch();
+  MyStopWatch stopwatch = MyStopWatch();
   late Timer _timer;
   RxString formattedTime = '00:00:00'.obs;
   // General State
@@ -31,7 +32,6 @@ class QuestionsListController extends BaseController {
   RxList<Topic?>? topicList = <Topic?>[].obs;
   Rx<Question?> selectedQuestion = Question().obs;
   RxInt questionTotalPage = 1.obs;
-  RxInt currentReadNumber = 0.obs;
   Rx<Activity?> currentActivity = Rx<Activity?>(null);
   bool isHistory = false;
 
@@ -57,15 +57,16 @@ class QuestionsListController extends BaseController {
     final activity = argument.activity;
     if (activity != null) {
       currentActivity.value = activity;
-      currentReadNumber.value = activity.activityQuestionsCount ?? 0;
     }
   }
 
   // Timer Function
   void startStopwatch() {
     stopwatch.start();
+    stopwatch.seconds = 1000000;
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      formattedTime.value = stopwatch.elapsed.toString().split('.')[0];
+      formattedTime.value = stopwatch.elapsedDuration.toString().split('.')[0];
+      debugPrint("${stopwatch.elapsedSeconds}");
     });
   }
 
@@ -85,10 +86,14 @@ class QuestionsListController extends BaseController {
     createActivityQuestion();
   }
 
+  List<String> get titleList =>
+      (argument.title ?? currentActivity.value?.title)?.split("|") ?? [];
+
   bool get isYearly => argument.revisionType == "yearly";
 
   double get getProgress =>
-      currentReadNumber / (currentActivity.value?.questionsCount ?? 0);
+      (currentActivity.value?.activityQuestionsCount ?? 0) /
+      (currentActivity.value?.questionsCount ?? 0);
 
   String? get yearsRange {
     String finalRange = "-";
@@ -168,6 +173,7 @@ class QuestionsListController extends BaseController {
   Future<void> createActivity() async {
     await activityRepo.createActivity(
         activity: Activity(
+          title: argument.title,
           subjectId: questionListParams?.subjectId,
           activityType: argument.revisionType,
           topicIds: questionListParams?.topicId,
@@ -188,7 +194,7 @@ class QuestionsListController extends BaseController {
           questionId: selectedQuestion.value?.id,
         ),
         onSuccess: (value) {
-          currentReadNumber.value += 1;
+          currentActivity.value = value?.activity;
         },
         onError: (error) {});
   }
@@ -226,5 +232,25 @@ class QuestionsListController extends BaseController {
     }
 
     return a.number?.compareTo(b.number ?? "") ?? 0;
+  }
+}
+
+class MyStopWatch extends Stopwatch {
+  int _starterSeconds = 0;
+
+  MyStopWatch();
+
+  get elapsedDuration {
+    return Duration(
+        seconds: int.parse("${(elapsedMilliseconds / 1000).round()}") +
+            _starterSeconds);
+  }
+
+  get elapsedSeconds {
+    return (elapsedMilliseconds / 1000).round() + _starterSeconds;
+  }
+
+  set seconds(int timeInSeconds) {
+    _starterSeconds = timeInSeconds;
   }
 }

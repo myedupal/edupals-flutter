@@ -114,12 +114,8 @@ class QuestionBankController extends GetxController {
   void navigatePage() {
     final QuestionBankArgument argument = QuestionBankArgument(
         revisionType: selectedRevisionType.value?.key,
-        titleList: [
-          selectedRevisionType.value?.label ?? "",
-          selectedSubject.value?.label ?? "",
-          "Paper ${selectedPaper.value?.label ?? ""}",
-          "${selectedSeason.value?.label ?? ""} Season"
-        ],
+        title:
+            "${selectedRevisionType.value?.label ?? ""}|${selectedSubject.value?.label ?? ""}|Paper ${selectedPaper.value?.label ?? ""}|${selectedSeason.value?.label ?? ""} Season",
         queryParams: QueryParams(
           page: 1,
           items: 100,

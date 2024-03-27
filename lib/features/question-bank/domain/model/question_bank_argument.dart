@@ -5,7 +5,7 @@ class QuestionBankArgument {
   String? title;
   bool isHistory;
   String? revisionType;
-  List<String>? titleList;
+  // List<String>? titleList;
   QueryParams? queryParams;
   Activity? activity;
 
@@ -14,7 +14,7 @@ class QuestionBankArgument {
     this.isHistory = false,
     this.title,
     this.revisionType,
-    this.titleList,
+    // this.titleList,
     this.activity,
   });
 }

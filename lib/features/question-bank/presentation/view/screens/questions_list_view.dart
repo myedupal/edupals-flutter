@@ -91,7 +91,7 @@ class QuestionsListView extends GetView<QuestionsListController> {
           titleList: [
             controller.mainController.selectedCurriculum.value?.getFullName ??
                 "",
-            ...?controller.argument.titleList
+            ...controller.titleList
           ],
         ),
         Expanded(child: pageBody)

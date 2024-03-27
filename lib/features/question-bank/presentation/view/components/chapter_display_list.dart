@@ -21,12 +21,12 @@ class ChapterDisplayList extends GetView<QuestionsListController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TrendingColumn(
-          percentage: 0,
-          title: controller.questionsList.first.subject?.name ?? "",
-          value: "${controller.topicList?.length ?? 0} Chapters ",
-          subvalue: "${controller.yearsRange}",
-        ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+        Obx(() => TrendingColumn(
+              percentage: (controller.getProgress * 100).round(),
+              title: controller.questionsList.first.subject?.name ?? "",
+              value: "${controller.topicList?.length ?? 0} Chapters ",
+              subvalue: "${controller.yearsRange}",
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20))),
         Expanded(child: Obx(() {
           final topicList = controller.topicList;
           return ListView.builder(
