@@ -5,12 +5,76 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 
 class AnswerSelectionRow extends StatelessWidget {
-  const AnswerSelectionRow(
-      {super.key, this.isActive = false, this.isFull = false, this.title});
+  const AnswerSelectionRow({
+    super.key,
+    this.isActive = false,
+    this.isFull = false,
+    this.isCorrect = false,
+    this.isWrong = false,
+    this.title,
+  });
 
   final bool isActive;
   final bool isFull;
+  final bool isCorrect;
+  final bool isWrong;
   final String? title;
+
+  Color get getTextColor {
+    Color textColor = AppColors.gray700;
+
+    if (isActive) {
+      textColor = AppColors.accent500;
+    }
+
+    if (isCorrect) {
+      textColor = AppColors.green500;
+    }
+
+    if (isWrong) {
+      textColor = AppColors.red600;
+    }
+
+    return textColor;
+  }
+
+  Color get getBackgroundColor {
+    Color backgroundColor = AppColors.white.withAlpha(90);
+
+    if (isActive) {
+      backgroundColor = AppColors.accent100;
+    }
+
+    if (isCorrect) {
+      backgroundColor = AppColors.green100;
+    }
+
+    if (isWrong) {
+      backgroundColor = AppColors.red100;
+    }
+
+    return backgroundColor;
+  }
+
+  Color get getBorderColor {
+    Color borderColor = AppColors.gray200;
+
+    if (isActive) {
+      borderColor = AppColors.accent500;
+    }
+
+    if (isCorrect) {
+      borderColor = AppColors.green500;
+    }
+
+    if (isWrong) {
+      borderColor = AppColors.red500;
+    }
+
+    return borderColor;
+  }
+
+  bool get isBold => isActive || isCorrect || isWrong;
 
   @override
   Widget build(BuildContext context) {
@@ -20,27 +84,26 @@ class AnswerSelectionRow extends StatelessWidget {
       children: [
         Text(
           title ?? "",
-          style: isActive
-              ? MyTextStyle.m.bold.c(AppColors.accent500)
-              : MyTextStyle.m.c(AppColors.gray700),
+          style: isBold
+              ? MyTextStyle.m.bold.c(getTextColor)
+              : MyTextStyle.m.c(getTextColor),
         ),
         if (isFull)
           Text(
             "Cambridge A-level",
-            style: isActive
-                ? MyTextStyle.m.bold.c(AppColors.accent500)
-                : MyTextStyle.m.c(AppColors.gray700),
+            style: isBold
+                ? MyTextStyle.m.bold.c(getTextColor)
+                : MyTextStyle.m.c(getTextColor),
           ).padding(const EdgeInsets.only(left: AppValues.double15))
       ],
     )
         .capsulise(
             radius: 10,
             border: true,
-            borderColor: isActive ? AppColors.accent500 : AppColors.gray200,
+            borderColor: getBorderColor,
             padding: const EdgeInsets.symmetric(
                 horizontal: AppValues.double20, vertical: AppValues.double20),
-            color:
-                isActive ? AppColors.accent100 : AppColors.white.withAlpha(90))
+            color: getBackgroundColor)
         .padding(const EdgeInsets.only(bottom: AppValues.double20));
   }
 }

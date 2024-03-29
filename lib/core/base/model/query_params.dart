@@ -20,6 +20,7 @@ class QueryParams {
     this.curriculumId,
     this.fromStartAt,
     this.toStartAt,
+    this.challengeId,
   });
 
   int? page;
@@ -42,6 +43,7 @@ class QueryParams {
   String? curriculumId;
   String? fromStartAt;
   String? toStartAt;
+  String? challengeId;
 
   factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
         page: int.parse(json["page"] ?? "1"),
@@ -85,6 +87,7 @@ class QueryParams {
         "curriculum_id": curriculumId,
         "from_start_at": fromStartAt,
         "to_start_at": toStartAt,
+        "challenge_id": challengeId
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 

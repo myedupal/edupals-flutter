@@ -2,9 +2,11 @@ import 'package:edupals/features/challenge/domain/model/challenge.dart';
 
 class ChallengeSubmissionWrapper {
   ChallengeSubmission? challengeSubmission;
+  List<ChallengeSubmission>? challengeSubmissions;
 
   ChallengeSubmissionWrapper({
     this.challengeSubmission,
+    this.challengeSubmissions,
   });
 
   factory ChallengeSubmissionWrapper.fromJson(Map<String, dynamic> json) =>
@@ -12,6 +14,10 @@ class ChallengeSubmissionWrapper {
         challengeSubmission: json["challenge_submission"] == null
             ? null
             : ChallengeSubmission.fromJson(json["challenge_submission"]),
+        challengeSubmissions: json["challenge_submissions"] == null
+            ? null
+            : List<ChallengeSubmission>.from(json["challenge_submissions"]
+                .map((x) => ChallengeSubmission.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

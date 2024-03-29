@@ -6,4 +6,5 @@ abstract class Routes {
   static const dailyChallenge = '/dailyChallenge';
   static const questionsList = '/questionsList';
   static const challengeComplete = '/challengeComplete';
+  static const challengeDetails = '/challengeDetails';
 }

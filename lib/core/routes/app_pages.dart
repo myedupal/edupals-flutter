@@ -1,7 +1,9 @@
 import 'package:edupals/core/components/navbar.dart';
 import 'package:edupals/features/auth/presentation/binding/auth_binding.dart';
+import 'package:edupals/features/challenge/presentation/binding/challenge_details_binding.dart';
 import 'package:edupals/features/challenge/presentation/binding/daily_challenge_binding.dart';
 import 'package:edupals/features/challenge/presentation/view/screens/challenge_complete_view.dart';
+import 'package:edupals/features/challenge/presentation/view/screens/challenge_details_view.dart';
 import 'package:edupals/features/challenge/presentation/view/screens/daily_challenge_view.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
 import 'package:edupals/features/question-bank/presentation/binding/questions_list_binding.dart';
@@ -37,5 +39,9 @@ class AppPages {
     GetPage(
         name: Routes.challengeComplete,
         page: () => const ChallengeCompleteView()),
+    GetPage(
+        name: "${Routes.challengeDetails}/:id",
+        page: () => const ChallengeDetailsView(),
+        binding: ChallengeDetailsBinding()),
   ];
 }
