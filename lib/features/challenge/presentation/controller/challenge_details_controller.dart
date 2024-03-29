@@ -1,13 +1,16 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_submission.dart';
+import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_submission_repository.dart';
+import 'package:edupals/features/challenge/domain/repository/submission_answer_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:get/get.dart';
 
 class ChallengeDetailsController extends BaseController {
   final ChallengeRepository challengeRepo = Get.find();
+  final SubmissionAnswerRepository submissionAnswerRepo = Get.find();
   final ChallengeSubmissionRepository challengeSubmissionRepo = Get.find();
   final String challengeId = Get.parameters["id"] ?? '';
   RxList<Question>? questionList = <Question>[].obs;
@@ -17,6 +20,7 @@ class ChallengeDetailsController extends BaseController {
       Rx<ChallengeSubmission?>(null);
   RxInt currentIndex = 0.obs;
   Rx<String>? currentSelectedAnswer = "".obs;
+  RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
 
   @override
   void onInit() {
@@ -31,9 +35,30 @@ class ChallengeDetailsController extends BaseController {
 
   Question? get currentQuestion => questionList?[currentIndex.value];
 
-  void onSubmitAnswer() {
-    // add answer in answeredlist and keep calling updaate challenge submission
-    // call update submission
+  SubmissionAnswer? get currentSubmissionAnswer =>
+      submissionAnswerList.firstWhereOrNull(
+          (element) => element?.questionId == currentQuestion?.id);
+
+  bool get isSubmitted => currentSubmissionAnswer != null;
+
+  bool isCorrect({required String answer}) =>
+      currentSubmissionAnswer?.question?.answers?.first.text == answer;
+
+  bool isWrong({required String answer}) =>
+      (answer == currentSubmissionAnswer?.answer) &&
+      currentSubmissionAnswer?.isCorrect == false;
+
+  Future<void> onSubmitAnswer() async {
+    await submissionAnswerRepo.createSubmissionAnswer(
+        submissionAnswer: SubmissionAnswer(
+            questionId: currentQuestion?.id,
+            challengeSubmissionId: currentChallengeSubmission.value?.id,
+            answer: currentSelectedAnswer?.value),
+        onSuccess: (value) {
+          submissionAnswerList.add(value);
+          currentSelectedAnswer?.value == "";
+        },
+        onError: (error) {});
   }
 
   Future<void> getChallenge({required String id}) async {
@@ -41,20 +66,31 @@ class ChallengeDetailsController extends BaseController {
         id: id,
         onSuccess: (value) {
           questionList?.value = value?.questions ?? [];
-          getChallengeSubmission(challengeId: id);
+          getChallengeSubmissions(challengeId: id);
         },
         onError: (error) {});
   }
 
-  Future<void> getChallengeSubmission({required String challengeId}) async {
+  Future<void> getChallengeSubmissions({required String challengeId}) async {
     await challengeSubmissionRepo.getChallengeSubmissions(
         queryParams: QueryParams(challengeId: challengeId),
         onSuccess: (value) {
           if (value?.isNotEmpty == true) {
             currentChallengeSubmission.value = value?.first;
+            getChallengeSubmission();
           } else {
             createChallengeSubmission(challengeId: challengeId);
           }
+        },
+        onError: (error) {});
+  }
+
+  Future<void> getChallengeSubmission() async {
+    await challengeSubmissionRepo.getChallengeSubmission(
+        id: currentChallengeSubmission.value?.id,
+        onSuccess: (value) {
+          currentChallengeSubmission.value = value;
+          submissionAnswerList.value = value?.submissionAnswers ?? [];
         },
         onError: (error) {});
   }

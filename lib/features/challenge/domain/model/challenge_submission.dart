@@ -1,4 +1,5 @@
 import 'package:edupals/features/challenge/domain/model/challenge.dart';
+import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
 
 class ChallengeSubmissionWrapper {
   ChallengeSubmission? challengeSubmission;
@@ -39,6 +40,7 @@ class ChallengeSubmission {
   String? updatedAt;
   Challenge? challenge;
   List<SubmissionAnswersAttribute>? submissionAnswersAttributes;
+  List<SubmissionAnswer>? submissionAnswers;
 
   ChallengeSubmission({
     this.id,
@@ -54,6 +56,7 @@ class ChallengeSubmission {
     this.updatedAt,
     this.challenge,
     this.submissionAnswersAttributes,
+    this.submissionAnswers,
   });
 
   factory ChallengeSubmission.fromJson(Map<String, dynamic> json) =>
@@ -78,6 +81,10 @@ class ChallengeSubmission {
                 : List<SubmissionAnswersAttribute>.from(
                     json["submission_answers_attributes"]!
                         .map((x) => SubmissionAnswersAttribute.fromJson(x))),
+        submissionAnswers: json["submission_answers"] == null
+            ? []
+            : List<SubmissionAnswer>.from(json["submission_answers"]!
+                .map((x) => SubmissionAnswer.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

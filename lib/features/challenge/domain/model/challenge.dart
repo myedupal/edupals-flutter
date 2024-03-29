@@ -114,5 +114,6 @@ class Challenge {
         "questions": questions == null
             ? []
             : List<dynamic>.from(questions!.map((x) => x.toJson())),
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }

@@ -3,7 +3,7 @@ import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
-import 'package:edupals/features/history/domain/repository.dart/activity_repository.dart';
+import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

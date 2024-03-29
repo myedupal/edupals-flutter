@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
@@ -57,23 +58,42 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
                   ],
                 ))
               : Container()),
-          Row(
-            children: [
-              ...["A", "B", "C", "D"].map((e) => Expanded(
-                      child: AnswerSelectionRow(
-                    title: e,
-                    isCorrect: false,
-                    isWrong: false,
-                    isActive: controller.currentSelectedAnswer?.value == e,
-                  )
-                          .padding(
-                              const EdgeInsets.only(right: AppValues.double30))
-                          .onTap(() {
-                    controller.onSelectAnswer(answer: e);
-                  })))
-            ],
-          ).padding(const EdgeInsets.only(
-              top: AppValues.double10, bottom: AppValues.double30)),
+          Obx(() => Column(
+                children: [
+                  Row(
+                    children: [
+                      ...["A", "B", "C", "D"].map((e) => Expanded(
+                              child: AnswerSelectionRow(
+                            title: e,
+                            isCorrect: controller.isCorrect(answer: e),
+                            isWrong: controller.isWrong(answer: e),
+                            isActive:
+                                controller.currentSelectedAnswer?.value == e,
+                          )
+                                  .padding(const EdgeInsets.only(
+                                      right: AppValues.double30))
+                                  .onTap(() {
+                            if (!controller.isSubmitted) {
+                              controller.onSelectAnswer(answer: e);
+                            }
+                          })))
+                    ],
+                  ).padding(const EdgeInsets.only(top: AppValues.double10)),
+                  BaseButton(
+                    text: controller.isSubmitted ? "Next Question" : "Submit",
+                    enabled:
+                        controller.currentSelectedAnswer?.value.isNotEmpty ==
+                                true ||
+                            controller.isSubmitted,
+                    onClick: () {
+                      controller.isSubmitted
+                          ? controller.nextQuestion()
+                          : controller.onSubmitAnswer();
+                    },
+                    fullWidth: true,
+                  ).padding(const EdgeInsets.only(bottom: AppValues.double30))
+                ],
+              ))
         ],
       ));
 
