@@ -37,8 +37,7 @@ class AppPages {
         page: () => const DailyChallengeView(),
         binding: DailyChallengeBinding()),
     GetPage(
-        name: Routes.challengeComplete,
-        page: () => const ChallengeCompleteView()),
+        name: Routes.challengeComplete, page: () => ChallengeCompleteView()),
     GetPage(
         name: "${Routes.challengeDetails}/:id",
         page: () => const ChallengeDetailsView(),

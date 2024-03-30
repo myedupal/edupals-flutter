@@ -1,5 +1,6 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_submission.dart';
 import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
@@ -22,10 +23,11 @@ class ChallengeDetailsController extends BaseController {
   Rx<String>? currentSelectedAnswer = "".obs;
   RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
 
+  // TODO: Integrate Submit Challenge
+
   @override
   void onInit() {
     getChallenge(id: challengeId);
-    // create challenge submission
     super.onInit();
   }
 
@@ -39,16 +41,42 @@ class ChallengeDetailsController extends BaseController {
       submissionAnswerList.firstWhereOrNull(
           (element) => element?.questionId == currentQuestion?.id);
 
-  bool get isSubmitted => currentSubmissionAnswer != null;
+  bool get isLastQuestion =>
+      currentIndex.value == (questionList?.length ?? 0) - 1;
+
+  bool get isSubmitted =>
+      currentSubmissionAnswer != null &&
+      currentSelectedAnswer?.value == currentSubmissionAnswer?.answer;
 
   bool isCorrect({required String answer}) =>
+      currentChallengeSubmission.value?.status != "pending" &&
       currentSubmissionAnswer?.question?.answers?.first.text == answer;
 
   bool isWrong({required String answer}) =>
+      currentChallengeSubmission.value?.status != "pending" &&
       (answer == currentSubmissionAnswer?.answer) &&
       currentSubmissionAnswer?.isCorrect == false;
 
   Future<void> onSubmitAnswer() async {
+    if (currentSubmissionAnswer == null) {
+      createSubmissionAnswer();
+    } else {
+      updateSubmissionAnswer();
+    }
+  }
+
+  Future<void> finishChallenge() async {
+    (currentChallengeSubmission.value?.status == "pending")
+        ? await challengeSubmissionRepo.submitChallengeSubmission(
+            id: currentChallengeSubmission.value?.id ?? "",
+            onSuccess: (value) {
+              Get.toNamed(Routes.challengeComplete, arguments: value);
+            },
+            onError: (error) {})
+        : Get.back();
+  }
+
+  Future<void> createSubmissionAnswer() async {
     await submissionAnswerRepo.createSubmissionAnswer(
         submissionAnswer: SubmissionAnswer(
             questionId: currentQuestion?.id,
@@ -56,7 +84,20 @@ class ChallengeDetailsController extends BaseController {
             answer: currentSelectedAnswer?.value),
         onSuccess: (value) {
           submissionAnswerList.add(value);
-          currentSelectedAnswer?.value == "";
+        },
+        onError: (error) {});
+  }
+
+  Future<void> updateSubmissionAnswer() async {
+    await submissionAnswerRepo.updateSubmissionAnswer(
+        id: currentSubmissionAnswer?.id ?? "",
+        submissionAnswer: SubmissionAnswer(
+            questionId: currentQuestion?.id,
+            answer: currentSelectedAnswer?.value),
+        onSuccess: (value) {
+          final submissionIndex = submissionAnswerList
+              .indexWhere((element) => element?.id == value?.id);
+          submissionAnswerList[submissionIndex] = value;
         },
         onError: (error) {});
   }
@@ -91,6 +132,7 @@ class ChallengeDetailsController extends BaseController {
         onSuccess: (value) {
           currentChallengeSubmission.value = value;
           submissionAnswerList.value = value?.submissionAnswers ?? [];
+          presetAnswer();
         },
         onError: (error) {});
   }
@@ -108,13 +150,23 @@ class ChallengeDetailsController extends BaseController {
     currentSelectedAnswer?.value = answer;
   }
 
+  void presetAnswer() {
+    if (currentSubmissionAnswer != null) {
+      currentSelectedAnswer?.value = currentSubmissionAnswer?.answer ?? "";
+    } else {
+      currentSelectedAnswer?.value = "";
+    }
+  }
+
   void nextQuestion() {
     currentIndex.value < ((questionList?.length ?? 0) - 1)
         ? currentIndex += 1
         : null;
+    presetAnswer();
   }
 
   void onBack() {
     currentIndex.value > 0 ? currentIndex -= 1 : Get.back();
+    presetAnswer();
   }
 }

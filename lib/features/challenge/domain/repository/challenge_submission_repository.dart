@@ -84,4 +84,22 @@ class ChallengeSubmissionRepository {
           onError: onError,
         );
   }
+
+  Future<void> submitChallengeSubmission(
+      {required String id,
+      required Function(ChallengeSubmission?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .put(
+          "${ApiConstants.getChallengeSubmissions}$id/submit",
+          body: null,
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) => onSuccess.call(
+              ChallengeSubmissionWrapper.fromJson(value.data)
+                  .challengeSubmission),
+          onError: onError,
+        );
+  }
 }
