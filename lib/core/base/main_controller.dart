@@ -8,6 +8,7 @@ import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
+import 'package:edupals/features/exam-builder.dart/presentation/view/screens/exam_builder_view.dart';
 import 'package:edupals/features/history/presentation/view/screens/history_view.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/question_bank_view.dart';
@@ -30,7 +31,7 @@ class MainController extends GetxController {
     DashboardView(),
     const QuestionBankView(),
     const HistoryView(),
-    Container(),
+    const ExamBuilderView(),
     Container(),
     Container(),
     Container()

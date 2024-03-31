@@ -63,7 +63,7 @@ class QuestionsListController extends BaseController {
   // Timer Function
   void startStopwatch() {
     stopwatch.start();
-    stopwatch.seconds = 1000000;
+    stopwatch.seconds = 0;
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       formattedTime.value = stopwatch.elapsedDuration.toString().split('.')[0];
       debugPrint("${stopwatch.elapsedSeconds}");
