@@ -1,14 +1,11 @@
 import 'package:edupals/core/components/base_accordion.dart';
-import 'package:edupals/core/extensions/view_extensions.dart';
-import 'package:edupals/core/values/app_values.dart';
-import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
+import 'package:edupals/features/exam-builder/presentation/controller/exam_builder_details_controller.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/questions_list_column.dart';
-import 'package:edupals/features/question-bank/presentation/view/components/treding_column.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ChapterDisplayList extends GetView<QuestionsListController> {
-  const ChapterDisplayList({super.key});
+class ExamChapterDisplayList extends GetView<ExamBuilderDetailsController> {
+  const ExamChapterDisplayList({super.key});
 
   void _loadMoreData() {
     if ((controller.questionTotalPage >
@@ -21,12 +18,6 @@ class ChapterDisplayList extends GetView<QuestionsListController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Obx(() => TrendingColumn(
-              percentage: (controller.getProgress * 100).round(),
-              title: controller.questionsList.first.subject?.name ?? "",
-              value: "${controller.topicList?.length ?? 0} Chapters ",
-              subvalue: "${controller.yearsRange}",
-            ).padding(const EdgeInsets.only(bottom: AppValues.double20))),
         Expanded(child: Obx(() {
           final topicList = controller.topicList;
           return ListView.builder(
@@ -49,8 +40,13 @@ class ChapterDisplayList extends GetView<QuestionsListController> {
                             question: e,
                             isActive:
                                 controller.selectedQuestion.value?.id == e.id,
+                            ableAdd: true,
+                            isAddActive: controller.isQuestionAdded(e.id),
                             onTap: () {
                               controller.onSelectQuestion(question: e);
+                            },
+                            onAddTap: () {
+                              controller.onAddQuestion(question: e);
                             },
                           );
                         })

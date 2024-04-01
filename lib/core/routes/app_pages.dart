@@ -6,8 +6,8 @@ import 'package:edupals/features/challenge/presentation/view/screens/challenge_c
 import 'package:edupals/features/challenge/presentation/view/screens/challenge_details_view.dart';
 import 'package:edupals/features/challenge/presentation/view/screens/daily_challenge_view.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
-import 'package:edupals/features/exam-builder.dart/presentation/binding/exam_builder_details_binding.dart';
-import 'package:edupals/features/exam-builder.dart/presentation/view/screens/exam_builder_details_view.dart';
+import 'package:edupals/features/exam-builder/presentation/binding/exam_builder_details_binding.dart';
+import 'package:edupals/features/exam-builder/presentation/view/screens/exam_builder_details_view.dart';
 import 'package:edupals/features/question-bank/presentation/binding/questions_list_binding.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/questions_list_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';

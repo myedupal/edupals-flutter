@@ -9,6 +9,7 @@ class AppAssets {
   static const mockQuestion = "${_pngImagePath}mock_question.png";
   static const staticConfetti = "${_pngImagePath}static_confetti.png";
 
+  static const check = "${_svgImagePath}check.svg";
   static const appIcon = "${_svgImagePath}app_logo.svg";
   static const downChevron = "${_svgImagePath}down_chevron.svg";
   static const downChevronFill = "${_svgImagePath}down_chevron_fill.svg";

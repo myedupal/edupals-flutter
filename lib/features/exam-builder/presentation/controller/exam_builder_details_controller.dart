@@ -15,6 +15,7 @@ class ExamBuilderDetailsController extends BaseController {
   RxList<Question> questionsList = <Question>[].obs;
   RxList<Topic?>? topicList = <Topic?>[].obs;
   Rx<Question?> selectedQuestion = Question().obs;
+  RxList<Question?> selectedQuestions = <Question?>[].obs;
   RxInt questionTotalPage = 1.obs;
   RxString? examName = "".obs;
 
@@ -22,12 +23,30 @@ class ExamBuilderDetailsController extends BaseController {
   void onInit() {
     if (argument.queryParams != null) {
       questionListParams = argument.queryParams;
+      getQuestions();
     }
     super.onInit();
   }
 
   void onSetExamName({String? name}) {
     examName?.value = name ?? "";
+  }
+
+  void onSelectQuestion({required Question question}) {
+    selectedQuestion.value = question;
+  }
+
+  void onAddQuestion({required Question question}) {
+    if (isQuestionAdded(question.id)) {
+      selectedQuestions.removeWhere((element) => element?.id == question.id);
+    } else {
+      selectedQuestions.add(question);
+    }
+  }
+
+  bool isQuestionAdded(String? id) {
+    return selectedQuestions.firstWhereOrNull((element) => element?.id == id) !=
+        null;
   }
 
   Future<void> getQuestions({bool loadMore = false}) async {
