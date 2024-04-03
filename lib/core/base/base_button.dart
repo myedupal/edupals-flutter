@@ -79,7 +79,7 @@ class BaseButton extends StatelessWidget {
         elevation: 0,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+        // padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
         splashFactory: InkRipple.splashFactory,
         backgroundColor: getButtonColor());
 

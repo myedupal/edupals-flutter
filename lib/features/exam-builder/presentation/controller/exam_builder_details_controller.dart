@@ -4,6 +4,7 @@ import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
 import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ExamBuilderDetailsController extends BaseController {
@@ -18,6 +19,7 @@ class ExamBuilderDetailsController extends BaseController {
   RxList<Question?> selectedQuestions = <Question?>[].obs;
   RxInt questionTotalPage = 1.obs;
   RxString? examName = "".obs;
+  final nameController = TextEditingController();
 
   @override
   void onInit() {
@@ -26,6 +28,15 @@ class ExamBuilderDetailsController extends BaseController {
       getQuestions();
     }
     super.onInit();
+  }
+
+  void submitName() {
+    examName?.value = nameController.text;
+  }
+
+  void onSearchQuestions({QuestionBankArgument? value}) {
+    questionListParams = value?.queryParams;
+    getQuestions();
   }
 
   void onSetExamName({String? name}) {

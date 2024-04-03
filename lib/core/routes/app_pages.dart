@@ -45,8 +45,9 @@ class AppPages {
         page: () => const ChallengeDetailsView(),
         binding: ChallengeDetailsBinding()),
     GetPage(
-        name: Routes.examBuilderDetails,
-        page: () => const ExamBuilderDetailsView(),
-        binding: ExamBuilderDetailsBinding()),
+      name: Routes.examBuilderDetails,
+      page: () => const ExamBuilderDetailsView(),
+      binding: ExamBuilderDetailsBinding(),
+    ),
   ];
 }
