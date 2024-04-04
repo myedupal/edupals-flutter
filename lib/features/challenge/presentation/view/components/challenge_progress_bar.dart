@@ -5,12 +5,12 @@ import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ChallengeProgressBar extends StatelessWidget {
-  const ChallengeProgressBar({super.key, this.progress = 0});
+  const ChallengeProgressBar({super.key, this.progress = 0, this.onBack});
 
   final double progress;
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class ChallengeProgressBar extends StatelessWidget {
                 padding: const EdgeInsets.all(AppValues.double15))
             .padding(const EdgeInsets.only(right: AppValues.double10))
             .onTap(() {
-          Get.back();
+          onBack?.call();
         }),
         Expanded(
             child: BaseProgressIndicator(

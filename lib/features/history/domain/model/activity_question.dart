@@ -1,3 +1,5 @@
+import 'package:edupals/features/history/domain/model/activity.dart';
+
 class ActivityQuestionWrapper {
   ActivityQuestion? activityQuestion;
   List<ActivityQuestion>? activityQuestions;
@@ -30,6 +32,7 @@ class ActivityQuestion {
   String? id;
   String? activityId;
   String? questionId;
+  Activity? activity;
   String? createdAt;
   String? updatedAt;
 
@@ -37,6 +40,7 @@ class ActivityQuestion {
     this.id,
     this.activityId,
     this.questionId,
+    this.activity,
     this.createdAt,
     this.updatedAt,
   });
@@ -45,6 +49,9 @@ class ActivityQuestion {
       ActivityQuestion(
         id: json["id"],
         activityId: json["activity_id"],
+        activity: json["activity"] != null
+            ? Activity.fromJson(json["activity"])
+            : null,
         questionId: json["question_id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
@@ -56,5 +63,6 @@ class ActivityQuestion {
         "question_id": questionId,
         "created_at": createdAt,
         "updated_at": updatedAt,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }

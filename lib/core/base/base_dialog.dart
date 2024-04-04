@@ -44,9 +44,14 @@ class BaseDialog {
     );
   }
 
-  static customise({required Widget child, bool dismissable = true}) {
+  static customise(
+      {required Widget child, bool dismissable = true, isBase = false}) {
     Get.dialog(
         barrierDismissible: dismissable,
-        child.constraintsWrapper(width: 600, isCenter: false).dialogWrapper());
+        isBase
+            ? child
+            : child
+                .constraintsWrapper(width: 600, isCenter: false)
+                .dialogWrapper());
   }
 }

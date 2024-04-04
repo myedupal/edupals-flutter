@@ -48,7 +48,7 @@ abstract class BaseController extends GetxController {
   bool get isHomeIndicatorVisible => _isHomeIndicatorVisible();
 
   ViewState setError(BaseFailure f) {
-    logger.e('Basecontroller error: >>>>>>> ${f.detailedMessage}');
+    logger.e('!!! Base Controller error: ${f.detailedMessage} !!!');
 
     // if (f is NoInternetConnectionFailure) {
     // showErrorMessage(f.detailedMessage.tr);

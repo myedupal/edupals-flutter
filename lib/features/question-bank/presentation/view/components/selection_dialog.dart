@@ -94,44 +94,44 @@ class SelectionDialog extends GetView<SelectionDialogController> {
   @override
   Widget build(BuildContext context) {
     Get.put(SelectionDialogController());
-    return Obx(() => Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AnimatedSize(
-                alignment: Alignment.topLeft,
-                duration: const Duration(milliseconds: 300),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "You have selected ${controller.selectedList?.length} $title",
-                      style: MyTextStyle.l.bold,
-                    ),
-                    if ((controller.selectedList?.length ?? 0) > 0)
-                      Text(
-                        controller.selectedList
-                                ?.map((element) => element.label)
-                                .join(", ") ??
-                            "",
-                        style: MyTextStyle.s,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                  ],
-                )),
-            dataList,
-            Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Obx(() => AnimatedSize(
+            alignment: Alignment.topLeft,
+            duration: const Duration(milliseconds: 300),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Spacer(),
-                BaseButton(
-                    text: "Done Selection",
-                    onClick: () {
-                      emitData?.call(controller.selectedList ?? []);
-                      Get.back();
-                    })
+                Text(
+                  "You have selected ${controller.selectedList?.length} $title",
+                  style: MyTextStyle.l.bold,
+                ),
+                if ((controller.selectedList?.length ?? 0) > 0)
+                  Text(
+                    controller.selectedList
+                            ?.map((element) => element.label)
+                            .join(", ") ??
+                        "",
+                    style: MyTextStyle.s,
+                    overflow: TextOverflow.ellipsis,
+                  ),
               ],
-            ).padding(const EdgeInsets.only(top: AppValues.double10))
+            ))),
+        Obx(() => dataList),
+        Row(
+          children: [
+            const Spacer(),
+            BaseButton(
+                text: "Done Selection",
+                onClick: () {
+                  emitData?.call(controller.selectedList ?? []);
+                  Get.back();
+                })
           ],
-        ));
+        ).padding(const EdgeInsets.only(top: AppValues.double10))
+      ],
+    );
   }
 }

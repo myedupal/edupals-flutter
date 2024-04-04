@@ -37,6 +37,8 @@ class ActivityWrapper {
 class Activity extends TableConvertible {
   String? id;
   String? activityType;
+  String? title;
+  int? recordedTime;
   int? activityQuestionsCount;
   String? userId;
   String? subjectId;
@@ -55,6 +57,8 @@ class Activity extends TableConvertible {
   Activity({
     this.id,
     this.activityType,
+    this.title,
+    this.recordedTime,
     this.activityQuestionsCount,
     this.userId,
     this.subjectId,
@@ -74,6 +78,8 @@ class Activity extends TableConvertible {
   factory Activity.fromJson(Map<String, dynamic> json) => Activity(
         id: json["id"],
         activityType: json["activity_type"],
+        title: json["title"],
+        recordedTime: json["recorded_time"],
         activityQuestionsCount: json["activity_questions_count"],
         userId: json["user_id"],
         subjectId: json["subject_id"],
@@ -104,11 +110,14 @@ class Activity extends TableConvertible {
   Map<String, dynamic> toJson() => {
         "activity_type": activityType,
         "subject_id": subjectId,
+        "title": title,
+        "recorded_time": recordedTime,
         "exam_id": examId,
         "metadata": metadata?.toMetadata(),
         "topic_ids": topicIds,
         "paper_ids": paperIds,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 
   @override
   Map<String, dynamic> toTable() => {

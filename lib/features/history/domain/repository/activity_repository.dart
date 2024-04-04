@@ -45,6 +45,24 @@ class ActivityRepository {
         );
   }
 
+  Future<void> updateActivity(
+      {Activity? activity,
+      required String id,
+      required Function(Activity?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .put(
+          "${ApiConstants.getActivities}$id",
+          body: jsonEncode(ActivityWrapper(activity: activity)),
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) =>
+              onSuccess.call(ActivityWrapper.fromJson(value.data).activity),
+          onError: onError,
+        );
+  }
+
   Future<void> getActivities(
       {QueryParams? queryParams,
       required Function(TupleResponse<List<Activity>?>) onSuccess,
@@ -60,6 +78,21 @@ class ActivityRepository {
               data: ActivityWrapper.fromJson(value.data).activities,
               pages: value.pages,
               counts: value.counts)),
+          onError: onError,
+        );
+  }
+
+  Future<void> deleteActivity(
+      {required String id,
+      required Function(bool?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .delete(
+          "${ApiConstants.getActivities}$id",
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) => onSuccess.call(true),
           onError: onError,
         );
   }

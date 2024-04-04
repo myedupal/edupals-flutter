@@ -10,20 +10,22 @@ import 'package:flutter/services.dart';
 enum KeyboardType { text, number, password, textarea, tap }
 
 class BaseInput extends StatefulWidget {
-  const BaseInput(
-      {super.key,
-      this.value,
-      this.label,
-      this.errorMessage = "",
-      this.enabled = true,
-      this.isUppercase = false,
-      this.keyboardType = KeyboardType.text,
-      this.inputFormatters,
-      this.onClick,
-      this.onValueChange,
-      this.textStyle = MyTextStyle.s,
-      this.controller,
-      this.labelStyle = MyTextStyle.s});
+  const BaseInput({
+    super.key,
+    this.value,
+    this.label,
+    this.errorMessage = "",
+    this.enabled = true,
+    this.isUppercase = false,
+    this.keyboardType = KeyboardType.text,
+    this.inputFormatters,
+    this.onClick,
+    this.onValueChange,
+    this.textStyle = MyTextStyle.s,
+    this.controller,
+    this.labelStyle = MyTextStyle.s,
+    this.maxLength,
+  });
 
   final String? label;
   final String? value;
@@ -37,6 +39,7 @@ class BaseInput extends StatefulWidget {
   final TextStyle? labelStyle;
   final TextEditingController? controller;
   final Function(String)? onValueChange;
+  final int? maxLength;
 
   @override
   State<BaseInput> createState() => _BaseInputState();
@@ -122,6 +125,7 @@ class _BaseInputState extends State<BaseInput> {
                 onTapOutside: (event) {
                   _focusNode.unfocus();
                 },
+                maxLength: widget.maxLength,
                 inputFormatters: widget.inputFormatters,
                 obscureText: widget.keyboardType == KeyboardType.password &&
                     !_showPassword,

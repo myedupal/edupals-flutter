@@ -59,20 +59,20 @@ class HistoryTable extends GetView<HistoryController> {
                   children: [
                     Text(
                       "Resume",
-                      style: MyTextStyle.xxs.bold.c(AppColors.gray200),
+                      style: MyTextStyle.xxs.bold.c(AppColors.gray600),
                       textAlign: TextAlign.center,
-                    ).capsulise(
-                        radius: 100,
-                        border: true,
-                        borderColor: AppColors.gray300,
-                        color: AppColors.gray100,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppValues.double15,
-                            vertical: AppValues.double5))
-                    //     .onTap(() {
-                    //   Get.toNamed(Routes.questionsList,
-                    //       arguments: QuestionBankArgument());
-                    // })
+                    )
+                        .capsulise(
+                            radius: 100,
+                            border: true,
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: AppValues.double15,
+                                vertical: AppValues.double5))
+                        .onTap(() {
+                      // controller.deleteActivity(id: data.id);
+                      controller.navigatePage(activity: data);
+                    })
                   ],
                 );
               },
