@@ -25,6 +25,8 @@ class QuestionsListController extends BaseController {
   MyStopWatch stopwatch = MyStopWatch();
   late Timer _timer;
   RxString formattedTime = '00:00:00'.obs;
+  RxInt elapsedSeconds = 0.obs;
+  RxInt initSecond = 0.obs;
   // General State
   final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
@@ -34,13 +36,15 @@ class QuestionsListController extends BaseController {
   RxInt questionTotalPage = 1.obs;
   Rx<Activity?> currentActivity = Rx<Activity?>(null);
   bool isHistory = false;
+  List<String>? questionMemoryList = [];
 
   @override
   void onClose() {
     if (stopwatch.isRunning) {
       stopwatch.stop();
       _timer.cancel(); // Stop the timer when the page is closed
-      mainController.onTerminateStopWatch(time: formattedTime.value);
+      mainController.onTerminateStopWatch(
+          time: elapsedSeconds.value, activityId: currentActivity.value?.id);
     }
     super.onClose();
   }
@@ -57,23 +61,35 @@ class QuestionsListController extends BaseController {
     final activity = argument.activity;
     if (activity != null) {
       currentActivity.value = activity;
+      initSecond.value = activity.recordedTime ?? 0;
+      formattedTime.value = formatDuration(Duration(seconds: initSecond.value));
     }
   }
 
   // Timer Function
   void startStopwatch() {
     stopwatch.start();
-    stopwatch.seconds = 0;
+    if (elapsedSeconds.value == 0) {
+      stopwatch.seconds = initSecond.value;
+    }
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       formattedTime.value = stopwatch.elapsedDuration.toString().split('.')[0];
+      elapsedSeconds.value = stopwatch.elapsedSeconds;
       debugPrint("${stopwatch.elapsedSeconds}");
     });
   }
 
-  String? stopStopwatch() {
+  void stopStopwatch() {
     stopwatch.stop();
     _timer.cancel();
-    return formattedTime.value;
+    updateActivity(activity: Activity(recordedTime: elapsedSeconds.value));
+  }
+
+  String formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
   void resetStopwatch() {
@@ -81,9 +97,17 @@ class QuestionsListController extends BaseController {
     formattedTime.value = '00:00:00';
   }
 
+  bool get isMemoryAvailable =>
+      questionMemoryList?.firstWhereOrNull(
+          (element) => element == selectedQuestion.value?.id) !=
+      null;
+
   void onSelectQuestion({required Question question}) {
     selectedQuestion.value = question;
-    createActivityQuestion();
+    if (!isMemoryAvailable) {
+      questionMemoryList?.add(question.id ?? "");
+      createActivityQuestion();
+    }
   }
 
   List<String> get titleList =>
@@ -116,11 +140,21 @@ class QuestionsListController extends BaseController {
     switch (action) {
       case "back":
         if (filteredQuestionIndex != 0) {
-          selectedQuestion.value = questionsList[(filteredQuestionIndex) - 1];
+          final question = questionsList[(filteredQuestionIndex) - 1];
+          selectedQuestion.value = question;
+          if (!isMemoryAvailable) {
+            questionMemoryList?.add(question.id ?? "");
+            createActivityQuestion();
+          }
         }
       case "next":
         if (filteredQuestionIndex != (questionsList.length) - 1) {
-          selectedQuestion.value = questionsList[(filteredQuestionIndex) + 1];
+          final question = questionsList[(filteredQuestionIndex) + 1];
+          selectedQuestion.value = question;
+          if (!isMemoryAvailable) {
+            questionMemoryList?.add(question.id ?? "");
+            createActivityQuestion();
+          }
         }
     }
   }
@@ -181,6 +215,16 @@ class QuestionsListController extends BaseController {
           metadata: questionListParams,
           examId: questionListParams?.examId?.first,
         ),
+        onSuccess: (value) {
+          currentActivity.value = value;
+        },
+        onError: (error) {});
+  }
+
+  Future<void> updateActivity({Activity? activity}) async {
+    await activityRepo.updateActivity(
+        activity: activity,
+        id: currentActivity.value?.id ?? "",
         onSuccess: (value) {
           currentActivity.value = value;
         },

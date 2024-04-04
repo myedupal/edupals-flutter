@@ -45,6 +45,24 @@ class ActivityRepository {
         );
   }
 
+  Future<void> updateActivity(
+      {Activity? activity,
+      required String id,
+      required Function(Activity?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .put(
+          "${ApiConstants.getActivities}$id",
+          body: jsonEncode(ActivityWrapper(activity: activity)),
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) =>
+              onSuccess.call(ActivityWrapper.fromJson(value.data).activity),
+          onError: onError,
+        );
+  }
+
   Future<void> getActivities(
       {QueryParams? queryParams,
       required Function(TupleResponse<List<Activity>?>) onSuccess,

@@ -9,6 +9,9 @@ import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
 import 'package:edupals/features/exam-builder/presentation/view/screens/exam_builder_view.dart';
+import 'package:edupals/features/history/domain/model/activity.dart';
+import 'package:edupals/features/history/domain/repository/activity_repository.dart';
+import 'package:edupals/features/history/presentation/controller/history_controller.dart';
 import 'package:edupals/features/history/presentation/view/screens/history_view.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/question_bank_view.dart';
@@ -20,6 +23,7 @@ class MainController extends GetxController {
   final AuthRepository authRepo = Get.find();
   final LocalRepository localRepo = Get.find();
   final CurriculumRepository curriculumRepo = Get.find();
+  final ActivityRepository activityRepo = Get.find();
 
   // Curriculum state
   Rx<Curriculum?> selectedCurriculum = Rx<Curriculum?>(null);
@@ -120,7 +124,13 @@ class MainController extends GetxController {
     Get.offAllNamed(Routes.login);
   }
 
-  void onTerminateStopWatch({String? time}) {
-    debugPrint("Last Time ${time}");
+  Future<void> onTerminateStopWatch({int? time, String? activityId}) async {
+    final HistoryController historyController = Get.find();
+    await activityRepo.updateActivity(
+        activity: Activity(recordedTime: time),
+        id: activityId ?? "",
+        onSuccess: (value) {},
+        onError: (error) {});
+    historyController.refreshHistory();
   }
 }

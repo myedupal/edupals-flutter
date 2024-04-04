@@ -65,12 +65,11 @@ class HistoryController extends BaseController {
     queryParams?.topicId = activity?.topicIds;
     debugPrint("${queryParams?.toJson()}");
     Get.toNamed(Routes.questionsList,
-            arguments: QuestionBankArgument(
-                isHistory: true,
-                activity: activity,
-                revisionType: activity?.activityType,
-                queryParams: queryParams))
-        ?.then((value) => refreshHistory());
+        arguments: QuestionBankArgument(
+            isHistory: true,
+            activity: activity,
+            revisionType: activity?.activityType,
+            queryParams: queryParams));
   }
 
   void deleteActivity({String? id}) {
