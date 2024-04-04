@@ -57,7 +57,8 @@ class HistoryController extends BaseController {
 
   void navigatePage({Activity? activity}) {
     QueryParams? queryParams = activity?.metadata;
-    queryParams?.paperId = activity?.paperIds?.first;
+    queryParams?.paperId =
+        activity?.paperIds?.isEmpty == true ? null : activity?.paperIds?.first;
     queryParams?.subjectId = activity?.subjectId;
     if (activity?.activityType == "yearly") {
       queryParams?.examId = [activity?.examId ?? ""];
