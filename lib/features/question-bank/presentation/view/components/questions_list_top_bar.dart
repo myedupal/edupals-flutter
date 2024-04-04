@@ -5,10 +5,11 @@ import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class QuestionsListTopBar extends StatelessWidget {
+class QuestionsListTopBar extends GetView<QuestionsListController> {
   const QuestionsListTopBar({super.key, this.titleList});
 
   final List<String>? titleList;
@@ -27,6 +28,44 @@ class QuestionsListTopBar extends StatelessWidget {
             )
         ],
       );
+
+  Widget get generateQuestion => Row(
+        children: [
+          const ImageAssetView(
+            fileName: AppAssets.addIcon,
+            width: AppValues.double12,
+          ).capsulise(
+              radius: 100,
+              color: AppColors.white,
+              padding: const EdgeInsets.all(AppValues.double8)),
+          Text(
+            "Generate new question".toUpperCase(),
+            style: MyTextStyle.xxs.bold.c(AppColors.white),
+          ).padding(const EdgeInsets.only(
+              left: AppValues.double10, right: AppValues.double5))
+        ],
+      );
+
+  Widget get timer => Obx(() => Row(
+        children: [
+          if (controller.formattedTime.value != "00:00:00")
+            const ImageAssetView(
+              fileName: AppAssets.history,
+              color: AppColors.white,
+              width: AppValues.double15,
+            ).padding(const EdgeInsets.only(right: AppValues.double5)),
+          Text(
+                  controller.formattedTime.value != "00:00:00"
+                      ? "${controller.formattedTime}"
+                      : "Start exam mode".toUpperCase(),
+                  style: MyTextStyle.xxs.bold.c(AppColors.white))
+              .repaintBoundary(),
+        ],
+      ).onTap(() {
+        controller.stopwatch.isRunning
+            ? controller.stopStopwatch()
+            : controller.startStopwatch();
+      }));
 
   @override
   Widget build(BuildContext context) {
@@ -65,26 +104,11 @@ class QuestionsListTopBar extends StatelessWidget {
                           horizontal: AppValues.double15))),
           ],
         )),
-        Row(
-          children: [
-            const ImageAssetView(
-              fileName: AppAssets.addIcon,
-              width: AppValues.double12,
-            ).capsulise(
-                radius: 100,
-                color: AppColors.white,
-                padding: const EdgeInsets.all(AppValues.double8)),
-            Text(
-              "Generate new question".toUpperCase(),
-              style: MyTextStyle.xxs.bold.c(AppColors.white),
-            ).padding(const EdgeInsets.only(
-                left: AppValues.double10, right: AppValues.double5))
-          ],
-        ).capsulise(
+        (controller.isYearly ? timer : generateQuestion).capsulise(
             radius: 100,
             color: AppColors.accent500,
             padding: const EdgeInsets.symmetric(
-                horizontal: AppValues.double10, vertical: AppValues.double10))
+                horizontal: AppValues.double12, vertical: AppValues.double12))
       ],
     ).capsulise(
         radius: 100,

@@ -1,6 +1,30 @@
 import 'package:edupals/core/base/model/file_url.dart';
 import 'package:edupals/features/question-bank/domain/model/paper.dart';
 
+class ExamWrapper {
+  Exam? exam;
+  List<Exam>? exams;
+  String? pages;
+
+  ExamWrapper({
+    this.exam,
+    this.exams,
+    this.pages,
+  });
+
+  factory ExamWrapper.fromJson(Map<String, dynamic> json) => ExamWrapper(
+        exam: json["exam"] == null ? null : Exam.fromJson(json["exam"]),
+        exams: json["exams"] == null
+            ? null
+            : List<Exam>.from(json["exams"].map((x) => Exam.fromJson(x))),
+        pages: json["pages"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "exam": exam?.toJson(),
+      };
+}
+
 class Exam {
   String? id;
   int? year;

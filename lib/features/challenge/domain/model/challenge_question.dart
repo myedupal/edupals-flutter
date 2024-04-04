@@ -29,12 +29,9 @@ class ChallengeQuestion {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "challenge_id": challengeId,
         "question_id": questionId,
-        "display_order": displayOrder,
         "score": score,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }

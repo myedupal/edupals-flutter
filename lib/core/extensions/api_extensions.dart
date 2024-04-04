@@ -34,16 +34,16 @@ extension DioResponseExtension<T> on Future<Response<T>> {
           : null;
       final BaseFailure exception =
           ErrorHandler().handleDioError(dioError, stackTrace);
-      logger.e(
-          'Throwing error from BaseRemoteDataSource: >>>>>>> Exception: ${exception.runtimeType}, Message: ${exception.message}');
+      logger.d(
+          '!!! Throwing error from API: Exception: ${exception.runtimeType}, Status Code: ${exception.statusCode}, Message: ${exception.message} !!!');
       onError.call(exception);
       // throw exception;
     } catch (error, stackTrace) {
       final formattedError = error is GeneralFailure
           ? error
           : ErrorHandler().unHandledError('$error', stackTrace);
-      logger.e('Generic error: >>>>>>> $error');
-      logger.e('Stacktrace: >>>>>>> $stackTrace');
+      logger.e('!!! Generic error: $error !!!');
+      logger.e('!!! Stacktrace: $stackTrace !!!');
 
       await SentryService.reportError(
         shouldReportError: true,

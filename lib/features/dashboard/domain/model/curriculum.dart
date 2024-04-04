@@ -39,6 +39,8 @@ class Curriculum {
     this.displayOrder,
   });
 
+  String get getFullName => "$board $name";
+
   factory Curriculum.fromJson(Map<String, dynamic> json) => Curriculum(
         id: json["id"],
         name: json["name"],

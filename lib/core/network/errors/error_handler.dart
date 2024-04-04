@@ -12,7 +12,7 @@ class ErrorHandler {
     if (kDebugMode) {
       print('dioErrorStatusCode: ${dioError.response?.statusCode}');
       print('dioError: ${dioError.toString()}');
-      print('stackTrace: $stackTrace');
+      // print('stackTrace: $stackTrace');
       print('message: ${dioError.message}');
     }
 
@@ -46,10 +46,17 @@ class ErrorHandler {
     String? serverMessage = '';
 
     try {
-      statusCode = int.tryParse(response?.data['statusCode'] ?? "0");
-      serverMessage = response?.data['error_messages'][0] ??
-          response?.data['error']['message'] ??
-          '';
+      statusCode = response?.statusCode ?? -1;
+      if (response?.data is Map<String, dynamic>) {
+        Map<String, dynamic> data = response?.data;
+
+        if (data.containsKey("error_messages")) {
+          serverMessage = data["error_messages"][0];
+        }
+      }
+      // serverMessage = response?.data != null
+      //     ? response?.data['error_messages'][0] ?? ""
+      //     : "";
     } catch (e, s) {
       logger.i('$e');
       logger.i(s.toString());

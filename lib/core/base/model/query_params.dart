@@ -20,6 +20,8 @@ class QueryParams {
     this.curriculumId,
     this.fromStartAt,
     this.toStartAt,
+    this.challengeId,
+    this.challengeSubmissionId,
   });
 
   int? page;
@@ -34,14 +36,16 @@ class QueryParams {
   String? subjectId;
   String? paperId;
   List<String>? examId;
-  String? zone;
-  String? season;
+  List<String>? zone;
+  List<String>? season;
   List<String>? year;
   bool? active;
   bool? isActive;
   String? curriculumId;
   String? fromStartAt;
   String? toStartAt;
+  String? challengeId;
+  String? challengeSubmissionId;
 
   factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
         page: int.parse(json["page"] ?? "1"),
@@ -50,9 +54,15 @@ class QueryParams {
         sortOrder: json["sort_order"],
         subjectId: json["subject_id"],
         examId: json["exam_id"],
-        zone: json["zone"],
-        season: json["season"],
-        year: json["year"],
+        zone: json["zone"] ?? json["zones"] != null
+            ? (List<String>.from(json["zones"]!.map((e) => e.toString())))
+            : null,
+        season: json["season"] ?? json["seasons"] != null
+            ? (List<String>.from(json["seasons"]!.map((e) => e.toString())))
+            : null,
+        year: json["year"] ?? json["years"] != null
+            ? (List<String>.from(json["years"]!.map((e) => e.toString())))
+            : null,
         fromStartAt: json["from_start_at"],
         toStartAt: json["to_start_at"],
       );
@@ -69,15 +79,18 @@ class QueryParams {
         "from_date": fromDate,
         "to_date": toDate,
         // Question List
+        "paper_id": paperId,
         "exam_id[]": examId?.isNotEmpty == true ? examId : null,
         "topic_id[]": topicId?.isNotEmpty == true ? topicId : null,
         "year[]": year?.isNotEmpty == true ? year : null,
         "subject_id": subjectId,
-        "season": season,
-        "zone": zone,
+        "season[]": season,
+        "zone[]": zone,
         "curriculum_id": curriculumId,
         "from_start_at": fromStartAt,
         "to_start_at": toStartAt,
+        "challenge_id": challengeId,
+        "challenge_submission_id": challengeSubmissionId,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 
@@ -87,8 +100,8 @@ class QueryParams {
         "sort_by": sortBy,
         "sort_order": sortOrder,
         "years": year?.isNotEmpty == true ? year : null,
-        "seasons": season?.isNotEmpty == true ? [season] : null,
-        "zones": season?.isNotEmpty == true ? [zone] : null,
+        "seasons": season?.isNotEmpty == true ? season : null,
+        "zones": season?.isNotEmpty == true ? zone : null,
         "curriculum_id": curriculumId
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
