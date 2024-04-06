@@ -24,6 +24,7 @@ class ExamBuilderView extends StatelessWidget {
                   style: MyTextStyle.xl1.bold,
                 ),
                 QuestionFilterSegment(
+                  ableSelectRevision: false,
                   controllerTag: "exam-builder",
                   emitData: (value) {
                     Get.toNamed(Routes.examBuilderDetails, arguments: value);

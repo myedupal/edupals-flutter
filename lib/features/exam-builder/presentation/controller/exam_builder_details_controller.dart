@@ -1,5 +1,8 @@
 import 'package:edupals/core/base/base_controller.dart';
+import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/features/exam-builder/domain/model/user_exam.dart';
+import 'package:edupals/features/exam-builder/domain/repository/user_exam_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
@@ -10,6 +13,7 @@ import 'package:get/get.dart';
 class ExamBuilderDetailsController extends BaseController {
   // Controller and repository DI
   final UserQuestionsRepository questionsRepo = Get.find();
+  final UserExamRepository userExamRepo = Get.find();
   // General State
   final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
@@ -19,6 +23,8 @@ class ExamBuilderDetailsController extends BaseController {
   RxList<Question?> selectedQuestions = <Question?>[].obs;
   RxInt questionTotalPage = 1.obs;
   RxString? examName = "".obs;
+  Rx<UserExam?> currentUserExam = Rx<UserExam?>(null);
+  UserExam userExamRequestBody = UserExam();
   final nameController = TextEditingController();
 
   @override
@@ -98,5 +104,47 @@ class ExamBuilderDetailsController extends BaseController {
       }
     }
     selectedQuestion.value = questionsList.first;
+  }
+
+  Future<void> getUserExam() async {
+    setLoading();
+    await userExamRepo.getUserExam(
+        id: "",
+        onSuccess: (value) {
+          currentUserExam.value = value;
+          setSuccess();
+        },
+        onError: (error) {});
+  }
+
+  Future<void> createUserExam() async {
+    userExamRequestBody.userExamQuestionsAttributes = selectedQuestions
+        .map((element) => UserExamQuestion(questionId: element?.id ?? ""))
+        .toList();
+    userExamRequestBody.title = examName?.value;
+    await userExamRepo.createUserExam(
+        userExam: userExamRequestBody,
+        onSuccess: (value) {
+          currentUserExam.value = value;
+        },
+        onError: (error) {
+          BaseDialog.showSuccess(
+            message: "You exam created successfully!",
+            action: () {
+              Get.back();
+              Get.back();
+            },
+          );
+        });
+  }
+
+  Future<void> updateUserExam({UserExam? userExam}) async {
+    await userExamRepo.updateUserExam(
+        userExam: userExam,
+        id: currentUserExam.value?.id ?? "",
+        onSuccess: (value) {
+          currentUserExam.value = value;
+        },
+        onError: (error) {});
   }
 }

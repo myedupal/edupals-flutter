@@ -13,10 +13,15 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class QuestionFilterSegment extends StatelessWidget {
-  const QuestionFilterSegment({super.key, this.emitData, this.controllerTag});
+  const QuestionFilterSegment({
+    super.key,
+    this.emitData,
+    this.controllerTag,
+    this.ableSelectRevision = true,
+  });
 
   final Function(QuestionBankArgument?)? emitData;
-
+  final bool ableSelectRevision;
   final String? controllerTag;
 
   void showRevisionDialog(QuestionFilterSegmentController controller) {
@@ -124,6 +129,18 @@ class QuestionFilterSegment extends StatelessWidget {
     ));
   }
 
+  Widget zoneWidget(QuestionFilterSegmentController controller) =>
+      SelectionInput(
+        label: "Zone",
+        isRequired: controller.isYearly,
+        isMultiSelect: false,
+        data: controller.selectedZone.value,
+      ).onTap(() {
+        controller.selectedSubject.value == null
+            ? controller.triggerError(error: "You have to select subject first")
+            : showZoneDialog(controller);
+      });
+
   @override
   Widget build(BuildContext context) {
     Get.lazyPut<SubjectRepository>(() => SubjectRepository());
@@ -137,13 +154,15 @@ class QuestionFilterSegment extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(
-                  child: SelectionInput(
-                label: "Revision Type",
-                data: controller.selectedRevisionType.value,
-              )
-                      .padding(const EdgeInsets.only(right: AppValues.double15))
-                      .onTap(() => showRevisionDialog(controller))),
+              if (ableSelectRevision)
+                Expanded(
+                    child: SelectionInput(
+                  label: "Revision Type",
+                  data: controller.selectedRevisionType.value,
+                )
+                        .padding(
+                            const EdgeInsets.only(right: AppValues.double15))
+                        .onTap(() => showRevisionDialog(controller))),
               Expanded(
                   child: SelectionInput(
                 label: "Subject",
@@ -156,20 +175,16 @@ class QuestionFilterSegment extends StatelessWidget {
                   controller.triggerError(
                       error: "Please select a curriculum first");
                 }
-              })),
+              }).padding(EdgeInsets.only(
+                      right: !ableSelectRevision
+                          ? AppValues.double15
+                          : AppValues.double0))),
+              if (!ableSelectRevision) Expanded(child: zoneWidget(controller)),
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          SelectionInput(
-            label: "Zone",
-            isRequired: controller.isYearly,
-            isMultiSelect: false,
-            data: controller.selectedZone.value,
-          ).onTap(() {
-            controller.selectedSubject.value == null
-                ? controller.triggerError(
-                    error: "You have to select subject first")
-                : showZoneDialog(controller);
-          }).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          if (ableSelectRevision)
+            zoneWidget(controller)
+                .padding(const EdgeInsets.only(bottom: AppValues.double20)),
           Row(
             children: [
               Expanded(

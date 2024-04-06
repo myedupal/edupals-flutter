@@ -1,3 +1,3 @@
-import 'package:get/get.dart';
+import 'package:edupals/core/base/base_controller.dart';
 
-class ExamBuilderController extends GetxController {}
+class ExamBuilderController extends BaseController {}

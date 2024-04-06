@@ -53,6 +53,7 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
           style: MyTextStyle.l.bold,
         ),
         QuestionFilterSegment(
+          ableSelectRevision: false,
           controllerTag: "exam-builder",
           emitData: (value) {
             controller.onSearchQuestions(value: value);
