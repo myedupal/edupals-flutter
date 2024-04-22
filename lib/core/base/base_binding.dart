@@ -6,6 +6,7 @@ import 'package:edupals/core/services/secure_storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
+import 'package:edupals/features/exam-builder/domain/repository/user_exam_repository.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/activity_question_repository.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,7 +33,7 @@ class BaseBinding extends Bindings {
     Get.lazyPut<ActivityQuestionRepository>(() => ActivityQuestionRepository(),
         fenix: true);
     Get.lazyPut<ActivityRepository>(() => ActivityRepository(), fenix: true);
-
+    Get.lazyPut(() => UserExamRepository());
     // Controller
     Get.put<MainController>(MainController(), permanent: true);
   }

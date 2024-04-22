@@ -86,11 +86,11 @@ class UserExam {
         "title": title,
         "is_public": isPublic,
         "subject_id": subjectId,
-        "user_exam_questions_attributes": userExamQuestionsAttributes == null
-            ? []
-            : List<UserExamQuestion>.from(
-                userExamQuestionsAttributes!.map((x) => x.toAttribute()))
-      };
+        "user_exam_questions_attributes": userExamQuestionsAttributes
+            ?.map((data) => data.toAttribute())
+            .toList()
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }
 
 class UserExamQuestion {
@@ -100,6 +100,7 @@ class UserExamQuestion {
   String? createdAt;
   String? updatedAt;
   Question? question;
+  bool? isDestroy;
 
   UserExamQuestion({
     this.id,
@@ -108,6 +109,7 @@ class UserExamQuestion {
     this.createdAt,
     this.updatedAt,
     this.question,
+    this.isDestroy,
   });
 
   factory UserExamQuestion.fromJson(Map<String, dynamic> json) =>
@@ -133,5 +135,8 @@ class UserExamQuestion {
 
   Map<String, dynamic> toAttribute() => {
         "question_id": questionId,
-      };
+        "_destroy": isDestroy,
+        "id": id,
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }

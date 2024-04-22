@@ -53,6 +53,7 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
           style: MyTextStyle.l.bold,
         ),
         QuestionFilterSegment(
+          ableSelectSubject: false,
           ableSelectRevision: false,
           controllerTag: "exam-builder",
           emitData: (value) {
@@ -117,21 +118,26 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
                           title: controller.examName?.value.isEmpty == true
                               ? "Your exam name"
                               : controller.examName?.value,
-                          icon: AppAssets.edit)
+                          icon: (controller.ableEdit.value)
+                              ? AppAssets.edit
+                              : null,
+                          withDivider: controller.ableEdit.value)
                       .onTap(() {
-                    displayNameDialog();
+                    if (controller.ableEdit.value) displayNameDialog();
                   }),
-                  topBarItem(
-                      title:
-                          "${controller.selectedQuestions.length} questions added",
-                      icon: AppAssets.eyeOpen),
-                  topBarItem(
-                          title: "Search Questions",
-                          withDivider: false,
-                          icon: AppAssets.search)
-                      .onTap(() {
-                    displaySearch();
-                  }),
+                  if (controller.ableEdit.value) ...[
+                    topBarItem(
+                        title:
+                            "${controller.selectedQuestions.length} questions added",
+                        icon: AppAssets.eyeOpen),
+                    topBarItem(
+                            title: "Search Questions",
+                            withDivider: false,
+                            icon: AppAssets.search)
+                        .onTap(() {
+                      displaySearch();
+                    }),
+                  ]
                 ],
               ).capsulise(
                       radius: 100,
@@ -145,18 +151,31 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
         Text(
           "FAQ",
           style: MyTextStyle.s.bold,
-        ),
-        Text(
-          "Save Exam",
-          style: MyTextStyle.s.bold.c(AppColors.white),
-        )
-            .capsulise(
-                radius: 100,
-                color: AppColors.accent500,
-                padding: const EdgeInsets.symmetric(
-                    vertical: AppValues.double12,
-                    horizontal: AppValues.double15))
-            .padding(const EdgeInsets.only(left: AppValues.double20)),
+        ).padding(const EdgeInsets.only(right: AppValues.double20)),
+        Obx(() => (controller.ableEdit.value)
+            ? Text(
+                "Save Exam",
+                style: MyTextStyle.s.bold.c(AppColors.white),
+              )
+                .capsulise(
+                    radius: 100,
+                    color: AppColors.accent500,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: AppValues.double12,
+                        horizontal: AppValues.double15))
+                .onTap(() {
+                controller.apiUserExam.value == null
+                    ? controller.createUserExam()
+                    : controller.updateUserExam();
+              })
+            : Text(
+                "Edit Exam",
+                style: MyTextStyle.s.bold.c(AppColors.gray900).underline,
+              )
+                .padding(const EdgeInsets.only(right: AppValues.double20))
+                .onTap(() {
+                controller.ableEdit.value = true;
+              })),
       ],
     ).capsulise(
         radius: 100,

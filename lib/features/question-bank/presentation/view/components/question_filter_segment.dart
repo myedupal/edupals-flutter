@@ -18,10 +18,12 @@ class QuestionFilterSegment extends StatelessWidget {
     this.emitData,
     this.controllerTag,
     this.ableSelectRevision = true,
+    this.ableSelectSubject = true,
   });
 
   final Function(QuestionBankArgument?)? emitData;
   final bool ableSelectRevision;
+  final bool ableSelectSubject;
   final String? controllerTag;
 
   void showRevisionDialog(QuestionFilterSegmentController controller) {
@@ -163,22 +165,23 @@ class QuestionFilterSegment extends StatelessWidget {
                         .padding(
                             const EdgeInsets.only(right: AppValues.double15))
                         .onTap(() => showRevisionDialog(controller))),
-              Expanded(
-                  child: SelectionInput(
-                label: "Subject",
-                isRequired: true,
-                data: controller.selectedSubject.value,
-              ).onTap(() {
-                if (controller.isAbleSelectSubject()) {
-                  showSubjectDialog(controller);
-                } else {
-                  controller.triggerError(
-                      error: "Please select a curriculum first");
-                }
-              }).padding(EdgeInsets.only(
-                      right: !ableSelectRevision
-                          ? AppValues.double15
-                          : AppValues.double0))),
+              if (ableSelectSubject)
+                Expanded(
+                    child: SelectionInput(
+                  label: "Subject",
+                  isRequired: true,
+                  data: controller.selectedSubject.value,
+                ).onTap(() {
+                  if (controller.isAbleSelectSubject()) {
+                    showSubjectDialog(controller);
+                  } else {
+                    controller.triggerError(
+                        error: "Please select a curriculum first");
+                  }
+                }).padding(EdgeInsets.only(
+                        right: !ableSelectRevision
+                            ? AppValues.double15
+                            : AppValues.double0))),
               if (!ableSelectRevision) Expanded(child: zoneWidget(controller)),
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),

@@ -15,6 +15,9 @@ class ExamBuilderDetailsController extends BaseController {
   final UserQuestionsRepository questionsRepo = Get.find();
   final UserExamRepository userExamRepo = Get.find();
   // General State
+  RxBool ableEdit = true.obs;
+  String? currentUserExamId = "";
+  Rx<UserExam?> apiUserExam = Rx<UserExam?>(null);
   final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
   RxList<Question> questionsList = <Question>[].obs;
@@ -32,6 +35,12 @@ class ExamBuilderDetailsController extends BaseController {
     if (argument.queryParams != null) {
       questionListParams = argument.queryParams;
       getQuestions();
+    }
+    final String? argumentUserExamId = argument.userExamId;
+    if (argumentUserExamId?.isEmpty == false) {
+      currentUserExamId = argumentUserExamId;
+      ableEdit.value = false;
+      getUserExamDetails();
     }
     super.onInit();
   }
@@ -118,32 +127,76 @@ class ExamBuilderDetailsController extends BaseController {
   }
 
   Future<void> createUserExam() async {
-    userExamRequestBody.userExamQuestionsAttributes = selectedQuestions
-        .map((element) => UserExamQuestion(questionId: element?.id ?? ""))
-        .toList();
+    compileSelectedQuestions();
     userExamRequestBody.title = examName?.value;
+    userExamRequestBody.subjectId = questionListParams?.subjectId;
     await userExamRepo.createUserExam(
         userExam: userExamRequestBody,
         onSuccess: (value) {
           currentUserExam.value = value;
+          showSuccessDialog(message: "You exam created successfully!");
         },
-        onError: (error) {
-          BaseDialog.showSuccess(
-            message: "You exam created successfully!",
-            action: () {
-              Get.back();
-              Get.back();
-            },
-          );
-        });
+        onError: (error) {});
+  }
+
+  void compileSelectedQuestions() {
+    userExamRequestBody.userExamQuestionsAttributes = selectedQuestions
+        .map((element) => UserExamQuestion(questionId: element?.id ?? ""))
+        .toList();
+    if (apiUserExam.value != null) {
+      for (int i = 0;
+          i < (apiUserExam.value?.userExamQuestions?.length ?? 0);
+          i++) {
+        final apiUserExamQuestion = apiUserExam.value?.userExamQuestions?[i];
+        final filteredQuestion = selectedQuestions.firstWhereOrNull(
+            (element) => element?.id == apiUserExamQuestion?.question?.id);
+        if (filteredQuestion == null) {
+          userExamRequestBody.userExamQuestionsAttributes?.add(
+              UserExamQuestion(id: apiUserExamQuestion?.id, isDestroy: true));
+        } else {
+          userExamRequestBody.userExamQuestionsAttributes?.removeWhere(
+              (element) =>
+                  element.questionId == apiUserExamQuestion?.question?.id);
+        }
+      }
+    }
+  }
+
+  void showSuccessDialog({String? message}) {
+    BaseDialog.showSuccess(
+      message: message,
+      action: () {
+        Get.back();
+        Get.back();
+      },
+    );
   }
 
   Future<void> updateUserExam({UserExam? userExam}) async {
+    compileSelectedQuestions();
     await userExamRepo.updateUserExam(
-        userExam: userExam,
-        id: currentUserExam.value?.id ?? "",
+        userExam: userExamRequestBody,
+        id: apiUserExam.value?.id ?? "",
         onSuccess: (value) {
           currentUserExam.value = value;
+          showSuccessDialog(message: "You exam updated successfully!");
+        },
+        onError: (error) {});
+  }
+
+  Future<void> getUserExamDetails() async {
+    setLoading();
+    await userExamRepo.getUserExam(
+        id: currentUserExamId ?? "",
+        onSuccess: (value) {
+          examName?.value = value?.title ?? "";
+          for (int i = 0; i < (value?.userExamQuestions?.length ?? 0); i++) {
+            questionsList.add(value!.userExamQuestions![i].question!);
+            selectedQuestions.add(value.userExamQuestions![i].question!);
+          }
+          processData();
+          apiUserExam.value = value;
+          setSuccess();
         },
         onError: (error) {});
   }

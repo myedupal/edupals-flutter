@@ -32,7 +32,7 @@ class UserExamRepository {
   }
 
   Future<void> getUserExam(
-      {String? id,
+      {required String id,
       required Function(UserExam?) onSuccess,
       required Function(BaseFailure) onError}) async {
     await dioClient
