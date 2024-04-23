@@ -14,11 +14,11 @@ class ExamBuilderDetailsController extends BaseController {
   // Controller and repository DI
   final UserQuestionsRepository questionsRepo = Get.find();
   final UserExamRepository userExamRepo = Get.find();
+  final QuestionBankArgument argument = Get.arguments;
   // General State
   RxBool ableEdit = true.obs;
   String? currentUserExamId = "";
   Rx<UserExam?> apiUserExam = Rx<UserExam?>(null);
-  final QuestionBankArgument argument = Get.arguments;
   QueryParams? questionListParams;
   RxList<Question> questionsList = <Question>[].obs;
   RxList<Topic?>? topicList = <Topic?>[].obs;

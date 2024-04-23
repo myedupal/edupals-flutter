@@ -1,13 +1,16 @@
 import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/base_input.dart';
+import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:edupals/features/exam-builder/domain/model/user_exam.dart';
 import 'package:edupals/features/exam-builder/presentation/controller/exam_builder_details_controller.dart';
+import 'package:edupals/features/question-bank/domain/model/question_filter_argument.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/question_filter_segment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,6 +46,8 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
   }
 
   void displaySearch() {
+    final UserExam? apiUserExam = controller.apiUserExam.value;
+    debugPrint("User exam ${apiUserExam != null}");
     BaseDialog.customise(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,6 +60,12 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
         QuestionFilterSegment(
           ableSelectSubject: false,
           ableSelectRevision: false,
+          filterArgument: apiUserExam != null
+              ? QuestionFilterArgument(
+                  subject: KeyValue(
+                      label: apiUserExam.subject?.name,
+                      key: apiUserExam.subject?.id))
+              : null,
           controllerTag: "exam-builder",
           emitData: (value) {
             controller.onSearchQuestions(value: value);

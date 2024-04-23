@@ -5,6 +5,7 @@ import 'package:edupals/core/components/selection_input.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
+import 'package:edupals/features/question-bank/domain/model/question_filter_argument.dart';
 import 'package:edupals/features/question-bank/domain/repository/subject_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/topic_repository.dart';
 import 'package:edupals/features/question-bank/presentation/controller/question_filter_segment_controller.dart';
@@ -19,12 +20,14 @@ class QuestionFilterSegment extends StatelessWidget {
     this.controllerTag,
     this.ableSelectRevision = true,
     this.ableSelectSubject = true,
+    this.filterArgument,
   });
 
   final Function(QuestionBankArgument?)? emitData;
   final bool ableSelectRevision;
   final bool ableSelectSubject;
   final String? controllerTag;
+  final QuestionFilterArgument? filterArgument;
 
   void showRevisionDialog(QuestionFilterSegmentController controller) {
     BaseDialog.customise(
@@ -149,6 +152,7 @@ class QuestionFilterSegment extends StatelessWidget {
     Get.lazyPut<TopicRepository>(() => TopicRepository());
     final controller =
         Get.put(QuestionFilterSegmentController(), tag: controllerTag);
+    controller.onSetFilterArgument(value: filterArgument);
     return Obx(() {
       return Column(
         mainAxisSize: MainAxisSize.min,
