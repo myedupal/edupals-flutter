@@ -126,19 +126,6 @@ class ExamBuilderDetailsController extends BaseController {
         onError: (error) {});
   }
 
-  Future<void> createUserExam() async {
-    compileSelectedQuestions();
-    userExamRequestBody.title = examName?.value;
-    userExamRequestBody.subjectId = questionListParams?.subjectId;
-    await userExamRepo.createUserExam(
-        userExam: userExamRequestBody,
-        onSuccess: (value) {
-          currentUserExam.value = value;
-          showSuccessDialog(message: "You exam created successfully!");
-        },
-        onError: (error) {});
-  }
-
   void compileSelectedQuestions() {
     userExamRequestBody.userExamQuestionsAttributes = selectedQuestions
         .map((element) => UserExamQuestion(questionId: element?.id ?? ""))
@@ -172,8 +159,24 @@ class ExamBuilderDetailsController extends BaseController {
     );
   }
 
+  Future<void> createUserExam() async {
+    compileSelectedQuestions();
+    userExamRequestBody.title = examName?.value;
+    userExamRequestBody.subjectId = questionListParams?.subjectId;
+    await userExamRepo.createUserExam(
+        userExam: userExamRequestBody,
+        onSuccess: (value) {
+          currentUserExam.value = value;
+          showSuccessDialog(message: "You exam created successfully!");
+        },
+        onError: (error) {});
+  }
+
   Future<void> updateUserExam({UserExam? userExam}) async {
     compileSelectedQuestions();
+    if (examName?.value.isNotEmpty == true) {
+      userExamRequestBody.title = examName?.value;
+    }
     await userExamRepo.updateUserExam(
         userExam: userExamRequestBody,
         id: apiUserExam.value?.id ?? "",

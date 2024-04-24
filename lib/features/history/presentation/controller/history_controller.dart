@@ -94,6 +94,12 @@ class HistoryController extends BaseController {
     getHistory();
   }
 
+  void navigateExam({String? id}) {
+    Get.toNamed(Routes.examBuilderDetails,
+            arguments: QuestionBankArgument(userExamId: id))
+        ?.then((value) => refreshUserExam());
+  }
+
   void navigatePage({Activity? activity}) {
     QueryParams? queryParams = activity?.metadata;
     queryParams?.paperId =
@@ -105,11 +111,12 @@ class HistoryController extends BaseController {
     queryParams?.topicId = activity?.topicIds;
     debugPrint("${queryParams?.toJson()}");
     Get.toNamed(Routes.questionsList,
-        arguments: QuestionBankArgument(
-            isHistory: true,
-            activity: activity,
-            revisionType: activity?.activityType,
-            queryParams: queryParams));
+            arguments: QuestionBankArgument(
+                isHistory: true,
+                activity: activity,
+                revisionType: activity?.activityType,
+                queryParams: queryParams))
+        ?.then((value) => refreshHistory());
   }
 
   void deleteActivity({String? id}) {
