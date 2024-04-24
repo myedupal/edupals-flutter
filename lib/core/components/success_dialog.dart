@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SuccessDialog extends StatelessWidget {
-  const SuccessDialog({super.key, this.message, this.action});
+  const SuccessDialog({super.key, this.message, this.action, this.buttonText});
 
-  final String? message;
+  final String? message, buttonText;
   final VoidCallback? action;
 
   @override
@@ -29,7 +29,7 @@ class SuccessDialog extends StatelessWidget {
             top: AppValues.double20, bottom: AppValues.double10)),
         BaseButton(
             fullWidth: true,
-            text: "Noted",
+            text: buttonText ?? "Noted",
             onClick: () {
               if (action == null) {
                 Get.back();

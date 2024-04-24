@@ -33,7 +33,7 @@ class BaseBinding extends Bindings {
     Get.lazyPut<ActivityQuestionRepository>(() => ActivityQuestionRepository(),
         fenix: true);
     Get.lazyPut<ActivityRepository>(() => ActivityRepository(), fenix: true);
-    Get.lazyPut(() => UserExamRepository());
+    Get.lazyPut<UserExamRepository>(() => UserExamRepository(), fenix: true);
     // Controller
     Get.put<MainController>(MainController(), permanent: true);
   }

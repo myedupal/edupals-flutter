@@ -30,7 +30,7 @@ class Navbar extends GetView<MainController> {
                               name: e,
                               isActive: controller.selectedNavIndex.value == i,
                             ).onTap(() {
-                              controller.selectedNavIndex.value = i;
+                              controller.onSetNavIndex(i);
                             }).padding(const EdgeInsets.only(
                                 bottom: AppValues.double20)))
                       ],

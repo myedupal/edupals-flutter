@@ -54,15 +54,10 @@ class User {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "name": name,
         "active": active,
         "email": email,
         "password": password,
-        "points": points,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "stripe_profile": stripeProfile,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 }

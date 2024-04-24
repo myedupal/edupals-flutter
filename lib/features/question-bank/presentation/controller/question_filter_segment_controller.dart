@@ -45,6 +45,7 @@ class QuestionFilterSegmentController extends GetxController {
   void onInit() {
     super.onInit();
     selectedRevisionType.value = revisionType.first;
+    getSubjects();
     mainController.selectedCurriculum.stream.listen((value) {
       getSubjects();
       resetFilter();

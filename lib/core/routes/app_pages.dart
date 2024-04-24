@@ -12,7 +12,7 @@ import 'package:edupals/features/question-bank/presentation/binding/questions_li
 import 'package:edupals/features/question-bank/presentation/view/screens/questions_list_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
 import 'package:edupals/core/routes/app_routes.dart';
-import 'package:edupals/features/auth/presentation/view/auth_view.dart';
+import 'package:edupals/features/auth/presentation/view/screens/auth_view.dart';
 import 'package:edupals/features/splash/presentation/view/splash_view.dart';
 import 'package:get/get.dart';
 

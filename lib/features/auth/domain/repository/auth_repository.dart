@@ -26,6 +26,22 @@ class AuthRepository {
         );
   }
 
+  Future<void> register(
+      {required User user,
+      required Function(User?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .post(
+          ApiConstants.getUser,
+          body: jsonEncode(UserWrapper(user: user)),
+          authorization: false,
+        )
+        .handleResponse(
+          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
+          onError: onError,
+        );
+  }
+
   Future<void> logout(
       {required Function(bool?) onSuccess,
       required Function(BaseFailure) onError}) async {

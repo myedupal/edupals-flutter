@@ -45,11 +45,18 @@ class BaseDialog {
     );
   }
 
-  static showSuccess({String? message, VoidCallback? action}) {
-    Get.dialog(SuccessDialog(
-      message: message,
-      action: action,
-    ).constraintsWrapper(width: 400, isCenter: false).dialogWrapper());
+  static showSuccess(
+      {String? message,
+      bool dismissable = true,
+      VoidCallback? action,
+      String? buttonText}) {
+    Get.dialog(
+        barrierDismissible: dismissable,
+        SuccessDialog(
+          message: message,
+          action: action,
+          buttonText: buttonText,
+        ).constraintsWrapper(width: 400, isCenter: false).dialogWrapper());
   }
 
   static customise(
