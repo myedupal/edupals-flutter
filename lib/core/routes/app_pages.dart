@@ -8,6 +8,7 @@ import 'package:edupals/features/challenge/presentation/view/screens/daily_chall
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
 import 'package:edupals/features/exam-builder/presentation/binding/exam_builder_details_binding.dart';
 import 'package:edupals/features/exam-builder/presentation/view/screens/exam_builder_details_view.dart';
+import 'package:edupals/features/profile/presentation/view/screens/profile_view.dart';
 import 'package:edupals/features/question-bank/presentation/binding/questions_list_binding.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/questions_list_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
@@ -48,6 +49,12 @@ class AppPages {
       name: Routes.examBuilderDetails,
       page: () => const ExamBuilderDetailsView(),
       binding: ExamBuilderDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.profile,
+      transition: Transition.circularReveal,
+      fullscreenDialog: true,
+      page: () => const ProfileView(),
     ),
   ];
 }

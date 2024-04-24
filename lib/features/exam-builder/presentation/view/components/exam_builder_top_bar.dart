@@ -167,14 +167,7 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
             ? Text(
                 "Save Exam",
                 style: MyTextStyle.s.bold.c(AppColors.white),
-              )
-                .capsulise(
-                    radius: 100,
-                    color: AppColors.accent500,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: AppValues.double12,
-                        horizontal: AppValues.double15))
-                .onTap(() {
+              ).topBarCapsule().onTap(() {
                 controller.apiUserExam.value == null
                     ? controller.createUserExam()
                     : controller.updateUserExam();

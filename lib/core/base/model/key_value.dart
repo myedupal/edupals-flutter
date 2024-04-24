@@ -23,6 +23,7 @@ class KeyValue {
       this.isBase64,
       this.onAction,
       this.isFilterAction = false,
+      this.keyValueList,
       this.color});
 
   String? id;
@@ -46,5 +47,6 @@ class KeyValue {
   bool? isBase64 = false;
   VoidCallback? onAction;
   bool? isFilterAction = false;
+  List<KeyValue>? keyValueList;
   Color? color;
 }
