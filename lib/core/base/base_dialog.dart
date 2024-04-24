@@ -1,5 +1,6 @@
 import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/success_dialog.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -44,14 +45,24 @@ class BaseDialog {
     );
   }
 
+  static showSuccess({String? message, VoidCallback? action}) {
+    Get.dialog(SuccessDialog(
+      message: message,
+      action: action,
+    ).constraintsWrapper(width: 400, isCenter: false).dialogWrapper());
+  }
+
   static customise(
-      {required Widget child, bool dismissable = true, isBase = false}) {
+      {required Widget child,
+      bool dismissable = true,
+      isBase = false,
+      double maxWidth = 600}) {
     Get.dialog(
         barrierDismissible: dismissable,
         isBase
             ? child
             : child
-                .constraintsWrapper(width: 600, isCenter: false)
+                .constraintsWrapper(width: maxWidth, isCenter: false)
                 .dialogWrapper());
   }
 }

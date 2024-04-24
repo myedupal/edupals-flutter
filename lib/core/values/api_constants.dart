@@ -19,4 +19,5 @@ abstract class ApiConstants {
   static const getActivityQuestions = '$version/user/activity_questions/';
   static const getChallengeSubmissions = '$version/user/challenge_submissions/';
   static const getSubmissionAnswers = '$version/user/submission_answers/';
+  static const getUserExams = '$version/user/user_exams/';
 }

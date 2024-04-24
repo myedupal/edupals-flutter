@@ -4,11 +4,11 @@ import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
 import 'package:edupals/features/history/domain/model/activity_question.dart';
-import 'package:edupals/features/history/domain/repository/activity_question_repository.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
+import 'package:edupals/features/question-bank/domain/repository/activity_question_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/exam_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,8 @@ class QuestionsListController extends BaseController {
   RxInt elapsedSeconds = 0.obs;
   RxInt initSecond = 0.obs;
   // General State
-  final QuestionBankArgument argument = Get.arguments;
+  final QuestionBankArgument routeArgument = Get.arguments;
+  Rx<QuestionBankArgument?> currentArgument = Rx<QuestionBankArgument?>(null);
   QueryParams? questionListParams;
   RxList<Question> questionsList = <Question>[].obs;
   RxList<Topic?>? topicList = <Topic?>[].obs;
@@ -51,14 +52,19 @@ class QuestionsListController extends BaseController {
 
   @override
   void onInit() {
+    onSetArgument(value: routeArgument);
     super.onInit();
-    if (argument.queryParams != null) {
-      questionListParams = argument.queryParams;
+  }
+
+  void onSetArgument({QuestionBankArgument? value}) {
+    currentArgument.value = value;
+    if (value?.queryParams != null) {
+      questionListParams = value?.queryParams;
     }
-    (argument.revisionType == "yearly" && argument.isHistory == false)
+    (value?.revisionType == "yearly" && value?.isHistory == false)
         ? getExam()
         : getQuestions();
-    final activity = argument.activity;
+    final activity = value?.activity;
     if (activity != null) {
       currentActivity.value = activity;
       initSecond.value = activity.recordedTime ?? 0;
@@ -111,13 +117,18 @@ class QuestionsListController extends BaseController {
   }
 
   List<String> get titleList =>
-      (argument.title ?? currentActivity.value?.title)?.split("|") ?? [];
+      (currentArgument.value?.title ?? currentActivity.value?.title)
+          ?.split("|") ??
+      [];
 
-  bool get isYearly => argument.revisionType == "yearly";
+  bool get isYearly => currentArgument.value?.revisionType == "yearly";
 
-  double get getProgress =>
-      (currentActivity.value?.activityQuestionsCount ?? 0) /
-      (currentActivity.value?.questionsCount ?? 0);
+  double get getProgress {
+    final calculatedProgress =
+        (currentActivity.value?.activityQuestionsCount ?? 0) /
+            (currentActivity.value?.questionsCount ?? 0);
+    return calculatedProgress.isNaN ? 0 : calculatedProgress;
+  }
 
   String? get yearsRange {
     String finalRange = "-";
@@ -174,7 +185,7 @@ class QuestionsListController extends BaseController {
               : {
                   questionsList.value = value.data ?? [],
                   if (questionsList.isNotEmpty == true &&
-                      argument.isHistory == false)
+                      currentArgument.value?.isHistory == false)
                     createActivity()
                 };
 
@@ -207,9 +218,9 @@ class QuestionsListController extends BaseController {
   Future<void> createActivity() async {
     await activityRepo.createActivity(
         activity: Activity(
-          title: argument.title,
+          title: currentArgument.value?.title,
           subjectId: questionListParams?.subjectId,
-          activityType: argument.revisionType,
+          activityType: currentArgument.value?.revisionType,
           topicIds: questionListParams?.topicId,
           paperIds: [questionListParams?.paperId ?? ""],
           metadata: questionListParams,

@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -6,6 +7,7 @@ import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
+import 'package:edupals/features/question-bank/presentation/view/components/question_filter_segment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +15,28 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
   const QuestionsListTopBar({super.key, this.titleList});
 
   final List<String>? titleList;
+
+  void displaySearch() {
+    BaseDialog.customise(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          "Search Question",
+          style: MyTextStyle.l.bold,
+        ),
+        QuestionFilterSegment(
+          ableSelectRevision: false,
+          controllerTag: "question-bank",
+          emitData: (value) {
+            controller.onSetArgument(value: value);
+            Get.back();
+          },
+        )
+      ],
+    ));
+  }
 
   Widget titleRow({String? title, bool displayDivider = true}) => Row(
         children: [
@@ -44,7 +68,9 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
           ).padding(const EdgeInsets.only(
               left: AppValues.double10, right: AppValues.double5))
         ],
-      );
+      ).onTap(() {
+        displaySearch();
+      });
 
   Widget get timer => Obx(() => Row(
         children: [
@@ -62,9 +88,11 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
               .repaintBoundary(),
         ],
       ).onTap(() {
-        controller.stopwatch.isRunning
-            ? controller.stopStopwatch()
-            : controller.startStopwatch();
+        if (controller.currentActivity.value != null) {
+          controller.stopwatch.isRunning
+              ? controller.stopStopwatch()
+              : controller.startStopwatch();
+        }
       }));
 
   @override

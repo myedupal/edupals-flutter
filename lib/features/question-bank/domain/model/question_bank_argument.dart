@@ -8,6 +8,7 @@ class QuestionBankArgument {
   // List<String>? titleList;
   QueryParams? queryParams;
   Activity? activity;
+  String? userExamId;
 
   QuestionBankArgument({
     this.queryParams,
@@ -16,5 +17,6 @@ class QuestionBankArgument {
     this.revisionType,
     // this.titleList,
     this.activity,
+    this.userExamId,
   });
 }
