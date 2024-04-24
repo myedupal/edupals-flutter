@@ -96,6 +96,33 @@ class _BaseInputState extends State<BaseInput> {
     }
   }
 
+  void _toggleShowPassword() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
+  }
+
+  Widget? get _getIcon {
+    if (widget.keyboardType == KeyboardType.password) {
+      return Icon(
+        _showPassword ? Icons.visibility : Icons.visibility_off,
+        size: AppValues.double20,
+      ).onTap(() {
+        _toggleShowPassword();
+      });
+    } else if (widget.controller?.text.isNotEmpty == true) {
+      return const Icon(
+        Icons.clear,
+        size: AppValues.double20,
+      ).onTap(
+        () {
+          widget.controller?.clear();
+        },
+      );
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -103,8 +130,11 @@ class _BaseInputState extends State<BaseInput> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(AppValues.double12,
-              AppValues.double8, AppValues.double12, AppValues.double14),
+          padding: EdgeInsets.fromLTRB(
+              AppValues.double12,
+              AppValues.double8,
+              _getIcon != null ? AppValues.double6 : AppValues.double12,
+              AppValues.double14),
           decoration: BoxDecoration(
             border: Border.all(color: _borderColor),
             borderRadius: BorderRadius.circular(5),
@@ -133,11 +163,13 @@ class _BaseInputState extends State<BaseInput> {
                 enabled: widget.enabled,
                 controller: widget.controller,
                 style: widget.textStyle,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
                   border: InputBorder.none,
                   prefixIcon: null,
+                  suffixIconConstraints: const BoxConstraints(minWidth: 30),
+                  suffixIcon: _getIcon,
                 ),
               )
             ],
