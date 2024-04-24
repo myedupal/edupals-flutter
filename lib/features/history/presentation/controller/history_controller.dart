@@ -94,6 +94,10 @@ class HistoryController extends BaseController {
     getHistory();
   }
 
+  void updateNavbar() {
+    mainController.onSetNavIndex(3);
+  }
+
   void navigateExam({String? id}) {
     Get.toNamed(Routes.examBuilderDetails,
             arguments: QuestionBankArgument(userExamId: id))

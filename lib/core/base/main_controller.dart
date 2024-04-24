@@ -61,6 +61,10 @@ class MainController extends GetxController {
     getCurriculums();
   }
 
+  void onSetNavIndex(int index) {
+    selectedNavIndex.value = index;
+  }
+
   Future<void> getUserCurriculum() async {
     selectedCurriculum.value = await localRepo.getCurriculum();
     // if (selectedCurriculum.value == null) {
