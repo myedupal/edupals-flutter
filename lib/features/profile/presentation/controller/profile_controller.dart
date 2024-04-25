@@ -20,7 +20,13 @@ class ProfileController extends GetxController {
 
   final Rx<KeyValue?> selectedMenu = Rx<KeyValue?>(null);
 
-  void onSelectMenu({required KeyValue menu}) {
+  @override
+  void onInit() {
+    onSelectMenu(menu: menuList.first.keyValueList?.first);
+    super.onInit();
+  }
+
+  void onSelectMenu({KeyValue? menu}) {
     selectedMenu.value = menu;
   }
 }

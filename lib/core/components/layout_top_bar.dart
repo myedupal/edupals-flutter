@@ -39,7 +39,8 @@ class LayoutTopBar extends GetView<MainController> {
           children: [
             const ImageAssetView(
               fileName:
-                  "https://cdn.pixabay.com/photo/2018/05/26/18/06/dog-3431913_1280.jpg",
+                  "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              fit: BoxFit.cover,
               width: AppValues.double25,
               height: AppValues.double25,
             ).clip(),

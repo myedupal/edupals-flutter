@@ -52,7 +52,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.profile,
-      transition: Transition.circularReveal,
+      transition: Transition.fadeIn,
       fullscreenDialog: true,
       page: () => const ProfileView(),
     ),

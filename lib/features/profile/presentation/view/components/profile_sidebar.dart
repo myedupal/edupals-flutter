@@ -26,7 +26,7 @@ class ProfileSidebar extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: AppValues.double20),
+      margin: const EdgeInsets.only(top: AppValues.double15),
       width: Get.width * 0.25,
       padding: const EdgeInsets.only(
           left: AppValues.double20, right: AppValues.double20),

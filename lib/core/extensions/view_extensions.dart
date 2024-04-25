@@ -139,4 +139,13 @@ extension ExpandedWidget on Widget {
       color: AppColors.accent500,
       padding: const EdgeInsets.symmetric(
           horizontal: AppValues.double15, vertical: AppValues.double12));
+
+  Widget imageBackground({EdgeInsets? padding}) => Container(
+      padding: padding ?? const EdgeInsets.all(AppValues.double20),
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(AppAssets.dashboardChallengeBg))),
+      child: this);
 }

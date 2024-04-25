@@ -1,6 +1,7 @@
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/profile/presentation/controller/profile_controller.dart';
+import 'package:edupals/features/profile/presentation/view/components/profile_overview.dart';
 import 'package:edupals/features/profile/presentation/view/components/profile_sidebar.dart';
 import 'package:edupals/features/profile/presentation/view/components/profile_top_bar.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class ProfileView extends GetView<ProfileController> {
           ProfileSidebar(),
           Expanded(
               child: Column(
-            children: [],
+            children: [ProfileOverview()],
           ))
         ])),
       ],
