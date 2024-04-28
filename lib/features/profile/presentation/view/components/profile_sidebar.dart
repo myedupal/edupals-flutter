@@ -31,6 +31,7 @@ class ProfileSidebar extends GetView<ProfileController> {
       padding: const EdgeInsets.only(
           left: AppValues.double20, right: AppValues.double20),
       child: ListView(
+        shrinkWrap: true,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -24,7 +24,8 @@ class KeyValue {
       this.onAction,
       this.isFilterAction = false,
       this.keyValueList,
-      this.color});
+      this.color,
+      this.buttonText});
 
   String? id;
   String? date;
@@ -49,4 +50,5 @@ class KeyValue {
   bool? isFilterAction = false;
   List<KeyValue>? keyValueList;
   Color? color;
+  String? buttonText;
 }

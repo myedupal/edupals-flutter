@@ -4,6 +4,7 @@ import 'package:edupals/features/profile/presentation/controller/profile_control
 import 'package:edupals/features/profile/presentation/view/components/profile_overview.dart';
 import 'package:edupals/features/profile/presentation/view/components/profile_sidebar.dart';
 import 'package:edupals/features/profile/presentation/view/components/profile_top_bar.dart';
+import 'package:edupals/features/profile/presentation/view/screens/account_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,13 +18,17 @@ class ProfileView extends GetView<ProfileController> {
       children: [
         const ProfileTopBar()
             .padding(const EdgeInsets.only(bottom: AppValues.double20)),
-        const Expanded(
+        Expanded(
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ProfileSidebar(),
-          Expanded(
-              child: Column(
-            children: [ProfileOverview()],
-          ))
+          if (!context.isPhone && context.isLandscape) const ProfileSidebar(),
+          const Spacer(),
+          ListView(
+            children: const [ProfileOverview(), AccountView()],
+          ).constraintsWrapper(
+              width: Get.width *
+                  (!context.isPhone && context.isLandscape ? 0.65 : 0.9),
+              color: Colors.transparent),
+          const Spacer(),
         ])),
       ],
     )

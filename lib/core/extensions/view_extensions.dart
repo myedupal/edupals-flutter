@@ -134,9 +134,9 @@ extension ExpandedWidget on Widget {
       padding: const EdgeInsets.symmetric(
           horizontal: AppValues.double10, vertical: AppValues.double10));
 
-  Widget topBarCapsule() => capsulise(
+  Widget topBarCapsule({Color? color}) => capsulise(
       radius: 100,
-      color: AppColors.accent500,
+      color: color ?? AppColors.accent500,
       padding: const EdgeInsets.symmetric(
           horizontal: AppValues.double15, vertical: AppValues.double12));
 
