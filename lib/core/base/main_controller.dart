@@ -8,6 +8,7 @@ import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
+import 'package:edupals/features/exam-builder/presentation/view/screens/exam_builder_view.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/history/presentation/controller/history_controller.dart';
@@ -34,7 +35,7 @@ class MainController extends GetxController {
     DashboardView(),
     const QuestionBankView(),
     const HistoryView(),
-    // const ExamBuilderView(),
+    const ExamBuilderView(),
     Container(),
     Container(),
     Container()
@@ -58,6 +59,10 @@ class MainController extends GetxController {
     super.onInit();
     getUserCurriculum();
     getCurriculums();
+  }
+
+  void onSetNavIndex(int index) {
+    selectedNavIndex.value = index;
   }
 
   Future<void> getUserCurriculum() async {

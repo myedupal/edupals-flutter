@@ -13,7 +13,7 @@ class TrendingColumn extends StatelessWidget {
     this.title,
     this.value,
     this.subvalue,
-    this.ableStart = true,
+    this.actionWidget,
   });
 
   final int percentage;
@@ -21,7 +21,7 @@ class TrendingColumn extends StatelessWidget {
   final String? title;
   final String? value;
   final String? subvalue;
-  final bool ableStart;
+  final Widget? actionWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +36,19 @@ class TrendingColumn extends StatelessWidget {
               title ?? "",
               style: MyTextStyle.m.bold,
             )),
-            if (ableStart)
-              Text(
-                "Start now",
-                style: MyTextStyle.xxs.bold.c(AppColors.accent500),
-              ).capsulise(
-                  radius: 100,
-                  border: true,
-                  borderColor: AppColors.accent500,
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppValues.double5,
-                      horizontal: AppValues.double15))
+            actionWidget ?? Container()
+            // if (ableStart)
+            //   Text(
+            //     "Start now",
+            //     style: MyTextStyle.xxs.bold.c(AppColors.accent500),
+            //   ).capsulise(
+            //       radius: 100,
+            //       border: true,
+            //       borderColor: AppColors.accent500,
+            //       color: Colors.transparent,
+            //       padding: const EdgeInsets.symmetric(
+            //           vertical: AppValues.double5,
+            //           horizontal: AppValues.double15))
           ],
         ).padding(const EdgeInsets.only(bottom: AppValues.double10)),
         Row(

@@ -1,11 +1,11 @@
 {
-    "name": "edupals_flutter",
-    "short_name": "edupals_flutter",
+    "name": "edupals",
+    "short_name": "edupals",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#007AFF",
+    "theme_color": "#007AFF",
+    "description": "edupals app",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

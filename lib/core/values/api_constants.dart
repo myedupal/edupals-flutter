@@ -11,6 +11,7 @@ abstract class ApiConstants {
   static const getCurriculums = '$version/web/curriculums/';
   static const getExams = '$version/web/exams/';
 
+  static const getUser = '$version/user';
   static const getLogin = '$version/user/sign_in';
   static const getLogout = '$version/user/sign_out';
   static const getQuestions = '$version/user/questions/';
@@ -19,4 +20,5 @@ abstract class ApiConstants {
   static const getActivityQuestions = '$version/user/activity_questions/';
   static const getChallengeSubmissions = '$version/user/challenge_submissions/';
   static const getSubmissionAnswers = '$version/user/submission_answers/';
+  static const getUserExams = '$version/user/user_exams/';
 }

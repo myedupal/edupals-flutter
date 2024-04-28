@@ -54,7 +54,7 @@ class ExamBuilderDetailsView extends GetView<ExamBuilderDetailsController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Q${selectedQuestion?.number} ${selectedQuestion?.exam?.year} ${selectedQuestion?.exam?.season} ${selectedQuestion?.exam?.zone}",
+              "Q${selectedQuestion?.number ?? ""} ${selectedQuestion?.exam?.year ?? ""} ${selectedQuestion?.exam?.season ?? ""} ${selectedQuestion?.exam?.zone ?? ""}",
               style: MyTextStyle.xxl.bold,
             ),
             Expanded(

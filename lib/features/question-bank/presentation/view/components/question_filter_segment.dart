@@ -5,6 +5,7 @@ import 'package:edupals/core/components/selection_input.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
+import 'package:edupals/features/question-bank/domain/model/question_filter_argument.dart';
 import 'package:edupals/features/question-bank/domain/repository/subject_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/topic_repository.dart';
 import 'package:edupals/features/question-bank/presentation/controller/question_filter_segment_controller.dart';
@@ -13,11 +14,20 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class QuestionFilterSegment extends StatelessWidget {
-  const QuestionFilterSegment({super.key, this.emitData, this.controllerTag});
+  const QuestionFilterSegment({
+    super.key,
+    this.emitData,
+    this.controllerTag,
+    this.ableSelectRevision = true,
+    this.ableSelectSubject = true,
+    this.filterArgument,
+  });
 
   final Function(QuestionBankArgument?)? emitData;
-
+  final bool ableSelectRevision;
+  final bool ableSelectSubject;
   final String? controllerTag;
+  final QuestionFilterArgument? filterArgument;
 
   void showRevisionDialog(QuestionFilterSegmentController controller) {
     BaseDialog.customise(
@@ -124,12 +134,25 @@ class QuestionFilterSegment extends StatelessWidget {
     ));
   }
 
+  Widget zoneWidget(QuestionFilterSegmentController controller) =>
+      SelectionInput(
+        label: "Zone",
+        isRequired: controller.isYearly,
+        isMultiSelect: false,
+        data: controller.selectedZone.value,
+      ).onTap(() {
+        controller.selectedSubject.value == null
+            ? controller.triggerError(error: "You have to select subject first")
+            : showZoneDialog(controller);
+      });
+
   @override
   Widget build(BuildContext context) {
     Get.lazyPut<SubjectRepository>(() => SubjectRepository());
     Get.lazyPut<TopicRepository>(() => TopicRepository());
     final controller =
         Get.put(QuestionFilterSegmentController(), tag: controllerTag);
+    controller.onSetFilterArgument(value: filterArgument);
     return Obx(() {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -137,39 +160,38 @@ class QuestionFilterSegment extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(
-                  child: SelectionInput(
-                label: "Revision Type",
-                data: controller.selectedRevisionType.value,
-              )
-                      .padding(const EdgeInsets.only(right: AppValues.double15))
-                      .onTap(() => showRevisionDialog(controller))),
-              Expanded(
-                  child: SelectionInput(
-                label: "Subject",
-                isRequired: true,
-                data: controller.selectedSubject.value,
-              ).onTap(() {
-                if (controller.isAbleSelectSubject()) {
-                  showSubjectDialog(controller);
-                } else {
-                  controller.triggerError(
-                      error: "Please select a curriculum first");
-                }
-              })),
+              if (ableSelectRevision)
+                Expanded(
+                    child: SelectionInput(
+                  label: "Revision Type",
+                  data: controller.selectedRevisionType.value,
+                )
+                        .padding(
+                            const EdgeInsets.only(right: AppValues.double15))
+                        .onTap(() => showRevisionDialog(controller))),
+              if (ableSelectSubject)
+                Expanded(
+                    child: SelectionInput(
+                  label: "Subject",
+                  isRequired: true,
+                  data: controller.selectedSubject.value,
+                ).onTap(() {
+                  if (controller.isAbleSelectSubject()) {
+                    showSubjectDialog(controller);
+                  } else {
+                    controller.triggerError(
+                        error: "Please select a curriculum first");
+                  }
+                }).padding(EdgeInsets.only(
+                        right: !ableSelectRevision
+                            ? AppValues.double15
+                            : AppValues.double0))),
+              if (!ableSelectRevision) Expanded(child: zoneWidget(controller)),
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-          SelectionInput(
-            label: "Zone",
-            isRequired: controller.isYearly,
-            isMultiSelect: false,
-            data: controller.selectedZone.value,
-          ).onTap(() {
-            controller.selectedSubject.value == null
-                ? controller.triggerError(
-                    error: "You have to select subject first")
-                : showZoneDialog(controller);
-          }).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          if (ableSelectRevision)
+            zoneWidget(controller)
+                .padding(const EdgeInsets.only(bottom: AppValues.double20)),
           Row(
             children: [
               Expanded(

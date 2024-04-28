@@ -22,7 +22,7 @@ class ChapterDisplayList extends GetView<QuestionsListController> {
     return Column(
       children: [
         Obx(() => TrendingColumn(
-              percentage: (controller.getProgress * 100).round(),
+              percentage: ((controller.getProgress) * 100).round(),
               title: controller.questionsList.first.subject?.name ?? "",
               value: "${controller.topicList?.length ?? 0} Chapters ",
               subvalue: "${controller.yearsRange}",

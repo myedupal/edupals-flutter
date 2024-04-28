@@ -4,6 +4,7 @@ import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/core/extensions/string_extensions.dart';
 import 'package:edupals/features/question-bank/domain/model/question_bank_argument.dart';
+import 'package:edupals/features/question-bank/domain/model/question_filter_argument.dart';
 import 'package:edupals/features/question-bank/domain/model/subject.dart';
 import 'package:edupals/features/question-bank/domain/model/topic.dart';
 import 'package:edupals/features/question-bank/domain/repository/subject_repository.dart';
@@ -11,9 +12,12 @@ import 'package:edupals/features/question-bank/domain/repository/topic_repositor
 import 'package:get/get.dart';
 
 class QuestionFilterSegmentController extends GetxController {
+  // Repository and controller DI
   final SubjectRepository subjectRepo = Get.find();
   final TopicRepository topicRepo = Get.find();
   final MainController mainController = Get.find();
+
+  // General State
   final RxList<Subject>? subjectList = <Subject>[].obs;
   final RxList<Topic>? topicList = <Topic>[].obs;
   final List<KeyValue> revisionType = [
@@ -41,14 +45,22 @@ class QuestionFilterSegmentController extends GetxController {
   void onInit() {
     super.onInit();
     selectedRevisionType.value = revisionType.first;
+    getSubjects();
     mainController.selectedCurriculum.stream.listen((value) {
       getSubjects();
       resetFilter();
     });
-    getSubjects();
   }
 
   bool get isYearly => selectedRevisionType.value?.key == "yearly";
+
+  void onSetFilterArgument({QuestionFilterArgument? value}) {
+    if (value?.subject != null) {
+      selectedSubject.value = value?.subject;
+      getTopics();
+      getSubjects(isReset: false);
+    }
+  }
 
   void resetFilter() {
     selectedPaper.value = null;
@@ -162,13 +174,13 @@ class QuestionFilterSegmentController extends GetxController {
       ?.map((e) => KeyValue(label: e.name, key: e.id))
       .toList();
 
-  Future<void> getSubjects() async {
+  Future<void> getSubjects({bool isReset = true}) async {
     await subjectRepo.getSubjects(
         queryParams: QueryParams(
             curriculumId: mainController.selectedCurriculum.value?.id),
         onSuccess: (value) {
           subjectList?.value = value ?? [];
-          selectedSubject.value = null;
+          if (isReset) selectedSubject.value = null;
         },
         onError: (error) {});
   }

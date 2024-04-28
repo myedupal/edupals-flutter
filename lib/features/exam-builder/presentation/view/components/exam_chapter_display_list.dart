@@ -40,7 +40,7 @@ class ExamChapterDisplayList extends GetView<ExamBuilderDetailsController> {
                             question: e,
                             isActive:
                                 controller.selectedQuestion.value?.id == e.id,
-                            ableAdd: true,
+                            ableAdd: controller.ableEdit.value,
                             isAddActive: controller.isQuestionAdded(e.id),
                             onTap: () {
                               controller.onSelectQuestion(question: e);

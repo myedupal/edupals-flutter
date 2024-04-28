@@ -1,13 +1,16 @@
 import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/base_input.dart';
+import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:edupals/features/exam-builder/domain/model/user_exam.dart';
 import 'package:edupals/features/exam-builder/presentation/controller/exam_builder_details_controller.dart';
+import 'package:edupals/features/question-bank/domain/model/question_filter_argument.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/question_filter_segment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,6 +46,8 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
   }
 
   void displaySearch() {
+    final UserExam? apiUserExam = controller.apiUserExam.value;
+    debugPrint("User exam ${apiUserExam != null}");
     BaseDialog.customise(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,6 +58,14 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
           style: MyTextStyle.l.bold,
         ),
         QuestionFilterSegment(
+          ableSelectSubject: false,
+          ableSelectRevision: false,
+          filterArgument: apiUserExam != null
+              ? QuestionFilterArgument(
+                  subject: KeyValue(
+                      label: apiUserExam.subject?.name,
+                      key: apiUserExam.subject?.id))
+              : null,
           controllerTag: "exam-builder",
           emitData: (value) {
             controller.onSearchQuestions(value: value);
@@ -116,21 +129,26 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
                           title: controller.examName?.value.isEmpty == true
                               ? "Your exam name"
                               : controller.examName?.value,
-                          icon: AppAssets.edit)
+                          icon: (controller.ableEdit.value)
+                              ? AppAssets.edit
+                              : null,
+                          withDivider: controller.ableEdit.value)
                       .onTap(() {
-                    displayNameDialog();
+                    if (controller.ableEdit.value) displayNameDialog();
                   }),
-                  topBarItem(
-                      title:
-                          "${controller.selectedQuestions.length} questions added",
-                      icon: AppAssets.eyeOpen),
-                  topBarItem(
-                          title: "Search Questions",
-                          withDivider: false,
-                          icon: AppAssets.search)
-                      .onTap(() {
-                    displaySearch();
-                  }),
+                  if (controller.ableEdit.value) ...[
+                    topBarItem(
+                        title:
+                            "${controller.selectedQuestions.length} questions added",
+                        icon: AppAssets.eyeOpen),
+                    topBarItem(
+                            title: "Search Questions",
+                            withDivider: false,
+                            icon: AppAssets.search)
+                        .onTap(() {
+                      displaySearch();
+                    }),
+                  ]
                 ],
               ).capsulise(
                       radius: 100,
@@ -144,18 +162,31 @@ class ExamBuilderTopBar extends GetView<ExamBuilderDetailsController> {
         Text(
           "FAQ",
           style: MyTextStyle.s.bold,
-        ),
-        Text(
-          "Save Exam",
-          style: MyTextStyle.s.bold.c(AppColors.white),
-        )
-            .capsulise(
-                radius: 100,
-                color: AppColors.accent500,
-                padding: const EdgeInsets.symmetric(
-                    vertical: AppValues.double12,
-                    horizontal: AppValues.double15))
-            .padding(const EdgeInsets.only(left: AppValues.double20)),
+        ).padding(const EdgeInsets.only(right: AppValues.double20)),
+        Obx(() => (controller.ableEdit.value)
+            ? Text(
+                "Save Exam",
+                style: MyTextStyle.s.bold.c(AppColors.white),
+              )
+                .capsulise(
+                    radius: 100,
+                    color: AppColors.accent500,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: AppValues.double12,
+                        horizontal: AppValues.double15))
+                .onTap(() {
+                controller.apiUserExam.value == null
+                    ? controller.createUserExam()
+                    : controller.updateUserExam();
+              })
+            : Text(
+                "Edit Exam",
+                style: MyTextStyle.s.bold.c(AppColors.gray900).underline,
+              )
+                .padding(const EdgeInsets.only(right: AppValues.double20))
+                .onTap(() {
+                controller.ableEdit.value = true;
+              })),
       ],
     ).capsulise(
         radius: 100,
