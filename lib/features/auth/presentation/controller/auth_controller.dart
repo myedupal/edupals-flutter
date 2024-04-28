@@ -46,7 +46,7 @@ class AuthController extends BaseController {
               password: passwordController.value.text),
           onSuccess: (value) {
             setSuccess();
-            Get.offAllNamed(Routes.home);
+            Get.offAllNamed(Routes.homeAnimation);
           },
           onError: (error) {
             setSuccess();
@@ -70,7 +70,7 @@ class AuthController extends BaseController {
               message: "Your account is registered successfully",
               buttonText: "Go to dashboard",
               action: () {
-                Get.offAllNamed(Routes.home);
+                Get.offAllNamed(Routes.homeAnimation);
               },
             );
           },

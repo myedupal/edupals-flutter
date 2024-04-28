@@ -61,7 +61,9 @@ class AuthView extends GetView<AuthController> {
           mainAxisSize: MainAxisSize.max,
           children: [
             if (!context.isPhone && context.isLandscape)
-              const ImageAssetView(fileName: AppAssets.authBg),
+              const ImageAssetView(
+                fileName: AppAssets.authBg,
+              ),
             Expanded(
                 child: ListView(
                     physics: const BouncingScrollPhysics(),

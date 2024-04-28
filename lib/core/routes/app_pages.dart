@@ -26,11 +26,25 @@ class AppPages {
         page: () => const SplashView(),
         binding: SplashBinding()),
     GetPage(name: Routes.home, page: () => const Navbar()),
+    GetPage(
+      name: Routes.homeAnimation,
+      page: () => const Navbar(),
+      fullscreenDialog: true,
+      transition: Transition.fadeIn,
+    ),
     GetPage(name: Routes.dashboard, page: () => DashboardView()),
     GetPage(
         name: Routes.login,
         page: () => const AuthView(),
         binding: AuthBinding()),
+    GetPage(
+      name: Routes.loginAnimation,
+      page: () => const AuthView(),
+      binding: AuthBinding(),
+      fullscreenDialog: true,
+      transitionDuration: const Duration(milliseconds: 500),
+      transition: Transition.fadeIn,
+    ),
     GetPage(
         name: Routes.questionsList,
         page: () => const QuestionsListView(),

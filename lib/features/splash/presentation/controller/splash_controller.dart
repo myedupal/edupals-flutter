@@ -11,9 +11,9 @@ class SplashController extends GetxController {
     checkLogin();
     Future.delayed(const Duration(seconds: 2), () {
       if (isLoggedIn.value) {
-        Get.offAllNamed(Routes.home);
+        Get.offAllNamed(Routes.homeAnimation);
       } else {
-        Get.offAllNamed(Routes.login);
+        Get.offAllNamed(Routes.loginAnimation);
       }
     });
     super.onInit();

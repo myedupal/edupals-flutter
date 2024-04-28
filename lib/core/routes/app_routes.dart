@@ -1,7 +1,9 @@
 abstract class Routes {
   static const main = '/main';
   static const home = '/home';
+  static const homeAnimation = '/homeAnimation';
   static const login = '/login';
+  static const loginAnimation = '/loginAnimation';
   static const dashboard = '/dashboard';
   static const dailyChallenge = '/dailyChallenge';
   static const questionsList = '/questionsList';

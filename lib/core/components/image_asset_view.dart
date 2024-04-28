@@ -57,6 +57,7 @@ class ImageAssetView extends StatelessWidget {
           width: width,
           color: color,
           scale: scale,
+          gaplessPlayback: true,
         );
       case 'url':
         return CachedNetworkImage(

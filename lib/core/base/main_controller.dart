@@ -125,7 +125,7 @@ class MainController extends GetxController {
 
   void clearSession() {
     localRepo.clearStorage();
-    Get.offAllNamed(Routes.login);
+    Get.offAllNamed(Routes.loginAnimation);
   }
 
   Future<void> onTerminateStopWatch({int? time, String? activityId}) async {
