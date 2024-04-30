@@ -8,6 +8,8 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/profile/presentation/view/components/update_profile_form.dart';
 import 'package:flutter/widgets.dart';
 
+enum UpdateAccountType { profile, password, phoneNumber, email }
+
 class AccountView extends StatelessWidget {
   const AccountView({super.key});
 
@@ -48,7 +50,9 @@ class AccountView extends StatelessWidget {
           sublabel: "Change your current username, display name",
           buttonText: "Edit profile",
           onAction: () {
-            BaseDialog.customise(child: const UpdateProfileForm());
+            BaseDialog.customise(
+                child: const UpdateProfileForm(
+                    updateType: UpdateAccountType.profile));
           },
           color: null),
       KeyValue(

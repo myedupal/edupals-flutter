@@ -1,22 +1,57 @@
 import 'package:edupals/core/base/base_button.dart';
-import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/base_input.dart';
-import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/profile/presentation/controller/update_profile_controller.dart';
+import 'package:edupals/features/profile/presentation/view/screens/account_view.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class UpdateProfileForm extends GetView<UpdateProfileController> {
+class UpdateProfileForm extends StatelessWidget {
   const UpdateProfileForm({super.key, this.updateType});
 
-  final KeyValue? updateType;
+  final UpdateAccountType? updateType;
+
+  Widget getFormInput({required UpdateProfileController controller}) {
+    Widget form;
+
+    switch (updateType) {
+      case UpdateAccountType.profile:
+        form = BaseInput(
+          label: "New Username",
+          controller: controller.usernameController,
+        ).padding(const EdgeInsets.only(bottom: AppValues.double20));
+        break;
+      case UpdateAccountType.password:
+        form = Column(
+          children: [
+            BaseInput(
+              label: "Current Password",
+              controller: controller.currentPasswordController,
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            BaseInput(
+              label: "New Password",
+              controller: controller.newPasswordController,
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            BaseInput(
+              label: "Confirmation New Password",
+              controller: controller.confirmPasswordController,
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          ],
+        );
+      default:
+        form = Container();
+    }
+
+    return form;
+  }
 
   @override
   Widget build(BuildContext context) {
-    Get.put(UpdateProfileController());
+    final controller = Get.put(UpdateProfileController());
+    controller.onSetUpdateType(value: updateType);
+
     return ListView(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
@@ -29,27 +64,14 @@ class UpdateProfileForm extends GetView<UpdateProfileController> {
                 "Update Profile",
                 style: MyTextStyle.m.bold,
               ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-              const BaseInput(
-                label: "New Username",
-              ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-              const BaseInput(
-                label: "New Username",
-              ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-              const BaseInput(
-                label: "New Username",
-              ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+              getFormInput(controller: controller),
               Row(
                 children: [
                   const Spacer(),
                   BaseButton(
                       text: "I am done !",
                       onClick: () {
-                        BaseDialog.showSuccess(
-                          message: "You have successfully updated profile!",
-                          action: () {
-                            Get.until((route) => Get.isDialogOpen == false);
-                          },
-                        );
+                        controller.onSubmit();
                       })
                 ],
               )

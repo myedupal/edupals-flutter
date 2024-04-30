@@ -67,5 +67,5 @@ class User {
         "current_password": currentPassword,
         "password_confirmation": passwordConfirmation,
       }..removeWhere((dynamic key, dynamic value) =>
-          key == null || value == null || value == "null");
+          key == null || value == null || value == "null" || value == "");
 }
