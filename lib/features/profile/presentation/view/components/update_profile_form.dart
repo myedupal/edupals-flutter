@@ -28,14 +28,17 @@ class UpdateProfileForm extends StatelessWidget {
           children: [
             BaseInput(
               label: "Current Password",
+              keyboardType: KeyboardType.password,
               controller: controller.currentPasswordController,
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
             BaseInput(
               label: "New Password",
+              keyboardType: KeyboardType.password,
               controller: controller.newPasswordController,
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
             BaseInput(
               label: "Confirmation New Password",
+              keyboardType: KeyboardType.password,
               controller: controller.confirmPasswordController,
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
           ],
@@ -56,27 +59,28 @@ class UpdateProfileForm extends StatelessWidget {
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Update Profile",
-                style: MyTextStyle.m.bold,
-              ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-              getFormInput(controller: controller),
-              Row(
+          Obx(() => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Spacer(),
-                  BaseButton(
-                      text: "I am done !",
-                      onClick: () {
-                        controller.onSubmit();
-                      })
+                  Text(
+                    "Update ${updateType?.displayTitle}",
+                    style: MyTextStyle.m.bold,
+                  ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+                  getFormInput(controller: controller),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      BaseButton(
+                          text: "I am done !",
+                          isLoading: controller.isLoading,
+                          onClick: () {
+                            controller.onSubmit();
+                          })
+                    ],
+                  )
                 ],
-              )
-            ],
-          )
+              ).ignorePointer(controller.isLoading))
         ]);
   }
 }

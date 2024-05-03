@@ -13,6 +13,8 @@ abstract class BaseController extends GetxController {
 
   ViewState get viewState => _pageSateController.value;
 
+  bool get isLoading => viewState == ViewState.loading;
+
   ViewState updateViewState(ViewState state) => _pageSateController(state);
 
   ViewState setLoading() => updateViewState(ViewState.loading);

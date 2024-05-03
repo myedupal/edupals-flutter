@@ -8,7 +8,16 @@ import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/profile/presentation/view/components/update_profile_form.dart';
 import 'package:flutter/widgets.dart';
 
-enum UpdateAccountType { profile, password, phoneNumber, email }
+enum UpdateAccountType {
+  profile("Profile"),
+  password("Password"),
+  phoneNumber("Phone Number"),
+  email("Email Address");
+
+  const UpdateAccountType(this.displayTitle);
+
+  final String? displayTitle;
+}
 
 class AccountView extends StatelessWidget {
   const AccountView({super.key});
@@ -55,23 +64,35 @@ class AccountView extends StatelessWidget {
                     updateType: UpdateAccountType.profile));
           },
           color: null),
-      KeyValue(
-          label: "Email Address",
-          sublabel: "Edit email address",
-          buttonText: "Edit email address",
-          onAction: () {},
-          color: null),
-      KeyValue(
-          label: "Phone Number",
-          sublabel: "Edit phone number",
-          buttonText: "Edit phone number",
-          onAction: () {},
-          color: null),
+      // KeyValue(
+      //     label: "Email Address",
+      //     sublabel: "Edit email address",
+      //     buttonText: "Edit email address",
+      //     onAction: () {
+      //       BaseDialog.customise(
+      //           child: const UpdateProfileForm(
+      //               updateType: UpdateAccountType.email));
+      //     },
+      //     color: null),
+      // KeyValue(
+      //     label: "Phone Number",
+      //     sublabel: "Edit phone number",
+      //     buttonText: "Edit phone number",
+      //     onAction: () {
+      //       BaseDialog.customise(
+      //           child: const UpdateProfileForm(
+      //               updateType: UpdateAccountType.phoneNumber));
+      //     },
+      //     color: null),
       KeyValue(
           label: "Password and Authentication",
           sublabel: "",
           buttonText: "Change password",
-          onAction: () {},
+          onAction: () {
+            BaseDialog.customise(
+                child: const UpdateProfileForm(
+                    updateType: UpdateAccountType.password));
+          },
           color: null),
       KeyValue(
           label: "Account Removal",

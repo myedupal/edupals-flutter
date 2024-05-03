@@ -37,7 +37,7 @@ class HttpRequestHeaderInterceptor extends Interceptor {
     if (err.type == DioExceptionType.badResponse && err.response != null) {
       // force logout
       if (err.response?.statusCode == 401) {
-        if (Get.currentRoute != Routes.login) {
+        if (Get.currentRoute != Routes.loginAnimation) {
           await localRepository.clearStorage();
           await mainController.logout();
           BaseSnackBar.show(message: "Please login again.");

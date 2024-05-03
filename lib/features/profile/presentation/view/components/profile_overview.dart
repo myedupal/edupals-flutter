@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/base_progress_indicator.dart';
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -13,6 +14,7 @@ class ProfileOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainController mainController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -106,10 +108,10 @@ class ProfileOverview extends StatelessWidget {
                   "Display Name",
                   style: MyTextStyle.xs.bold.c(AppColors.white),
                 ),
-                Text(
-                  "Johnson",
-                  style: MyTextStyle.s.c(AppColors.white),
-                )
+                Obx(() => Text(
+                      mainController.currentUser.value?.name ?? "",
+                      style: MyTextStyle.s.c(AppColors.white),
+                    ))
               ],
             )
           ],

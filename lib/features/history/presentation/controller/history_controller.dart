@@ -1,6 +1,7 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/exam-builder/domain/model/user_exam.dart';
 import 'package:edupals/features/exam-builder/domain/repository/user_exam_repository.dart';
@@ -22,6 +23,9 @@ class HistoryController extends BaseController {
   RxList<UserExam> userExamList = <UserExam>[].obs;
   RxInt activityTotalPage = 1.obs;
   RxInt userExamTotalPage = 1.obs;
+
+  Rx<ViewState> userExamState = ViewState.initial.obs;
+  Rx<ViewState> historyState = ViewState.initial.obs;
 
   @override
   void onInit() {
@@ -65,7 +69,7 @@ class HistoryController extends BaseController {
     if (loadMore) {
       userExamListParams?.page = page + 1;
     } else {
-      setLoading();
+      userExamState.value = ViewState.loading;
     }
     await userExamRepo.getUserExams(
         queryParams: userExamListParams,
@@ -77,9 +81,9 @@ class HistoryController extends BaseController {
           userExamList.isNotEmpty == true
               ? {
                   userExamTotalPage.value = int.parse(value.pages ?? "1"),
-                  setSuccess()
+                  userExamState.value = ViewState.success
                 }
-              : setNoData();
+              : userExamState.value = ViewState.noData;
         },
         onError: (error) {});
   }

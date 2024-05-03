@@ -63,7 +63,10 @@ class User {
         "name": name,
         "active": active,
         "email": email,
+        "points": points,
         "password": password,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
         "current_password": currentPassword,
         "password_confirmation": passwordConfirmation,
       }..removeWhere((dynamic key, dynamic value) =>

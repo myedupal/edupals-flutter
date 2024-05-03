@@ -1,12 +1,16 @@
+import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/base_dialog.dart';
+import 'package:edupals/core/base/base_snackbar.dart';
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/user.dart';
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
 import 'package:edupals/features/profile/presentation/view/screens/account_view.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class UpdateProfileController extends GetxController {
+class UpdateProfileController extends BaseController {
   final UserAccountRepository userAccountRepo = Get.find();
+  final MainController mainController = Get.find();
   final usernameController = TextEditingController();
   final currentPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
@@ -26,14 +30,24 @@ class UpdateProfileController extends GetxController {
   }
 
   void updateUserAcount() {
+    setLoading();
     final user = User(
-      email: usernameController.text,
+      name: usernameController.text,
     );
     userAccountRepo.updateAccount(
-        user: user, onSuccess: (value) {}, onError: (eror) {});
+        user: user,
+        onSuccess: (value) {
+          setSuccess();
+          updateSuccess(value: value);
+        },
+        onError: (error) {
+          setSuccess();
+          BaseSnackBar.show(message: error.message);
+        });
   }
 
   void updateUserPassword() {
+    setLoading();
     final userPassword = User(
         currentPassword: currentPasswordController.text,
         password: newPasswordController.text,
@@ -41,14 +55,21 @@ class UpdateProfileController extends GetxController {
     userAccountRepo.updatePassword(
         user: userPassword,
         onSuccess: (value) {
-          updateSuccess();
+          setSuccess();
+          updateSuccess(value: value);
         },
-        onError: (eror) {});
+        onError: (error) {
+          setSuccess();
+          BaseSnackBar.show(message: error.message);
+        });
   }
 
-  void updateSuccess() {
+  void updateSuccess({User? value}) {
+    mainController.setUser(user: value);
     BaseDialog.showSuccess(
-      message: "You have successfully updated password !",
+      dismissable: false,
+      message:
+          "You have successfully updated ${updateType?.displayTitle?.toLowerCase()}!",
       action: () {
         Get.until((route) => Get.isDialogOpen == false);
       },

@@ -21,7 +21,8 @@ class AuthRepository {
           authorization: false,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
           onError: onError,
         );
   }
@@ -37,7 +38,8 @@ class AuthRepository {
           authorization: false,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
           onError: onError,
         );
   }

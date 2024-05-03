@@ -16,10 +16,11 @@ class UserAccountRepository {
     await dioClient
         .get(
           ApiConstants.getUserAccount,
-          authorization: false,
+          authorization: true,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
           onError: onError,
         );
   }
@@ -32,10 +33,11 @@ class UserAccountRepository {
         .put(
           ApiConstants.getUserAccount,
           body: jsonEncode(UserWrapper(account: user)),
-          authorization: false,
+          authorization: true,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
           onError: onError,
         );
   }
@@ -48,10 +50,11 @@ class UserAccountRepository {
         .put(
           "${ApiConstants.getUserAccount}/password",
           body: jsonEncode(UserWrapper(account: user)),
-          authorization: false,
+          authorization: true,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(User.fromJson(value.data)),
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
           onError: onError,
         );
   }
