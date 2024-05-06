@@ -47,7 +47,7 @@ class QuestionFilterSegmentController extends GetxController {
     selectedRevisionType.value = revisionType.first;
     getSubjects();
     mainController.selectedCurriculum.stream.listen((value) {
-      getSubjects();
+      getSubjects(isReset: true);
       resetFilter();
     });
   }
@@ -58,7 +58,7 @@ class QuestionFilterSegmentController extends GetxController {
     if (value?.subject != null) {
       selectedSubject.value = value?.subject;
       getTopics();
-      getSubjects(isReset: false);
+      getSubjects();
     }
   }
 
@@ -174,7 +174,7 @@ class QuestionFilterSegmentController extends GetxController {
       ?.map((e) => KeyValue(label: e.name, key: e.id))
       .toList();
 
-  Future<void> getSubjects({bool isReset = true}) async {
+  Future<void> getSubjects({bool isReset = false}) async {
     await subjectRepo.getSubjects(
         queryParams: QueryParams(
             curriculumId: mainController.selectedCurriculum.value?.id),
