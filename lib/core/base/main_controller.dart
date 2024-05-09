@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:html' as html;
+import 'package:edupals/config/flavor_config.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/base/model/user.dart';
@@ -17,8 +18,14 @@ import 'package:edupals/features/history/presentation/view/screens/history_view.
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/question_bank_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sui/cryptography/ed25519_keypair.dart';
+import 'package:sui/sui_account.dart';
+import 'package:sui/sui_client.dart';
+import 'package:sui/sui_urls.dart';
+import 'package:zklogin/zklogin.dart';
 
 // Global use controller
 class MainController extends GetxController {
@@ -27,6 +34,14 @@ class MainController extends GetxController {
   final LocalRepository localRepo = Get.find();
   final CurriculumRepository curriculumRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
+
+  // Sui core state
+  final suiClient = SuiClient(SuiUrls.devnet);
+  SuiAccount? suiAccount;
+  int maxEpoch = 0;
+  String? randomness;
+  String? nonce;
+  String? jwt;
 
   // Curriculum state
   Rx<Curriculum?> selectedCurriculum = Rx<Curriculum?>(null);
@@ -64,6 +79,33 @@ class MainController extends GetxController {
     refreshUser();
     getUserCurriculum();
     getCurriculums();
+    prepareLogin();
+  }
+
+  String get googleLoginUrl =>
+      'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?'
+      'client_id=${FlavorConfig.googleClientId}&response_type=id_token'
+      '&redirect_uri=${kIsWeb ? Uri.encodeComponent(FlavorConfig.redirectUrl) : FlavorConfig.redirectUrl}'
+      '&scope=openid+https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email'
+      '&nonce=$nonce'
+      '&service=lso&o2v=2&theme=mn&ddm=0&flowName=GeneralOAuthFlow'
+      '&id_token=$jwt';
+
+  void createEphemeral() {
+    suiAccount = SuiAccount(Ed25519Keypair());
+  }
+
+  void getCurrentEpoch() async {
+    final result = await suiClient.getLatestSuiSystemState();
+    maxEpoch = int.parse(result.epoch) + 10;
+  }
+
+  void prepareLogin() {
+    createEphemeral();
+    getCurrentEpoch();
+    randomness = generateRandomness();
+    nonce =
+        generateNonce(suiAccount!.keyPair.getPublicKey(), maxEpoch, randomness);
   }
 
   void onSetNavIndex(int index) {

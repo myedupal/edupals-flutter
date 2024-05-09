@@ -10,6 +10,7 @@ class AppAssets {
   static const staticConfetti = "${_pngImagePath}static_confetti.png";
   static const badgeMockup = "${_pngImagePath}badge_mockup.png";
 
+  static const google = "${_svgImagePath}google.svg";
   static const success = "${_svgImagePath}success.svg";
   static const search = "${_svgImagePath}search.svg";
   static const eyeOpen = "${_svgImagePath}eye_open.svg";
