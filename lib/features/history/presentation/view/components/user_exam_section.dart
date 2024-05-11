@@ -1,5 +1,6 @@
 import 'package:edupals/core/components/shimmer.dart';
 import 'package:edupals/core/enum/view_state.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -22,13 +23,13 @@ class UserExamSection extends GetView<HistoryController> {
         );
       case ViewState.success:
         return ListView(
-          // This next line does the trick.
+          shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           children: <Widget>[
             Row(
               children: [
                 ...controller.userExamList.map((element) => SizedBox(
-                      width: Get.width * 0.3,
+                      width: Get.dynamicWidth * 0.3,
                       child: TrendingColumn(
                         title: "${element.title}",
                         value: "${element.subject?.name}",

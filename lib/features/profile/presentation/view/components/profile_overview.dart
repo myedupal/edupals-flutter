@@ -1,6 +1,7 @@
 import 'package:edupals/core/base/base_progress_indicator.dart';
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -16,24 +17,26 @@ class ProfileOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     final MainController mainController = Get.find();
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            const ImageAssetView(
-              fileName:
-                  "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-              fit: BoxFit.cover,
-              width: AppValues.double70,
-              height: AppValues.double70,
-            ).clip().capsulise(
-                radius: 100,
-                padding: const EdgeInsets.all(AppValues.double4),
-                color: AppColors.accent500),
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(horizontal: AppValues.double10),
-              width: Get.width * 0.20,
+        [
+          const ImageAssetView(
+            fileName:
+                "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+            fit: BoxFit.cover,
+            width: AppValues.double70,
+            height: AppValues.double70,
+          )
+              .clip()
+              .capsulise(
+                  radius: 100,
+                  padding: const EdgeInsets.all(AppValues.double4),
+                  color: AppColors.accent500)
+              .padding(EdgeInsets.only(
+                  bottom: context.isPhonePortrait ? AppValues.double10 : 0)),
+          Flexible(
+              flex: context.isPhonePortrait ? 0 : 4,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,34 +75,47 @@ class ProfileOverview extends StatelessWidget {
                       backgoundColor: AppColors.white10,
                       fixedPercentage: 0.3)
                 ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Badges Collected",
-                  style: MyTextStyle.s.bold.c(AppColors.white),
-                ),
-                Text(
-                  "100",
-                  style: MyTextStyle.m.c(AppColors.white),
-                )
-              ],
-            ).padding(const EdgeInsets.only(left: AppValues.double10)),
-            const Spacer(),
-            const ImageAssetView(
-              fileName: AppAssets.badgeMockup,
-              width: AppValues.double70,
-              height: AppValues.double70,
-            )
-          ],
-        ).capsulise(
-            radius: 10,
-            color: AppColors.accent200,
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppValues.double10, vertical: AppValues.double15)),
+              ).padding(
+                  const EdgeInsets.symmetric(horizontal: AppValues.double10))),
+          Flexible(
+              flex: context.isPhonePortrait ? 0 : 7,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Badges Collected",
+                        style: MyTextStyle.s.bold.c(AppColors.white),
+                      ),
+                      Text(
+                        "100",
+                        style: MyTextStyle.m.c(AppColors.white),
+                      )
+                    ],
+                  ).padding(const EdgeInsets.only(left: AppValues.double10)),
+                  const ImageAssetView(
+                    fileName: AppAssets.badgeMockup,
+                    width: AppValues.double70,
+                    height: AppValues.double70,
+                  )
+                ],
+              ))
+        ]
+            .rowToColumn(
+                columnCrossAlignment: CrossAxisAlignment.center,
+                isActive: context.isPhonePortrait,
+                rowMainAlignment: MainAxisAlignment.start)
+            .capsulise(
+                radius: 10,
+                color: AppColors.accent200,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppValues.double10,
+                    vertical: AppValues.double15)),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

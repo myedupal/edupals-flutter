@@ -1,3 +1,4 @@
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -72,8 +73,11 @@ class QuestionBankView extends GetView<QuestionBankController> {
                 ),
                 filterBody,
               ],
-            ).padding(const EdgeInsets.only(right: AppValues.double40))),
-        Flexible(flex: 4, child: trendingSection)
+            ).padding(EdgeInsets.only(
+                right: context.isPhonePortrait
+                    ? AppValues.double0
+                    : AppValues.double40))),
+        if (!context.isPhonePortrait) Flexible(flex: 4, child: trendingSection)
       ],
     ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double20));
   }

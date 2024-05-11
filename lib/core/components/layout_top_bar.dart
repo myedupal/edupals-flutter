@@ -16,9 +16,10 @@ class LayoutTopBar extends GetView<MainController> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const ImageAssetView(fileName: AppAssets.appIcon).padding(
-            const EdgeInsets.only(
-                left: AppValues.double10, right: AppValues.double20)),
+        if (!context.isPhone)
+          const ImageAssetView(fileName: AppAssets.appIcon).padding(
+              const EdgeInsets.only(
+                  left: AppValues.double10, right: AppValues.double20)),
         Obx(() {
           final selectedCurriculum = controller.selectedCurriculum.value;
           return Row(children: [
