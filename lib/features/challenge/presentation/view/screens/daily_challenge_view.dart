@@ -88,8 +88,9 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
     return Column(
       children: [
         Obx(() => controller.challengeList?.isEmpty == true
-            ? const NoDataView(
-                message: "There is no challlenge for you today...")
+            ? const Expanded(
+                child: NoDataView(
+                    message: "There is no challenge for you today..."))
             : Expanded(child: challengeList))
       ],
     ).scaffoldWrapper();

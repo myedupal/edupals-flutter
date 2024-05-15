@@ -114,7 +114,7 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
                 .onTap(() {
               Get.back();
             }),
-            if (titleList?.isNotEmpty == true)
+            if (titleList?.isNotEmpty == true && !context.isPhone)
               IntrinsicHeight(
                   child: Row(children: [
                 ...?titleList?.mapIndexed(
@@ -132,7 +132,8 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
                           horizontal: AppValues.double15))),
           ],
         )),
-        (controller.isYearly ? timer : generateQuestion).topBarWidgetCapsule()
+        if (!context.isPhone)
+          (controller.isYearly ? timer : generateQuestion).topBarWidgetCapsule()
       ],
     ).capsulise(
         radius: 100,

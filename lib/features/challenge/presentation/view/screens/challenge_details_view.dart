@@ -22,7 +22,7 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
         children: [
           Text(
             "Your Daily Challenge",
-            style: MyTextStyle.xl1.bold,
+            style: MyTextStyle.xxxl.bold,
           ).padding(const EdgeInsets.only(
               bottom: AppValues.double20, top: AppValues.double20)),
           Obx(
@@ -71,7 +71,7 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
                                 controller.currentSelectedAnswer?.value == e,
                           )
                                   .padding(const EdgeInsets.only(
-                                      right: AppValues.double30))
+                                      right: AppValues.double20))
                                   .onTap(() {
                             if (controller
                                     .currentChallengeSubmission.value?.status ==

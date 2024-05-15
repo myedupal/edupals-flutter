@@ -1,3 +1,4 @@
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -31,8 +32,11 @@ class ExamBuilderView extends StatelessWidget {
                   },
                 ),
               ],
-            ).padding(const EdgeInsets.only(right: AppValues.double40))),
-        Flexible(flex: 4, child: Container())
+            ).padding(EdgeInsets.only(
+                right: context.isPhonePortrait
+                    ? AppValues.double0
+                    : AppValues.double40))),
+        if (!context.isPhonePortrait) Flexible(flex: 4, child: Container())
       ],
     ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double20));
   }

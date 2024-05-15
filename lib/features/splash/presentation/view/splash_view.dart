@@ -1,4 +1,5 @@
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/features/splash/presentation/controller/splash_controller.dart';
@@ -19,7 +20,7 @@ class SplashView extends GetView<SplashController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ImageAssetView(
-              width: Get.width * 0.1,
+              width: Get.dynamicWidth * 0.1,
               fileName: AppAssets.appIcon,
             )
           ]),
