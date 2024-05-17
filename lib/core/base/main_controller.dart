@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:html' as html;
 import 'package:edupals/config/flavor_config.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/base/model/user.dart';
+import 'package:edupals/core/base/model/user_key.dart';
 import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
@@ -37,10 +37,8 @@ class MainController extends GetxController {
 
   // Sui core state
   final suiClient = SuiClient(SuiUrls.devnet);
+  UserKey? userKey = UserKey();
   SuiAccount? suiAccount;
-  int maxEpoch = 0;
-  String? randomness;
-  String? nonce;
   String? jwt;
 
   // Curriculum state
@@ -79,7 +77,7 @@ class MainController extends GetxController {
     refreshUser();
     getUserCurriculum();
     getCurriculums();
-    prepareLogin();
+    getUserKeyData();
   }
 
   String get googleLoginUrl =>
@@ -87,25 +85,37 @@ class MainController extends GetxController {
       'client_id=${FlavorConfig.googleClientId}&response_type=id_token'
       '&redirect_uri=${kIsWeb ? Uri.encodeComponent(FlavorConfig.redirectUrl) : FlavorConfig.redirectUrl}'
       '&scope=openid+https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email'
-      '&nonce=$nonce'
+      '&nonce=${userKey?.nonce}'
       '&service=lso&o2v=2&theme=mn&ddm=0&flowName=GeneralOAuthFlow'
       '&id_token=$jwt';
 
-  void createEphemeral() {
+  void getUserKeyData() async {
+    final UserKey? userKeyData = await localRepo.getUserKeyData();
+    if (userKeyData != null) {
+      userKey = userKeyData;
+      suiAccount = SuiAccount.fromPrivKey(
+        userKeyData.privateKey ?? "",
+      );
+    } else {
+      prepareLogin();
+    }
+  }
+
+  void prepareLogin() async {
+    // Create Ephemeral Account
     suiAccount = SuiAccount(Ed25519Keypair());
-  }
-
-  void getCurrentEpoch() async {
     final result = await suiClient.getLatestSuiSystemState();
-    maxEpoch = int.parse(result.epoch) + 10;
-  }
-
-  void prepareLogin() {
-    createEphemeral();
-    getCurrentEpoch();
-    randomness = generateRandomness();
-    nonce =
-        generateNonce(suiAccount!.keyPair.getPublicKey(), maxEpoch, randomness);
+    // Create Sui max epoch
+    userKey?.maxEpoch = int.parse(result.epoch) + 10;
+    userKey?.publicKey = suiAccount?.keyPair.getPublicKey().toBase64();
+    userKey?.privateKey = suiAccount?.privateKey();
+    // Create randomness
+    userKey?.randomness = generateRandomness();
+    // Create nonce
+    userKey?.nonce = generateNonce(suiAccount!.keyPair.getPublicKey(),
+        userKey?.maxEpoch ?? 0, userKey?.randomness ?? "");
+    debugPrint("My user key ${userKey?.privateKey}");
+    await localRepo.setUserKeyData(jsonEncode(userKey));
   }
 
   void onSetNavIndex(int index) {

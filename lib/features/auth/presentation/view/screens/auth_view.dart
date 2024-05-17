@@ -89,7 +89,7 @@ class AuthView extends GetView<AuthController> {
                           : _registerForm,
                     ),
                     _footerSegment
-                  ])
+                  ]).constraintsWrapper(width: 600)
                 ]))
           ],
         )

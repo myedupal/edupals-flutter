@@ -1,4 +1,4 @@
-import "dart:html" as html;
+import 'package:universal_html/html.dart' as html;
 import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/base_divider.dart';
 import 'package:edupals/core/base/base_input.dart';
@@ -66,6 +66,7 @@ class LoginForm extends GetView<AuthController> {
           } else {
             Get.to(const GoogleSignInView())?.then((value) => {
                   debugPrint("JWT $value"),
+                  // Handle Login
                   if (value is String) {mainController.jwt = value}
                 });
           }
