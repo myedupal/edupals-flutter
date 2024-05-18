@@ -113,7 +113,20 @@ class ProfileOverview extends StatelessWidget {
                       style: MyTextStyle.s.c(AppColors.white),
                     ))
               ],
-            )
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Sui Wallet Addres",
+                  style: MyTextStyle.xs.bold.c(AppColors.white),
+                ),
+                Text(
+                  mainController.suiAddress ?? "-",
+                  style: MyTextStyle.s.c(AppColors.white),
+                )
+              ],
+            ).padding(const EdgeInsets.only(left: AppValues.double20))
           ],
         ).padding(const EdgeInsets.only(
             top: AppValues.double20, bottom: AppValues.double10))

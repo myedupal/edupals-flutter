@@ -67,7 +67,8 @@ class LoginForm extends GetView<AuthController> {
             Get.to(const GoogleSignInView())?.then((value) => {
                   debugPrint("JWT $value"),
                   // Handle Login
-                  if (value is String) {mainController.jwt = value}
+                  if (value is String)
+                    controller.loginWithGoogle(idToken: value)
                 });
           }
         }),

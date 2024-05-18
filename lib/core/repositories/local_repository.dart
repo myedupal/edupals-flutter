@@ -16,6 +16,8 @@ class LocalRepository {
   final String user = AppStrings.storageUser;
   final String curriculum = "curriculum";
   final String userKeyData = "userKeyData";
+  final String userSalt = "userSalt";
+  final String userIdToken = "userIdToken";
 
   Future<void> clearStorage() async {
     await Future.wait([
@@ -61,6 +63,14 @@ class LocalRepository {
         : UserKey.fromJson(jsonDecode(storageUserKey));
   }
 
+  Future<String?> getUserSalt() async {
+    return await secureStorageService.getString(userSalt);
+  }
+
+  Future<String?> getUserIdToken() async {
+    return await secureStorageService.getString(userIdToken);
+  }
+
   Future<void> setUser(String? value) async {
     return await secureStorageService.setString(user, value ?? '');
   }
@@ -82,5 +92,13 @@ class LocalRepository {
 
   Future<void> setUserKeyData(String? value) async {
     return await secureStorageService.setString(userKeyData, value ?? '');
+  }
+
+  Future<void> setUserSalt(String? value) async {
+    return await secureStorageService.setString(userSalt, value ?? '');
+  }
+
+  Future<void> setUserIdToken(String? value) async {
+    return await secureStorageService.setString(userIdToken, value ?? '');
   }
 }

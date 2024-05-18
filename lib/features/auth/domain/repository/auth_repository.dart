@@ -27,6 +27,23 @@ class AuthRepository {
         );
   }
 
+  Future<void> googleLogin(
+      {required String idToken,
+      required Function(UserWrapper?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .post(
+          ApiConstants.getGoogleLogin,
+          body: jsonEncode({"id_token": idToken}),
+          authorization: false,
+        )
+        .handleResponse(
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data)),
+          onError: onError,
+        );
+  }
+
   Future<void> register(
       {required User user,
       required Function(User?) onSuccess,

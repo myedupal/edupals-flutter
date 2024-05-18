@@ -25,6 +25,7 @@ import 'package:sui/cryptography/ed25519_keypair.dart';
 import 'package:sui/sui_account.dart';
 import 'package:sui/sui_client.dart';
 import 'package:sui/sui_urls.dart';
+import 'package:sui/utils/hex.dart';
 import 'package:zklogin/zklogin.dart';
 
 // Global use controller
@@ -40,6 +41,8 @@ class MainController extends GetxController {
   UserKey? userKey = UserKey();
   SuiAccount? suiAccount;
   String? jwt;
+  String? userSalt;
+  String? suiAddress;
 
   // Curriculum state
   Rx<Curriculum?> selectedCurriculum = Rx<Curriculum?>(null);
@@ -182,12 +185,43 @@ class MainController extends GetxController {
 
   void refreshUser() async {
     currentUser.value = await localRepo.getUser();
+    jwt = await localRepo.getUserIdToken();
+    userSalt = await localRepo.getUserSalt();
+    if (jwt?.isEmpty == false && userSalt?.isEmpty == false) {
+      onSetSuiAddress();
+    }
   }
 
-  void setUser({User? user}) async {
+  void setUser({User? user, String? salt}) async {
     currentUser.value = user;
     await localRepo.setUser(jsonEncode(user));
+    if (salt?.isEmpty == false) {
+      userSalt = salt;
+      await localRepo.setUserSalt(salt);
+    }
     refreshUser();
+  }
+
+  void onSetSuiAddress() {
+    Uint8List bytes = base64.decode(userSalt ?? "");
+
+    suiAddress = jwtToAddress(
+      jwt ?? "",
+      toBigIntBE(bytes),
+    );
+  }
+
+  BigInt toBigIntBE(Uint8List bytes) {
+    String hex = Hex.encode(bytes);
+    if (hex.isEmpty) {
+      return BigInt.from(0);
+    }
+    return BigInt.parse('0x$hex');
+  }
+
+  void setJwtToken({required String token}) async {
+    jwt = token;
+    await localRepo.setUserIdToken(token);
   }
 
   void getUser() async {

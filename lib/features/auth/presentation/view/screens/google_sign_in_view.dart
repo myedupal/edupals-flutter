@@ -18,7 +18,7 @@ class GoogleSignInView extends StatelessWidget {
         initialSettings: InAppWebViewSettings(
           javaScriptEnabled: true,
           useShouldOverrideUrlLoading: true,
-          userAgent: 'Mofa Web3',
+          userAgent: 'edupals',
           allowsInlineMediaPlayback: true,
           allowsBackForwardNavigationGestures: true,
           automaticallyAdjustsScrollIndicatorInsets: true,
