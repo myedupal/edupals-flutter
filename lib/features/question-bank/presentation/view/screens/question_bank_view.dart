@@ -79,6 +79,6 @@ class QuestionBankView extends GetView<QuestionBankController> {
                     : AppValues.double40))),
         if (!context.isPhonePortrait) Flexible(flex: 4, child: trendingSection)
       ],
-    ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double20));
+    ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double10));
   }
 }

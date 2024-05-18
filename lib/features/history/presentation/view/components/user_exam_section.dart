@@ -18,7 +18,8 @@ class UserExamSection extends GetView<HistoryController> {
       case ViewState.loading || ViewState.initial:
         return Row(
           children: [
-            Shimmer.rounded(height: double.infinity, width: Get.width * 0.3),
+            Shimmer.rounded(
+                height: double.infinity, width: Get.dynamicWidth * 0.3),
           ],
         );
       case ViewState.success:

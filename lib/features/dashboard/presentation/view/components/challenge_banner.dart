@@ -35,8 +35,10 @@ class ChallengeBanner extends StatelessWidget {
               // ).padding(const EdgeInsets.only(left: AppValues.double20))
             ],
           ),
-          const SizedBox(
-            height: AppValues.double20,
+          SizedBox(
+            height: context.isPhonePortrait
+                ? AppValues.double40
+                : AppValues.double20,
           ),
         ],
       ),
@@ -47,6 +49,8 @@ class ChallengeBanner extends StatelessWidget {
           .capsulise(
               radius: 100,
               color: AppColors.white,
+              width: context.isPhonePortrait ? double.infinity : null,
+              alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(
                   horizontal: AppValues.double20, vertical: AppValues.double12))
           .onTap(() {
