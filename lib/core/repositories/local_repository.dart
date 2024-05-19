@@ -23,7 +23,9 @@ class LocalRepository {
     await Future.wait([
       secureStorageService.delete(accessTokenKey),
       secureStorageService.delete(curriculum),
-      secureStorageService.delete(user)
+      secureStorageService.delete(user),
+      secureStorageService.delete(userSalt),
+      secureStorageService.delete(userIdToken),
     ]);
   }
 
