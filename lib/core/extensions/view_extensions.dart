@@ -1,5 +1,6 @@
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
+import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 
 extension ExpandedWidget on Widget {
@@ -123,4 +124,28 @@ extension ExpandedWidget on Widget {
               ? customPadding ??
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 20)
               : EdgeInsets.zero));
+
+  Widget clip() =>
+      ClipRRect(borderRadius: BorderRadius.circular(100), child: this);
+
+  Widget topBarWidgetCapsule({Color? color = AppColors.accent500}) => capsulise(
+      radius: 100,
+      color: color,
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppValues.double10, vertical: AppValues.double10));
+
+  Widget topBarCapsule({Color? color}) => capsulise(
+      radius: 100,
+      color: color ?? AppColors.accent500,
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppValues.double15, vertical: AppValues.double12));
+
+  Widget imageBackground({EdgeInsets? padding}) => Container(
+      padding: padding ?? const EdgeInsets.all(AppValues.double20),
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(AppAssets.dashboardChallengeBg))),
+      child: this);
 }

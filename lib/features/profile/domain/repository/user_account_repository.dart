@@ -7,53 +7,54 @@ import 'package:edupals/core/network/errors/failures.dart';
 import 'package:edupals/core/values/api_constants.dart';
 import 'package:get/get.dart';
 
-class AuthRepository {
+class UserAccountRepository {
   final DioClient dioClient = Get.find();
 
-  Future<void> login(
-      {required User user,
-      required Function(User?) onSuccess,
+  Future<void> getAccount(
+      {required Function(User?) onSuccess,
       required Function(BaseFailure) onError}) async {
     await dioClient
-        .post(
-          ApiConstants.getLogin,
-          body: jsonEncode(UserWrapper(user: user)),
-          authorization: false,
-        )
-        .handleResponse(
-          onSuccess: (value) =>
-              onSuccess.call(UserWrapper.fromJson(value.data).user),
-          onError: onError,
-        );
-  }
-
-  Future<void> register(
-      {required User user,
-      required Function(User?) onSuccess,
-      required Function(BaseFailure) onError}) async {
-    await dioClient
-        .post(
-          ApiConstants.getUser,
-          body: jsonEncode(UserWrapper(user: user)),
-          authorization: false,
-        )
-        .handleResponse(
-          onSuccess: (value) =>
-              onSuccess.call(UserWrapper.fromJson(value.data).user),
-          onError: onError,
-        );
-  }
-
-  Future<void> logout(
-      {required Function(bool?) onSuccess,
-      required Function(BaseFailure) onError}) async {
-    await dioClient
-        .delete(
-          ApiConstants.getLogout,
+        .get(
+          ApiConstants.getUserAccount,
           authorization: true,
         )
         .handleResponse(
-          onSuccess: (value) => onSuccess.call(true),
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
+          onError: onError,
+        );
+  }
+
+  Future<void> updateAccount(
+      {required User user,
+      required Function(User?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .put(
+          ApiConstants.getUserAccount,
+          body: jsonEncode(UserWrapper(account: user)),
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
+          onError: onError,
+        );
+  }
+
+  Future<void> updatePassword(
+      {required User user,
+      required Function(User?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .put(
+          "${ApiConstants.getUserAccount}/password",
+          body: jsonEncode(UserWrapper(account: user)),
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) =>
+              onSuccess.call(UserWrapper.fromJson(value.data).user),
           onError: onError,
         );
   }

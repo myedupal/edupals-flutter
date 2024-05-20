@@ -23,8 +23,6 @@ class ChallengeDetailsController extends BaseController {
   Rx<String>? currentSelectedAnswer = "".obs;
   RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
 
-  // TODO: Integrate Submit Challenge
-
   @override
   void onInit() {
     getChallenge(id: challengeId);

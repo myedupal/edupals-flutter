@@ -1,6 +1,8 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/base_dialog.dart';
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/base/model/user.dart';
+import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,8 @@ enum AuthStep { register, login }
 
 class AuthController extends BaseController {
   final AuthRepository authRepo = Get.find();
+  final MainController mainController = Get.find();
+  final LocalRepository localRepo = Get.find();
   final Rx<AuthStep> currentStep = AuthStep.login.obs;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -46,7 +50,8 @@ class AuthController extends BaseController {
               password: passwordController.value.text),
           onSuccess: (value) {
             setSuccess();
-            Get.offAllNamed(Routes.home);
+            mainController.setUser(user: value);
+            Get.offAllNamed(Routes.homeAnimation);
           },
           onError: (error) {
             setSuccess();
@@ -70,7 +75,7 @@ class AuthController extends BaseController {
               message: "Your account is registered successfully",
               buttonText: "Go to dashboard",
               action: () {
-                Get.offAllNamed(Routes.home);
+                Get.offAllNamed(Routes.homeAnimation);
               },
             );
           },

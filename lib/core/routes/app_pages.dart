@@ -8,6 +8,7 @@ import 'package:edupals/features/challenge/presentation/view/screens/daily_chall
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
 import 'package:edupals/features/exam-builder/presentation/binding/exam_builder_details_binding.dart';
 import 'package:edupals/features/exam-builder/presentation/view/screens/exam_builder_details_view.dart';
+import 'package:edupals/features/profile/presentation/view/screens/profile_view.dart';
 import 'package:edupals/features/question-bank/presentation/binding/questions_list_binding.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/questions_list_view.dart';
 import 'package:edupals/features/splash/presentation/binding/splash_binding.dart';
@@ -25,11 +26,25 @@ class AppPages {
         page: () => const SplashView(),
         binding: SplashBinding()),
     GetPage(name: Routes.home, page: () => const Navbar()),
+    GetPage(
+      name: Routes.homeAnimation,
+      page: () => const Navbar(),
+      fullscreenDialog: true,
+      transition: Transition.fadeIn,
+    ),
     GetPage(name: Routes.dashboard, page: () => DashboardView()),
     GetPage(
         name: Routes.login,
         page: () => const AuthView(),
         binding: AuthBinding()),
+    GetPage(
+      name: Routes.loginAnimation,
+      page: () => const AuthView(),
+      binding: AuthBinding(),
+      fullscreenDialog: true,
+      transitionDuration: const Duration(milliseconds: 500),
+      transition: Transition.fadeIn,
+    ),
     GetPage(
         name: Routes.questionsList,
         page: () => const QuestionsListView(),
@@ -48,6 +63,12 @@ class AppPages {
       name: Routes.examBuilderDetails,
       page: () => const ExamBuilderDetailsView(),
       binding: ExamBuilderDetailsBinding(),
+    ),
+    GetPage(
+      name: Routes.profile,
+      transition: Transition.fadeIn,
+      fullscreenDialog: true,
+      page: () => const ProfileView(),
     ),
   ];
 }

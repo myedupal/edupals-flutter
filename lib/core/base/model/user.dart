@@ -1,9 +1,10 @@
 class UserWrapper {
-  UserWrapper({this.user, this.users, this.pages});
+  UserWrapper({this.user, this.users, this.pages, this.account});
 
   String? pages;
   User? user;
   List<User>? users;
+  User? account;
 
   factory UserWrapper.fromJson(Map<String, dynamic> json) => UserWrapper(
         pages: json["pages"],
@@ -15,6 +16,7 @@ class UserWrapper {
 
   Map<String, dynamic> toJson() => {
         "user": user?.toJson(),
+        "account": account?.toJson(),
       };
 }
 
@@ -24,6 +26,8 @@ class User {
   bool? active;
   String? email;
   String? password;
+  String? currentPassword;
+  String? passwordConfirmation;
   int? points;
   String? createdAt;
   String? updatedAt;
@@ -35,6 +39,8 @@ class User {
     this.active,
     this.email,
     this.password,
+    this.currentPassword,
+    this.passwordConfirmation,
     this.points,
     this.createdAt,
     this.updatedAt,
@@ -57,7 +63,12 @@ class User {
         "name": name,
         "active": active,
         "email": email,
+        "points": points,
         "password": password,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "current_password": currentPassword,
+        "password_confirmation": passwordConfirmation,
       }..removeWhere((dynamic key, dynamic value) =>
-          key == null || value == null || value == "null");
+          key == null || value == null || value == "null" || value == "");
 }

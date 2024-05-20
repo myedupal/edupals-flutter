@@ -132,11 +132,7 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
                           horizontal: AppValues.double15))),
           ],
         )),
-        (controller.isYearly ? timer : generateQuestion).capsulise(
-            radius: 100,
-            color: AppColors.accent500,
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppValues.double12, vertical: AppValues.double12))
+        (controller.isYearly ? timer : generateQuestion).topBarWidgetCapsule()
       ],
     ).capsulise(
         radius: 100,

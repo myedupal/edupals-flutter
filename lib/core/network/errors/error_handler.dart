@@ -79,6 +79,6 @@ class ErrorHandler {
 
     await localRepository.clearStorage();
 
-    await Get.offAllNamed(Routes.login);
+    await Get.offAllNamed(Routes.loginAnimation);
   }
 }

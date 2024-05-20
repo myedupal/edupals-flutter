@@ -23,7 +23,9 @@ class KeyValue {
       this.isBase64,
       this.onAction,
       this.isFilterAction = false,
-      this.color});
+      this.keyValueList,
+      this.color,
+      this.buttonText});
 
   String? id;
   String? date;
@@ -46,5 +48,7 @@ class KeyValue {
   bool? isBase64 = false;
   VoidCallback? onAction;
   bool? isFilterAction = false;
+  List<KeyValue>? keyValueList;
   Color? color;
+  String? buttonText;
 }

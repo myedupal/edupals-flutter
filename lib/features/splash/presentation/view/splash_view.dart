@@ -10,6 +10,8 @@ class SplashView extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
+    // Perform precache for heavy login background image
+    precacheImage(const AssetImage(AppAssets.authBg), context);
     return Container(
       color: AppColors.white,
       child: Column(

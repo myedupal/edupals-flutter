@@ -1,6 +1,7 @@
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -29,32 +30,29 @@ class LayoutTopBar extends GetView<MainController> {
             ),
             const ImageAssetView(fileName: AppAssets.downChevron)
                 .padding(const EdgeInsets.only(left: AppValues.double10))
-          ])
-              .capsulise(
-                  radius: 100,
-                  color: AppColors.white,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppValues.double10,
-                      horizontal: AppValues.double10))
-              .onTap(() {
+          ]).topBarWidgetCapsule(color: AppColors.white).onTap(() {
             controller.showCurriculumDialog();
           });
         }),
         const Spacer(),
         Row(
           children: [
+            const ImageAssetView(
+              fileName:
+                  "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+              fit: BoxFit.cover,
+              width: AppValues.double25,
+              height: AppValues.double25,
+            ).clip(),
             Text(
-              "Logout",
-              style: MyTextStyle.xxs.bold.c(AppColors.white),
-            ).onTap(() {
-              controller.logout();
-            })
+              "LV.1",
+              style: MyTextStyle.xs.bold.c(AppColors.white),
+            ).padding(
+                const EdgeInsets.symmetric(horizontal: AppValues.double10))
           ],
-        ).capsulise(
-            radius: 100,
-            color: AppColors.accent500,
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppValues.double10, vertical: AppValues.double10))
+        ).topBarWidgetCapsule().onTap(() {
+          Get.toNamed(Routes.profile);
+        })
       ],
     ).capsulise(
         radius: 100,
