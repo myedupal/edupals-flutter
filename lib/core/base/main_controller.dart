@@ -37,7 +37,8 @@ class MainController extends GetxController {
   final ActivityRepository activityRepo = Get.find();
 
   // Sui core state
-  final suiClient = SuiClient(SuiUrls.devnet);
+  final suiClient =
+      SuiClient(FlavorConfig.isProduction ? SuiUrls.mainnet : SuiUrls.devnet);
   UserKey? userKey = UserKey();
   SuiAccount? suiAccount;
   String? jwt;

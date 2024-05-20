@@ -45,10 +45,18 @@ jobs:
       - name: Create env file
         run: |
           rm -f .env.prod
+          rm -f .env.dev
           touch .env.prod
           touch .env.dev
           touch .env.uat
-          echo "${{ secrets.env_file }}" >> .env.prod
+
+      - name: Include staging env file
+        if: ${{ inputs.environment == 'staging' }}
+        run: echo "${{ secrets.env_file }}" >> .env.dev
+
+      - name: Include production env file
+        if: ${{ inputs.environment != 'staging' }}
+        run: echo "${{ secrets.env_file }}" >> .env.prod
 
       - name: Clear cache
         run: flutter clean
@@ -59,7 +67,12 @@ jobs:
       # - name: Run tests
       #   run: flutter test
       
-      - name: Build web
+      - name: Build web for staging
+        if: ${{ inputs.environment == 'staging' }}
+        run: flutter build web -t lib/main_dev.dart
+      
+      - name: Build web for production
+        if: ${{ inputs.environment != 'staging' }}
         run: flutter build web -t lib/main_prod.dart
         
       - name: Setup Docker buildx
