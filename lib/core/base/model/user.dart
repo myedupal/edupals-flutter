@@ -43,6 +43,8 @@ class User {
   String? createdAt;
   String? updatedAt;
   dynamic stripeProfile;
+  int? dailyStreak;
+  int? maximumStreak;
 
   User({
     this.id,
@@ -59,6 +61,8 @@ class User {
     this.createdAt,
     this.updatedAt,
     this.stripeProfile,
+    this.dailyStreak,
+    this.maximumStreak,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -74,6 +78,8 @@ class User {
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         stripeProfile: json["stripe_profile"],
+        dailyStreak: json["daily_streak"],
+        maximumStreak: json["maximum_streak"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +94,22 @@ class User {
         "password_confirmation": passwordConfirmation,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null" || value == "");
+
+  Map<String, dynamic> toStore() => {
+        "id": id,
+        "name": name,
+        "active": active,
+        "email": email,
+        "points": points,
+        "oauth2_provider": oauth2Provider,
+        "oauth2_sub": oauth2Sub,
+        "oauth2_profile_picture_url": oauth2ProfilePictureUrl,
+        "daily_streak": dailyStreak,
+        "maximum_streak": maximumStreak,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "stripe_profile": stripeProfile,
+      };
 }
 
 class UserMeta {

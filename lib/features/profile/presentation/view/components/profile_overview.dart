@@ -21,20 +21,22 @@ class ProfileOverview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         [
-          const ImageAssetView(
-            fileName:
-                "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            fit: BoxFit.cover,
-            width: AppValues.double70,
-            height: AppValues.double70,
-          )
-              .clip()
-              .capsulise(
-                  radius: 100,
-                  padding: const EdgeInsets.all(AppValues.double4),
-                  color: AppColors.accent500)
-              .padding(EdgeInsets.only(
-                  bottom: context.isPhonePortrait ? AppValues.double10 : 0)),
+          Obx(() => ImageAssetView(
+                fileName: mainController
+                        .currentUser.value?.oauth2ProfilePictureUrl ??
+                    "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                fit: BoxFit.cover,
+                width: AppValues.double70,
+                height: AppValues.double70,
+              )
+                  .clip()
+                  .capsulise(
+                      radius: 100,
+                      padding: const EdgeInsets.all(AppValues.double4),
+                      color: AppColors.accent500)
+                  .padding(EdgeInsets.only(
+                      bottom:
+                          context.isPhonePortrait ? AppValues.double10 : 0))),
           Flexible(
               flex: context.isPhonePortrait ? 0 : 4,
               child: Column(

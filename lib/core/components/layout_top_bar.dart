@@ -14,6 +14,7 @@ class LayoutTopBar extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
+    final MainController mainController = Get.find();
     return Row(
       children: [
         if (!context.isPhone)
@@ -38,15 +39,16 @@ class LayoutTopBar extends GetView<MainController> {
         const Spacer(),
         Row(
           children: [
-            const ImageAssetView(
-              fileName:
-                  "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-              fit: BoxFit.cover,
-              width: AppValues.double25,
-              height: AppValues.double25,
-            ).clip(),
+            Obx(() => ImageAssetView(
+                  fileName: mainController
+                          .currentUser.value?.oauth2ProfilePictureUrl ??
+                      "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                  fit: BoxFit.cover,
+                  width: AppValues.double25,
+                  height: AppValues.double25,
+                ).clip()),
             Text(
-              "LV.1",
+              "Profile",
               style: MyTextStyle.xs.bold.c(AppColors.white),
             ).padding(
                 const EdgeInsets.symmetric(horizontal: AppValues.double10))

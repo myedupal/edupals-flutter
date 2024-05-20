@@ -53,7 +53,7 @@ class MainController extends GetxController {
   // Navbar selection
   final RxInt selectedNavIndex = 0.obs;
   final pagesList = [
-    DashboardView(),
+    const DashboardView(),
     const QuestionBankView(),
     const HistoryView(),
     const ExamBuilderView(),
@@ -79,8 +79,6 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
     refreshUser();
-    getUserCurriculum();
-    getCurriculums();
     getUserKeyData();
   }
 
@@ -195,7 +193,7 @@ class MainController extends GetxController {
 
   void setUser({User? user, String? salt}) async {
     currentUser.value = user;
-    await localRepo.setUser(jsonEncode(user));
+    await localRepo.setUser(jsonEncode(user?.toStore()));
     if (salt?.isEmpty == false) {
       userSalt = salt;
       await localRepo.setUserSalt(salt);
@@ -231,6 +229,12 @@ class MainController extends GetxController {
           setUser(user: value);
         },
         onError: (error) {});
+  }
+
+  void goAhead() {
+    getUserCurriculum();
+    getCurriculums();
+    getUser();
   }
 
   void clearSession() {

@@ -29,6 +29,7 @@ class AppAssets {
   static const sortFull = "${_svgImagePath}sort_full.svg";
   static const history = "${_svgImagePath}history.svg";
   static const imageError = "${_svgImagePath}image_error.svg";
+  static const totalPointsEarned = "${_svgImagePath}total_points_earned.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";

@@ -1,62 +1,52 @@
 import 'package:edupals/core/base/main_controller.dart';
-import 'package:edupals/core/values/app_colors.dart';
-import 'package:edupals/core/values/app_text_style.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/dashboard/presentation/view/components/challenge_banner.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/features/dashboard/presentation/view/components/daily_challenge_report.dart';
+import 'package:edupals/features/dashboard/presentation/view/components/mcq_report.dart';
+import 'package:edupals/features/dashboard/presentation/view/components/points_breakdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DashboardView extends GetResponsiveView<MainController> {
-  DashboardView({super.key}) : super(alwaysUseBuilder: false);
-
-  Widget dashboardColumn({String? title, String? value, String? subvalue}) {
-    return Expanded(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title ?? "",
-          style: MyTextStyle.s.bold,
-        ),
-        const Spacer(),
-        Text(
-          value ?? "",
-          style: MyTextStyle.xl2.medium,
-        ).padding(const EdgeInsets.only(top: AppValues.double30)),
-      ],
-    )
-            .capsulise(
-                radius: 15,
-                color: AppColors.gray100,
-                padding: const EdgeInsets.all(AppValues.double20))
-            .padding(const EdgeInsets.only(right: AppValues.double10)));
-  }
+class DashboardView extends GetView<MainController> {
+  const DashboardView({super.key});
 
   @override
-  Widget builder() => const Column(
+  Widget build(BuildContext context) => ListView(
         children: [
-          ChallengeBanner(),
-          // Row(
-          //   mainAxisSize: MainAxisSize.min,
-          //   children: [
-          //     Expanded(
-          //         flex: 8,
-          //         child: IntrinsicHeight(
-          //             child: Row(
-          //           children: [
-          //             dashboardColumn(
-          //                 title: "Average time spent 10 questions",
-          //                 value: "100"),
-          //             dashboardColumn(
-          //                 title: "Total question attempt", value: "100/100"),
-          //             dashboardColumn(title: "Accuracy", value: "50/100"),
-          //             dashboardColumn(title: "Question flagged", value: "100"),
-          //           ],
-          //         ))),
-          //     Expanded(flex: 3, child: Container())
-          //   ],
-          // ).padding(const EdgeInsets.only(top: AppValues.double20))
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const ChallengeBanner(),
+              [
+                Expanded(
+                    flex: context.isPhonePortrait ? 0 : 8,
+                    child: Column(
+                      children: [
+                        const DailyChallengeReport(),
+                        const MCQReport().padding(
+                            const EdgeInsets.only(top: AppValues.double10))
+                      ],
+                    )),
+                const SizedBox(
+                  width: AppValues.double10,
+                  height: AppValues.double10,
+                ),
+                Expanded(
+                    flex: context.isPhonePortrait ? 0 : 3,
+                    child: const SizedBox(
+                      width: double.infinity,
+                      child: PointsBreakdown(),
+                    ))
+              ]
+                  .rowToColumn(
+                      isActive: context.isPhonePortrait,
+                      rowCrossAlignment: CrossAxisAlignment.start)
+                  .padding(
+                      const EdgeInsets.symmetric(vertical: AppValues.double10))
+            ],
+          )
         ],
       );
 }
