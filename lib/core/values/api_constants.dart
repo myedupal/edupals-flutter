@@ -14,6 +14,7 @@ abstract class ApiConstants {
   static const getUser = '$version/user';
   static const getUserAccount = '$version/user/account';
   static const getLogin = '$version/user/sign_in';
+  static const getGoogleLogin = '$version/user/oauth/google';
   static const getLogout = '$version/user/sign_out';
   static const getQuestions = '$version/user/questions/';
   static const getChallenges = '$version/user/daily_challenges/';

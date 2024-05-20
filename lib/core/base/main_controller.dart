@@ -1,8 +1,9 @@
 import 'dart:convert';
-
+import 'package:edupals/config/flavor_config.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/base/model/user.dart';
+import 'package:edupals/core/base/model/user_key.dart';
 import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
@@ -17,8 +18,15 @@ import 'package:edupals/features/history/presentation/view/screens/history_view.
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:edupals/features/question-bank/presentation/view/screens/question_bank_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sui/cryptography/ed25519_keypair.dart';
+import 'package:sui/sui_account.dart';
+import 'package:sui/sui_client.dart';
+import 'package:sui/sui_urls.dart';
+import 'package:sui/utils/hex.dart';
+import 'package:zklogin/zklogin.dart';
 
 // Global use controller
 class MainController extends GetxController {
@@ -27,6 +35,15 @@ class MainController extends GetxController {
   final LocalRepository localRepo = Get.find();
   final CurriculumRepository curriculumRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
+
+  // Sui core state
+  final suiClient =
+      SuiClient(FlavorConfig.isProduction ? SuiUrls.mainnet : SuiUrls.devnet);
+  UserKey? userKey = UserKey();
+  SuiAccount? suiAccount;
+  String? jwt;
+  String? userSalt;
+  String? suiAddress;
 
   // Curriculum state
   Rx<Curriculum?> selectedCurriculum = Rx<Curriculum?>(null);
@@ -64,6 +81,45 @@ class MainController extends GetxController {
     refreshUser();
     getUserCurriculum();
     getCurriculums();
+    getUserKeyData();
+  }
+
+  String get googleLoginUrl =>
+      'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?'
+      'client_id=${FlavorConfig.googleClientId}&response_type=id_token'
+      '&redirect_uri=${kIsWeb ? Uri.encodeComponent(FlavorConfig.redirectUrl) : FlavorConfig.redirectUrl}'
+      '&scope=openid+https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email'
+      '&nonce=${userKey?.nonce}'
+      '&service=lso&o2v=2&theme=mn&ddm=0&flowName=GeneralOAuthFlow'
+      '&id_token=$jwt';
+
+  void getUserKeyData() async {
+    final UserKey? userKeyData = await localRepo.getUserKeyData();
+    if (userKeyData != null) {
+      userKey = userKeyData;
+      suiAccount = SuiAccount.fromPrivKey(
+        userKeyData.privateKey ?? "",
+      );
+    } else {
+      prepareLogin();
+    }
+  }
+
+  void prepareLogin() async {
+    // Create Ephemeral Account
+    suiAccount = SuiAccount(Ed25519Keypair());
+    final result = await suiClient.getLatestSuiSystemState();
+    // Create Sui max epoch
+    userKey?.maxEpoch = int.parse(result.epoch) + 10;
+    userKey?.publicKey = suiAccount?.keyPair.getPublicKey().toBase64();
+    userKey?.privateKey = suiAccount?.privateKey();
+    // Create randomness
+    userKey?.randomness = generateRandomness();
+    // Create nonce
+    userKey?.nonce = generateNonce(suiAccount!.keyPair.getPublicKey(),
+        userKey?.maxEpoch ?? 0, userKey?.randomness ?? "");
+    debugPrint("My user key ${userKey?.privateKey}");
+    await localRepo.setUserKeyData(jsonEncode(userKey));
   }
 
   void onSetNavIndex(int index) {
@@ -130,12 +186,43 @@ class MainController extends GetxController {
 
   void refreshUser() async {
     currentUser.value = await localRepo.getUser();
+    jwt = await localRepo.getUserIdToken();
+    userSalt = await localRepo.getUserSalt();
+    if (jwt?.isEmpty == false && userSalt?.isEmpty == false) {
+      onSetSuiAddress();
+    }
   }
 
-  void setUser({User? user}) async {
+  void setUser({User? user, String? salt}) async {
     currentUser.value = user;
     await localRepo.setUser(jsonEncode(user));
+    if (salt?.isEmpty == false) {
+      userSalt = salt;
+      await localRepo.setUserSalt(salt);
+    }
     refreshUser();
+  }
+
+  void onSetSuiAddress() {
+    Uint8List bytes = base64.decode(userSalt ?? "");
+
+    suiAddress = jwtToAddress(
+      jwt ?? "",
+      toBigIntBE(bytes),
+    );
+  }
+
+  BigInt toBigIntBE(Uint8List bytes) {
+    String hex = Hex.encode(bytes);
+    if (hex.isEmpty) {
+      return BigInt.from(0);
+    }
+    return BigInt.parse('0x$hex');
+  }
+
+  void setJwtToken({required String token}) async {
+    jwt = token;
+    await localRepo.setUserIdToken(token);
   }
 
   void getUser() async {

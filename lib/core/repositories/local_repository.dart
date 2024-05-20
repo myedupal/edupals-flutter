@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:edupals/core/base/model/user.dart';
+import 'package:edupals/core/base/model/user_key.dart';
 import 'package:edupals/core/services/secure_storage_service.dart';
 import 'package:edupals/core/values/app_strings.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
@@ -14,12 +15,17 @@ class LocalRepository {
   final String languageKey = AppStrings.storageLanguage;
   final String user = AppStrings.storageUser;
   final String curriculum = "curriculum";
+  final String userKeyData = "userKeyData";
+  final String userSalt = "userSalt";
+  final String userIdToken = "userIdToken";
 
   Future<void> clearStorage() async {
     await Future.wait([
       secureStorageService.delete(accessTokenKey),
       secureStorageService.delete(curriculum),
-      secureStorageService.delete(user)
+      secureStorageService.delete(user),
+      secureStorageService.delete(userSalt),
+      secureStorageService.delete(userIdToken),
     ]);
   }
 
@@ -51,6 +57,22 @@ class LocalRepository {
         : Curriculum.fromJson(jsonDecode(storageCurriculum));
   }
 
+  Future<UserKey?> getUserKeyData() async {
+    final storageUserKey =
+        await secureStorageService.getString(userKeyData) ?? "";
+    return storageUserKey == "null" || storageUserKey == ""
+        ? null
+        : UserKey.fromJson(jsonDecode(storageUserKey));
+  }
+
+  Future<String?> getUserSalt() async {
+    return await secureStorageService.getString(userSalt);
+  }
+
+  Future<String?> getUserIdToken() async {
+    return await secureStorageService.getString(userIdToken);
+  }
+
   Future<void> setUser(String? value) async {
     return await secureStorageService.setString(user, value ?? '');
   }
@@ -68,5 +90,17 @@ class LocalRepository {
     final String localeString = locale.toLanguageTag();
 
     return await secureStorageService.setString(languageKey, localeString);
+  }
+
+  Future<void> setUserKeyData(String? value) async {
+    return await secureStorageService.setString(userKeyData, value ?? '');
+  }
+
+  Future<void> setUserSalt(String? value) async {
+    return await secureStorageService.setString(userSalt, value ?? '');
+  }
+
+  Future<void> setUserIdToken(String? value) async {
+    return await secureStorageService.setString(userIdToken, value ?? '');
   }
 }

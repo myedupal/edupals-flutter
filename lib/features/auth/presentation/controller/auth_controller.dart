@@ -60,6 +60,23 @@ class AuthController extends BaseController {
     }
   }
 
+  Future<void> loginWithGoogle({required String idToken}) async {
+    setLoading();
+    mainController.setJwtToken(token: idToken);
+    await authRepo.googleLogin(
+        idToken: idToken,
+        onSuccess: (value) {
+          setSuccess();
+          mainController.setUser(
+              user: value?.user, salt: value?.meta?.zkloginSalt);
+          Get.offAllNamed(Routes.homeAnimation);
+        },
+        onError: (error) {
+          setSuccess();
+          BaseDialog.showError(subtitle: error.message);
+        });
+  }
+
   Future<void> register() async {
     if (validRegisterInput()) {
       setLoading();

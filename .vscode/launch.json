@@ -9,7 +9,9 @@
       "type": "dart",
       "args": [
         "--flavor",
-        "dev"
+        "dev",
+        "--web-port",
+        "54203"
       ],
     },
     {
@@ -20,7 +22,9 @@
       "type": "dart",
       "args": [
         "--flavor",
-        "dev"
+        "dev",
+        "--web-port",
+        "54203"
       ],
     },
     {
@@ -31,7 +35,9 @@
       "type": "dart",
       "args": [
         "--flavor",
-        "uat"
+        "uat",
+        "--web-port",
+        "54203"
       ],
     },
     {
@@ -42,7 +48,9 @@
       "type": "dart",
       "args": [
         "--flavor",
-        "uat"
+        "uat",
+        "--web-port",
+        "54203"
       ],
     },
     {
@@ -53,7 +61,9 @@
       "type": "dart",
       "args": [
         "--flavor",
-        "prod"
+        "prod",
+        "--web-port",
+        "54203"
       ],
     },
   ]
