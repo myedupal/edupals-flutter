@@ -1,6 +1,7 @@
 import 'package:edupals/core/base/model/table_column.dart';
 import 'package:edupals/core/components/base_table.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -50,8 +51,10 @@ class HistoryTable extends GetView<HistoryController> {
                 );
               },
             ),
-            TableColumn(name: "Type", selector: "activity_type"),
-            TableColumn(name: "Created At", selector: "created_at"),
+            if (!context.isPhonePortrait) ...[
+              TableColumn(name: "Type", selector: "activity_type"),
+              TableColumn(name: "Created At", selector: "created_at"),
+            ],
             TableColumn(
               name: "Actions",
               column: (data, index) {

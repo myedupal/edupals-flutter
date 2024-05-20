@@ -1,5 +1,6 @@
 import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -14,20 +15,21 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: Get.width * 0.1,
-          ),
           ImageAssetView(
             fileName: AppAssets.noDataLottie,
-            width: Get.width * 0.25,
+            width: Get.dynamicWidth * 0.25,
           ),
           Text(
             message ?? "",
             style: MyTextStyle.l.bold,
-          ),
+            textAlign: TextAlign.center,
+          ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double40)),
           BaseButton(
               text: "Go Back",
               onClick: () {

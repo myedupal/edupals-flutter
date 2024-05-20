@@ -23,6 +23,6 @@ class HistoryView extends GetView<HistoryController> {
         const UserExamSection(),
         const HistoryTable()
       ],
-    ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double20));
+    ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double10));
   }
 }

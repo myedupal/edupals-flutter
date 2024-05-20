@@ -149,3 +149,41 @@ extension ExpandedWidget on Widget {
               image: AssetImage(AppAssets.dashboardChallengeBg))),
       child: this);
 }
+
+extension ListWidgetExtension on List<Widget> {
+  Widget columnToRow({
+    bool isActive = false,
+    CrossAxisAlignment? columnCrossAlignment,
+    MainAxisAlignment? rowMainAlignment,
+    CrossAxisAlignment? rowCrossAlignment,
+  }) =>
+      isActive
+          ? Row(
+              mainAxisAlignment: rowMainAlignment ?? MainAxisAlignment.start,
+              crossAxisAlignment: rowCrossAlignment ?? CrossAxisAlignment.start,
+              children: this,
+            )
+          : Column(
+              children: this,
+            );
+
+  Widget rowToColumn({
+    bool isActive = false,
+    CrossAxisAlignment? columnCrossAlignment,
+    MainAxisAlignment? rowMainAlignment,
+    CrossAxisAlignment? rowCrossAlignment,
+  }) =>
+      isActive
+          ? Column(
+              crossAxisAlignment:
+                  columnCrossAlignment ?? CrossAxisAlignment.start,
+              children: this,
+            )
+          : Row(
+              crossAxisAlignment:
+                  rowCrossAlignment ?? CrossAxisAlignment.center,
+              mainAxisAlignment:
+                  rowMainAlignment ?? MainAxisAlignment.spaceBetween,
+              children: this,
+            );
+}

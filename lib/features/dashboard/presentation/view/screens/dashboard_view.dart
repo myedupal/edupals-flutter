@@ -34,29 +34,29 @@ class DashboardView extends GetResponsiveView<MainController> {
   }
 
   @override
-  Widget builder() => Column(
+  Widget builder() => const Column(
         children: [
-          const ChallengeBanner(),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                  flex: 8,
-                  child: IntrinsicHeight(
-                      child: Row(
-                    children: [
-                      dashboardColumn(
-                          title: "Average time spent 10 questions",
-                          value: "100"),
-                      dashboardColumn(
-                          title: "Total question attempt", value: "100/100"),
-                      dashboardColumn(title: "Accuracy", value: "50/100"),
-                      dashboardColumn(title: "Question flagged", value: "100"),
-                    ],
-                  ))),
-              Expanded(flex: 3, child: Container())
-            ],
-          ).padding(const EdgeInsets.only(top: AppValues.double20))
+          ChallengeBanner(),
+          // Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     Expanded(
+          //         flex: 8,
+          //         child: IntrinsicHeight(
+          //             child: Row(
+          //           children: [
+          //             dashboardColumn(
+          //                 title: "Average time spent 10 questions",
+          //                 value: "100"),
+          //             dashboardColumn(
+          //                 title: "Total question attempt", value: "100/100"),
+          //             dashboardColumn(title: "Accuracy", value: "50/100"),
+          //             dashboardColumn(title: "Question flagged", value: "100"),
+          //           ],
+          //         ))),
+          //     Expanded(flex: 3, child: Container())
+          //   ],
+          // ).padding(const EdgeInsets.only(top: AppValues.double20))
         ],
       );
 }
