@@ -32,7 +32,7 @@ class AppPages {
       fullscreenDialog: true,
       transition: Transition.fadeIn,
     ),
-    GetPage(name: Routes.dashboard, page: () => DashboardView()),
+    GetPage(name: Routes.dashboard, page: () => const DashboardView()),
     GetPage(
         name: Routes.login,
         page: () => const AuthView(),

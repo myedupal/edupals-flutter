@@ -41,7 +41,6 @@ class BaseHorizontalBarChart extends StatelessWidget {
       double parentWidth = constraints.maxWidth;
       double leftWidth = parentWidth * (leftRatio ?? 0.25);
       double rightWidth = parentWidth * (rightRatio ?? 0.75);
-      debugPrint("Parent width $parentWidth");
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
