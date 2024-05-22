@@ -11,6 +11,8 @@ import 'package:edupals/features/question-bank/domain/repository/subject_reposit
 import 'package:edupals/features/question-bank/domain/repository/topic_repository.dart';
 import 'package:get/get.dart';
 
+enum QuestionFilterType { mcq, all }
+
 class QuestionFilterSegmentController extends GetxController {
   // Repository and controller DI
   final SubjectRepository subjectRepo = Get.find();
@@ -18,21 +20,25 @@ class QuestionFilterSegmentController extends GetxController {
   final MainController mainController = Get.find();
 
   // General State
+  QuestionFilterType? questionFilterType = QuestionFilterType.all;
   final RxList<Subject>? subjectList = <Subject>[].obs;
   final RxList<Topic>? topicList = <Topic>[].obs;
-  final List<KeyValue> revisionType = [
+  final RxList<KeyValue> revisionType = [
     KeyValue(label: "Topical", key: "topical"),
     KeyValue(label: "Yearly", key: "yearly")
-  ];
-  final List<KeyValue> season = [
+  ].obs;
+  final RxList<KeyValue> season = [
     KeyValue(label: "Summer", key: "summer"),
     KeyValue(label: "Winter", key: "winter")
-  ];
-  final List<KeyValue> zoneList = [
+  ].obs;
+  final RxList<KeyValue> yearsList = [KeyValue(label: "2023", key: "2023")].obs;
+  final RxList<KeyValue> paperList =
+      [KeyValue(label: "Paper 1", key: "Paper 1")].obs;
+  final RxList<KeyValue> zoneList = [
     KeyValue(label: "Zone 1", key: "1"),
     KeyValue(label: "Zone 2", key: "2"),
     KeyValue(label: "Zone 3", key: "3")
-  ];
+  ].obs;
   RxList<KeyValue>? selectedTopics = <KeyValue>[].obs;
   RxList<KeyValue>? selectedYears = <KeyValue>[].obs;
   Rx<KeyValue?> selectedZone = Rx<KeyValue?>(null);
@@ -60,18 +66,57 @@ class QuestionFilterSegmentController extends GetxController {
       getTopics();
       getSubjects();
     }
+
+    if (value?.revisionType != null) {
+      selectedRevisionType.value = revisionType
+          .firstWhere((element) => element.key == value?.revisionType);
+    }
+
+    if (value?.questionFilterType != null) {
+      questionFilterType = value?.questionFilterType;
+    }
   }
 
   void resetFilter() {
     selectedPaper.value = null;
     selectedTopics?.value = [];
     selectedYears?.value = [];
+    selectedZone.value = null;
+    selectedSeason.value = null;
   }
 
   void onSelectSubject({KeyValue? value}) {
     selectedSubject.value = value;
     getTopics();
     resetFilter();
+    onResetData();
+  }
+
+  void onResetData() {
+    final filteredSubject = subjectList?.firstWhereOrNull(
+        (element) => element.id == selectedSubject.value?.key);
+    final ExamsFiltering? examAttribute =
+        questionFilterType == QuestionFilterType.mcq
+            ? filteredSubject?.examsFiltering?.mcq
+            : filteredSubject?.examsFiltering?.all;
+    examAttribute?.years?.sort((a, b) => b.compareTo(a));
+    zoneList.value = examAttribute?.zones
+            ?.map((e) => KeyValue(label: "Zone $e", key: e))
+            .toList() ??
+        [];
+    season.value = examAttribute?.seasons
+            ?.map((e) => KeyValue(label: e.toCapitalized(), key: e))
+            .toList() ??
+        [];
+    yearsList.value = examAttribute?.years
+            ?.map((e) => KeyValue(label: "$e", key: "$e"))
+            .toList() ??
+        [];
+
+    paperList.value = examAttribute?.papers
+            ?.map((e) => KeyValue(label: e, key: e))
+            .toList() ??
+        [];
   }
 
   void onSelectPaper({KeyValue? value}) {
@@ -135,7 +180,8 @@ class QuestionFilterSegmentController extends GetxController {
               ? [selectedZone.value?.key ?? ""]
               : null,
           subjectId: selectedSubject.value?.key,
-          paperId: selectedPaper.value?.key ?? "",
+          paperName: selectedPaper.value?.key ?? "",
+          // paperId: selectedPaper.value?.key ?? "",
           topicId: selectedTopics?.map((element) => element.key ?? "").toList(),
           year: selectedYears?.map((element) => element.key ?? "").toList(),
           season: selectedSeason.value != null
@@ -159,24 +205,10 @@ class QuestionFilterSegmentController extends GetxController {
     BaseDialog.showError(subtitle: error);
   }
 
-  List<KeyValue>? get yearsList {
-    final currentYear = DateTime.now().year - 1;
-    final yearList = List<KeyValue>.generate(
-        15,
-        (index) => KeyValue(
-            label: "${currentYear - index}", key: "${currentYear - index}"));
-    return yearList;
-  }
-
-  List<KeyValue>? get paperList => subjectList
-      ?.firstWhereOrNull((element) => element.id == selectedSubject.value?.key)
-      ?.papers
-      ?.map((e) => KeyValue(label: e.name, key: e.id))
-      .toList();
-
   Future<void> getSubjects({bool isReset = false}) async {
     await subjectRepo.getSubjects(
         queryParams: QueryParams(
+            hasMcqQuestions: questionFilterType == QuestionFilterType.mcq,
             curriculumId: mainController.selectedCurriculum.value?.id),
         onSuccess: (value) {
           subjectList?.value = value ?? [];

@@ -222,6 +222,7 @@ class QuestionsListController extends BaseController {
           subjectId: questionListParams?.subjectId,
           activityType: currentArgument.value?.revisionType,
           topicIds: questionListParams?.topicId,
+          // This will cause issue because current using paper_name
           paperIds: [questionListParams?.paperId ?? ""],
           metadata: questionListParams,
           examId: questionListParams?.examId?.first,

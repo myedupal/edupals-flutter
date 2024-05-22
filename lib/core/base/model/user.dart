@@ -31,6 +31,7 @@ class UserWrapper {
 class User {
   String? id;
   String? name;
+  String? phoneNumber;
   bool? active;
   String? email;
   String? password;
@@ -49,6 +50,7 @@ class User {
   User({
     this.id,
     this.name,
+    this.phoneNumber,
     this.active,
     this.email,
     this.password,
@@ -68,6 +70,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
+        phoneNumber: json["phone_number"],
         active: json["active"],
         email: json["email"],
         password: json["password"],
@@ -84,6 +87,7 @@ class User {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "phone_number": phoneNumber,
         "active": active,
         "email": email,
         "points": points,
@@ -98,6 +102,7 @@ class User {
   Map<String, dynamic> toStore() => {
         "id": id,
         "name": name,
+        "phone_number": phoneNumber,
         "active": active,
         "email": email,
         "points": points,

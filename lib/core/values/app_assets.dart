@@ -30,6 +30,7 @@ class AppAssets {
   static const history = "${_svgImagePath}history.svg";
   static const imageError = "${_svgImagePath}image_error.svg";
   static const totalPointsEarned = "${_svgImagePath}total_points_earned.svg";
+  static const suiLogo = "${_svgImagePath}sui_logo.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";

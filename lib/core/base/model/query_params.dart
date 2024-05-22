@@ -12,6 +12,7 @@ class QueryParams {
     this.isActive,
     this.examId,
     this.paperId,
+    this.paperName,
     this.season,
     this.subjectId,
     this.topicId,
@@ -22,6 +23,7 @@ class QueryParams {
     this.toStartAt,
     this.challengeId,
     this.challengeSubmissionId,
+    this.hasMcqQuestions,
   });
 
   int? page;
@@ -35,6 +37,7 @@ class QueryParams {
   List<String>? topicId;
   String? subjectId;
   String? paperId;
+  String? paperName;
   List<String>? examId;
   List<String>? zone;
   List<String>? season;
@@ -46,6 +49,7 @@ class QueryParams {
   String? toStartAt;
   String? challengeId;
   String? challengeSubmissionId;
+  bool? hasMcqQuestions;
 
   factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
         page: int.parse(json["page"] ?? "1"),
@@ -80,6 +84,7 @@ class QueryParams {
         "to_date": toDate,
         // Question List
         "paper_id": paperId,
+        "paper_name": paperName,
         "exam_id[]": examId?.isNotEmpty == true ? examId : null,
         "topic_id[]": topicId?.isNotEmpty == true ? topicId : null,
         "year[]": year?.isNotEmpty == true ? year : null,
@@ -91,6 +96,7 @@ class QueryParams {
         "to_start_at": toStartAt,
         "challenge_id": challengeId,
         "challenge_submission_id": challengeSubmissionId,
+        "has_mcq_questions": hasMcqQuestions,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 

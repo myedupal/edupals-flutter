@@ -125,6 +125,7 @@ class ChallengeDetailsController extends BaseController {
         queryParams: queryParams,
         onSuccess: (value) {
           questionList?.value = value.data ?? [];
+          createChallengeSubmission();
         },
         onError: (error) {});
   }
@@ -154,7 +155,7 @@ class ChallengeDetailsController extends BaseController {
         onError: (error) {});
   }
 
-  Future<void> createChallengeSubmission({required String challengeId}) async {
+  Future<void> createChallengeSubmission({String? challengeId}) async {
     await challengeSubmissionRepo.createChallengeSubmission(
         challengeSubmission: ChallengeSubmission(challengeId: challengeId),
         onSuccess: (value) {

@@ -12,17 +12,17 @@ class ChallengeSubmissionWrapper {
 
   factory ChallengeSubmissionWrapper.fromJson(Map<String, dynamic> json) =>
       ChallengeSubmissionWrapper(
-        challengeSubmission: json["challenge_submission"] == null
+        challengeSubmission: json["submission"] == null
             ? null
-            : ChallengeSubmission.fromJson(json["challenge_submission"]),
-        challengeSubmissions: json["challenge_submissions"] == null
+            : ChallengeSubmission.fromJson(json["submission"]),
+        challengeSubmissions: json["submissions"] == null
             ? null
-            : List<ChallengeSubmission>.from(json["challenge_submissions"]
+            : List<ChallengeSubmission>.from(json["submissions"]
                 .map((x) => ChallengeSubmission.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "challenge_submission": challengeSubmission?.toJson(),
+        "submission": challengeSubmission?.toJson(),
       };
 }
 

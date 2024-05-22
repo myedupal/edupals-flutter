@@ -11,14 +11,12 @@ import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
-import 'package:edupals/features/exam-builder/presentation/view/screens/exam_builder_view.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/history/presentation/controller/history_controller.dart';
-import 'package:edupals/features/history/presentation/view/screens/history_view.dart';
+import 'package:edupals/features/mcq/presentation/view/screen/mcq_view.dart';
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
-import 'package:edupals/features/question-bank/presentation/view/screens/question_bank_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -52,24 +50,24 @@ class MainController extends GetxController {
   final RxInt selectedNavIndex = 0.obs;
   final pagesList = [
     const DashboardView(),
-    Container(),
-    const QuestionBankView(),
-    const HistoryView(),
-    const ExamBuilderView(),
-    Container(),
-    Container(),
-    Container()
+    const MCQView(),
+    // const QuestionBankView(),
+    // const HistoryView(),
+    // const ExamBuilderView(),
+    // Container(),
+    // Container(),
+    // Container()
   ];
   final navList = [
     "Dashboard",
     "MCQ",
-    "Question Bank",
+    // "Question Bank",
     // "Flash Cards",
-    "History",
-    "Exam Builder",
-    "Store",
+    // "History",
+    // "Exam Builder",
+    // "Store",
     // "Tutors",
-    "FAQ"
+    // "FAQ"
   ];
 
   Widget get getCurrentPage => pagesList[selectedNavIndex.value];
