@@ -9,6 +9,10 @@ class AppAssets {
   static const mockQuestion = "${_pngImagePath}mock_question.png";
   static const staticConfetti = "${_pngImagePath}static_confetti.png";
   static const badgeMockup = "${_pngImagePath}badge_mockup.png";
+  static const biologyBg = "${_pngImagePath}biology_bg.png";
+  static const economicsBg = "${_pngImagePath}economics_bg.png";
+  static const physicsBg = "${_pngImagePath}physics_bg.png";
+  static const scienceCombinedBg = "${_pngImagePath}science_combined_bg.png";
 
   static const google = "${_svgImagePath}google.svg";
   static const success = "${_svgImagePath}success.svg";
@@ -31,13 +35,18 @@ class AppAssets {
   static const imageError = "${_svgImagePath}image_error.svg";
   static const totalPointsEarned = "${_svgImagePath}total_points_earned.svg";
   static const suiLogo = "${_svgImagePath}sui_logo.svg";
+  static const rightFullChevron = "${_svgImagePath}right_full_chevron.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";
   static const questionLoadingLottie = "${_lottiePath}question_loading.json";
   static const noDataLottie = "${_lottiePath}no_data.json";
 
-  String getPath({required String name}) {
+  String getSvgPath({required String name}) {
     return "$_svgImagePath$name.svg";
+  }
+
+  String getPngPath({required String name}) {
+    return "$_pngImagePath$name.png";
   }
 }

@@ -1,14 +1,12 @@
-import 'package:edupals/core/components/base_accordion.dart';
-import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
-import 'package:edupals/core/values/app_assets.dart';
-import 'package:edupals/core/values/app_colors.dart';
-import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:edupals/features/challenge/domain/model/challenge.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
 import 'package:edupals/features/challenge/presentation/controller/daily_challenge_controller.dart';
+import 'package:edupals/features/challenge/presentation/view/components/challenge_card.dart';
+import 'package:edupals/features/challenge/presentation/view/components/challenge_top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,73 +16,32 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
   Widget get challengeList => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const ImageAssetView(
-                fileName: AppAssets.backIcon,
-                height: AppValues.double15,
-                color: AppColors.gray900,
-              )
-                  .capsulise(
-                      radius: 100,
-                      color: AppColors.gray100,
-                      padding: const EdgeInsets.all(AppValues.double15))
-                  .padding(const EdgeInsets.only(right: AppValues.double10))
-                  .onTap(() {
-                Get.back();
-              }),
-              Text(
-                "Subject List",
-                style: MyTextStyle.xl.bold,
-              ),
-            ],
-          ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          const ChallengeTopBar()
+              .padding(const EdgeInsets.only(bottom: AppValues.double20)),
           Obx(() => Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: controller.subjectList?.toList().length,
-                  itemBuilder: (context, dataIndex) {
-                    final subject = controller.subjectList?[dataIndex];
-                    final filteredChallenge = controller.challengeList
-                        ?.where((e) => e.subject?.name == subject);
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BaseAccordion(
-                            title: subject,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ...?filteredChallenge?.map((e) => Row(
-                                      children: [
-                                        Text(
-                                          "${e.title}",
-                                          style: MyTextStyle.s,
-                                        )
-                                      ],
-                                    )
-                                        .capsulise(
-                                            radius: 10,
-                                            color: AppColors.gray100,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: AppValues.double20,
-                                                horizontal: AppValues.double20))
-                                        .padding(const EdgeInsets.only(
-                                            bottom: AppValues.double10))
-                                        .onTap(() {
-                                      Get.toNamed(Routes.challengeDetails,
-                                          arguments: ChallengeArgument(
-                                              challengeId: e.id,
-                                              title: "Daily Challenge"));
-                                    }))
-                              ],
-                            ))
-                      ],
-                    ).padding(const EdgeInsets.only(bottom: AppValues.double5));
-                  })))
+                  child: GridView.builder(
+                padding: const EdgeInsets.all(AppValues.double20),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 2,
+                    crossAxisSpacing: AppValues.double10,
+                    mainAxisSpacing: AppValues.double10),
+                itemBuilder: (_, index) {
+                  final Challenge? challenge = controller.challengeList?[index];
+                  return ChallengeCard(
+                    challenge: challenge,
+                    onClick: () {
+                      Get.toNamed(Routes.challengeDetails,
+                          arguments: ChallengeArgument(
+                              challengeId: challenge?.id,
+                              title: "Daily Challenge"));
+                    },
+                  );
+                },
+                itemCount: controller.challengeList?.length,
+              ))),
         ],
-      ).padding(const EdgeInsets.all(AppValues.double20));
+      ).padding(const EdgeInsets.all(AppValues.double20)).addBackgroundImage();
 
   @override
   Widget build(BuildContext context) {

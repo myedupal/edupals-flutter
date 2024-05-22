@@ -1,3 +1,4 @@
+import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/question-bank/domain/model/paper.dart';
 
@@ -45,6 +46,11 @@ class Subject {
     this.examsFiltering,
     this.papers,
   });
+
+  String? get getBackgroundImage {
+    return AppAssets()
+        .getPngPath(name: "${name?.replaceAll(" ", "_").toLowerCase()}_bg");
+  }
 
   factory Subject.fromJson(Map<String, dynamic> json) => Subject(
         id: json["id"],

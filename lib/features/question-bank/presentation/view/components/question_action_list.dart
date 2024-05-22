@@ -12,7 +12,7 @@ class QuestionActionList extends StatelessWidget {
   final Function(String)? action;
 
   Widget buttonTemplate({required KeyValue config}) => ImageAssetView(
-        fileName: AppAssets().getPath(name: config.key ?? ""),
+        fileName: AppAssets().getSvgPath(name: config.key ?? ""),
         width: AppValues.double15,
         height: AppValues.double15,
         color: AppColors.accent500,

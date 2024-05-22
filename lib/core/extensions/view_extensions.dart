@@ -140,14 +140,19 @@ extension ExpandedWidget on Widget {
       padding: const EdgeInsets.symmetric(
           horizontal: AppValues.double15, vertical: AppValues.double12));
 
-  Widget imageBackground({EdgeInsets? padding}) => Container(
-      padding: padding ?? const EdgeInsets.all(AppValues.double20),
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(AppAssets.dashboardChallengeBg))),
-      child: this);
+  Widget imageBackground(
+          {EdgeInsets? padding, double? radius, String? image}) =>
+      Container(
+          padding: padding ?? const EdgeInsets.all(AppValues.double20),
+          decoration: BoxDecoration(
+              color: AppColors.gray900,
+              borderRadius: BorderRadius.all(Radius.circular(radius ?? 10)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(image ?? AppAssets.dashboardChallengeBg),
+                onError: (exception, stackTrace) {},
+              )),
+          child: this);
 }
 
 extension ListWidgetExtension on List<Widget> {

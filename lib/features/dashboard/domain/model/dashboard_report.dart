@@ -1,5 +1,5 @@
 class DashboardReport {
-  String? averageTime;
+  double? averageTime;
   int? dailyStreak;
   int? totalCorrectQuestions;
   int? totalQuestionsAttempted;
@@ -21,7 +21,7 @@ class DashboardReport {
           : "$totalCorrectQuestions / $totalQuestionsAttempted";
 
   String? get getParsedAverageTime {
-    final convertedSeconds = (double.tryParse(averageTime ?? "0") ?? 0).round();
+    final convertedSeconds = averageTime?.round() ?? 0;
     int hours = convertedSeconds ~/ 3600;
     int minutes = (convertedSeconds % 3600) ~/ 60;
     int remainingSeconds = convertedSeconds % 60;
