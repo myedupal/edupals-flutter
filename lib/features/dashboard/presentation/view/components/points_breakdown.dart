@@ -47,10 +47,10 @@ class PointsBreakdown extends StatelessWidget {
                   "Total Points Earned",
                   style: MyTextStyle.m.bold.c(AppColors.white),
                 ),
-                Text(
-                  "300",
-                  style: MyTextStyle.m.regular.c(AppColors.white),
-                )
+                Obx(() => Text(
+                      "${mainController.currentUser.value?.points}",
+                      style: MyTextStyle.m.regular.c(AppColors.white),
+                    ))
               ],
             ).padding(const EdgeInsets.only(left: AppValues.double20))
           ],
@@ -65,8 +65,8 @@ class PointsBreakdown extends StatelessWidget {
             BaseHorizontalBarChart(
               dylabels: const ["MCQ", "Daily Challenge"],
               dxlabels: const [0, 10, 20, 30, 40, 50, 60, 70],
-              data: const [10, 40],
-              leftRatio: context.isPhonePortrait ? 0.15 : 0.25,
+              data: const [0, 0],
+              leftRatio: context.isPhonePortrait ? 0.18 : 0.25,
             )
           ],
         )

@@ -1,19 +1,22 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/core/routes/routing.dart';
+import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_submission.dart';
 import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_submission_repository.dart';
 import 'package:edupals/features/challenge/domain/repository/submission_answer_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
+import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
 import 'package:get/get.dart';
 
 class ChallengeDetailsController extends BaseController {
   final ChallengeRepository challengeRepo = Get.find();
+  final UserQuestionsRepository questionsRepo = Get.find();
   final SubmissionAnswerRepository submissionAnswerRepo = Get.find();
   final ChallengeSubmissionRepository challengeSubmissionRepo = Get.find();
-  final String challengeId = Get.parameters["id"] ?? '';
+  final ChallengeArgument routeArgument = Get.arguments;
   RxList<Question>? questionList = <Question>[].obs;
   RxList<SubmissionAnswersAttribute>? answeredList =
       <SubmissionAnswersAttribute>[].obs;
@@ -22,10 +25,17 @@ class ChallengeDetailsController extends BaseController {
   RxInt currentIndex = 0.obs;
   Rx<String>? currentSelectedAnswer = "".obs;
   RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
+  Rx<String> challengeTitle = "".obs;
 
   @override
   void onInit() {
-    getChallenge(id: challengeId);
+    challengeTitle.value = routeArgument.title ?? "";
+    if (routeArgument.challengeId?.isEmpty == false) {
+      getChallenge(id: routeArgument.challengeId ?? "");
+    }
+    if (routeArgument.questionQueryParams != null) {
+      getQuestions(queryParams: routeArgument.questionQueryParams);
+    }
     super.onInit();
   }
 
@@ -106,6 +116,15 @@ class ChallengeDetailsController extends BaseController {
         onSuccess: (value) {
           questionList?.value = value?.questions ?? [];
           getChallengeSubmissions(challengeId: id);
+        },
+        onError: (error) {});
+  }
+
+  Future<void> getQuestions({QueryParams? queryParams}) async {
+    await questionsRepo.getQuestions(
+        queryParams: queryParams,
+        onSuccess: (value) {
+          questionList?.value = value.data ?? [];
         },
         onError: (error) {});
   }

@@ -52,6 +52,7 @@ class MainController extends GetxController {
   final RxInt selectedNavIndex = 0.obs;
   final pagesList = [
     const DashboardView(),
+    Container(),
     const QuestionBankView(),
     const HistoryView(),
     const ExamBuilderView(),
@@ -61,6 +62,7 @@ class MainController extends GetxController {
   ];
   final navList = [
     "Dashboard",
+    "MCQ",
     "Question Bank",
     // "Flash Cards",
     "History",

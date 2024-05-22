@@ -7,6 +7,7 @@ import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
 import 'package:edupals/features/challenge/presentation/controller/daily_challenge_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -72,8 +73,10 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
                                         .padding(const EdgeInsets.only(
                                             bottom: AppValues.double10))
                                         .onTap(() {
-                                      Get.toNamed(
-                                          "${Routes.challengeDetails}/${e.id}");
+                                      Get.toNamed(Routes.challengeDetails,
+                                          arguments: ChallengeArgument(
+                                              challengeId: e.id,
+                                              title: "Daily Challenge"));
                                     }))
                               ],
                             ))
@@ -88,9 +91,8 @@ class DailyChallengeView extends GetView<DailyChallengeController> {
     return Column(
       children: [
         Obx(() => controller.challengeList?.isEmpty == true
-            ? const Expanded(
-                child: NoDataView(
-                    message: "There is no challenge for you today..."))
+            ? const NoDataView(
+                message: "There is no challenge for you today...")
             : Expanded(child: challengeList))
       ],
     ).scaffoldWrapper();

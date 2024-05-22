@@ -56,7 +56,7 @@ class AppPages {
     GetPage(
         name: Routes.challengeComplete, page: () => ChallengeCompleteView()),
     GetPage(
-        name: "${Routes.challengeDetails}/:id",
+        name: Routes.challengeDetails,
         page: () => const ChallengeDetailsView(),
         binding: ChallengeDetailsBinding()),
     GetPage(

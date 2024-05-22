@@ -5,7 +5,6 @@ import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class DashboardColumn extends StatelessWidget {
   const DashboardColumn(
@@ -19,7 +18,7 @@ class DashboardColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: SizedBox(
-            height: Get.dynamicWidth * (context.isPhone ? 0.2 : 0.14),
+            height: Get.dynamicWidth * (context.isPhone ? 0.2 : 0.12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

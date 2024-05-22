@@ -28,10 +28,10 @@ class MCQReport extends GetView<DashboardController> {
                   children: [
                     DashboardColumn(
                         title: "Average Time",
-                        childValue: "${report?.getParsedAverageTime}"),
+                        childValue: report?.getParsedAverageTime ?? "0s"),
                     DashboardColumn(
                         title: "Total correct question",
-                        childValue: "${report?.getTotalCorrectQuestions}"),
+                        childValue: report?.getTotalCorrectQuestions ?? "0"),
                   ],
                 )),
             if (context.isPhone)
@@ -44,10 +44,10 @@ class MCQReport extends GetView<DashboardController> {
                   children: [
                     DashboardColumn(
                         title: "Strength",
-                        childValue: "${report?.strengthSubject}"),
+                        childValue: report?.strengthSubject ?? "N/A"),
                     DashboardColumn(
                         title: "Weakness",
-                        childValue: "${report?.weaknessSubject}"),
+                        childValue: report?.weaknessSubject ?? "N/A"),
                   ],
                 ))
           ]

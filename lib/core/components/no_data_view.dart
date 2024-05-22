@@ -15,15 +15,14 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
+    return Expanded(
+        child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ImageAssetView(
             fileName: AppAssets.noDataLottie,
-            width: Get.dynamicWidth * 0.25,
+            width: Get.dynamicWidth * 0.3,
           ),
           Text(
             message ?? "",
@@ -37,6 +36,6 @@ class NoDataView extends StatelessWidget {
               }).padding(const EdgeInsets.only(top: AppValues.double20))
         ],
       ),
-    );
+    ));
   }
 }

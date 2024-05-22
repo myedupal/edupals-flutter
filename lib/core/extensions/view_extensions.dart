@@ -18,7 +18,7 @@ extension ExpandedWidget on Widget {
       );
 
   Widget onTap(VoidCallback onClick) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           onClick();
         },
