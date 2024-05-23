@@ -4,7 +4,7 @@ import 'package:edupals/features/challenge/domain/model/challenge.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
 import 'package:get/get.dart';
 
-class DailyChallengeController extends BaseController {
+class ExploreController extends BaseController {
   final ChallengeRepository challengeRepo = Get.find();
   RxList<Challenge>? challengeList = <Challenge>[].obs;
 

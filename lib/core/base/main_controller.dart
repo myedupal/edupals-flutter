@@ -11,6 +11,7 @@ import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
 import 'package:edupals/features/dashboard/presentation/view/screens/dashboard_view.dart';
+import 'package:edupals/features/explore/presentation/view/screen/explore_view.dart';
 import 'package:edupals/features/history/domain/model/activity.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/history/presentation/controller/history_controller.dart';
@@ -50,6 +51,7 @@ class MainController extends GetxController {
   final RxInt selectedNavIndex = 0.obs;
   final pagesList = [
     const DashboardView(),
+    const ExploreView(),
     const MCQView(),
     // const QuestionBankView(),
     // const HistoryView(),
@@ -60,6 +62,7 @@ class MainController extends GetxController {
   ];
   final navList = [
     "Dashboard",
+    "Explore",
     "MCQ",
     // "Question Bank",
     // "Flash Cards",

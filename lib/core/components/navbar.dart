@@ -46,13 +46,11 @@ class Navbar extends GetView<MainController> {
                 child: [
               if (!context.isPhonePortrait) navChild(context),
               Expanded(
-                child: controller.getCurrentPage.padding(
-                    const EdgeInsets.symmetric(horizontal: AppValues.double10)),
-              ),
+                  child: controller.getCurrentPage.padding(
+                      const EdgeInsets.symmetric(
+                          horizontal: AppValues.double10))),
               if (context.isPhonePortrait) navChild(context),
-            ]
-                    .rowToColumn(isActive: context.isPhonePortrait)
-                    .padding(const EdgeInsets.only(top: AppValues.double10))),
+            ].rowToColumn(isActive: context.isPhonePortrait)),
           ],
         )
             .scaffoldWrapper(

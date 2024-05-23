@@ -79,8 +79,14 @@ class ChallengeDetailsController extends BaseController {
         ? await challengeSubmissionRepo.submitChallengeSubmission(
             id: currentChallengeSubmission.value?.id ?? "",
             onSuccess: (value) {
+              Get.toNamed(Routes.challengeComplete, arguments: value)
+                  ?.then((value) {
+                currentIndex.value = 0;
+                presetAnswer();
+              });
               currentChallengeSubmission.value = value;
-              Get.toNamed(Routes.challengeComplete, arguments: value);
+              submissionAnswerList.value = value?.submissionAnswers ?? [];
+              presetAnswer();
             },
             onError: (error) {
               BaseSnackBar.show(message: "Error: ${error.message}");
@@ -130,12 +136,20 @@ class ChallengeDetailsController extends BaseController {
 
   Future<void> getQuestions({QueryParams? queryParams}) async {
     setLoading();
+    QueryParams? updatedQueryParams = queryParams;
+    updatedQueryParams?.sortBy = "number";
+    updatedQueryParams?.sortOrder = "asc";
+    updatedQueryParams?.questionType = "mcq";
     await questionsRepo.getQuestions(
         queryParams: queryParams,
         onSuccess: (value) {
-          value.data?.isEmpty == true ? setNoData() : setSuccess();
-          questionList?.value = value.data ?? [];
-          createChallengeSubmission();
+          if (value.data?.isEmpty == true) {
+            setNoData();
+          } else {
+            setSuccess();
+            questionList?.value = value.data ?? [];
+            createChallengeSubmission();
+          }
         },
         onError: (error) {});
   }

@@ -24,6 +24,7 @@ class QueryParams {
     this.challengeId,
     this.challengeSubmissionId,
     this.hasMcqQuestions,
+    this.questionType,
   });
 
   int? page;
@@ -50,6 +51,7 @@ class QueryParams {
   String? challengeId;
   String? challengeSubmissionId;
   bool? hasMcqQuestions;
+  String? questionType;
 
   factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
         page: int.parse(json["page"] ?? "1"),
@@ -97,6 +99,7 @@ class QueryParams {
         "challenge_id": challengeId,
         "submission_id": challengeSubmissionId,
         "has_mcq_questions": hasMcqQuestions,
+        "question_type": questionType,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 
