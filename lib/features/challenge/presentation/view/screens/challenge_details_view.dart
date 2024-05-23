@@ -1,5 +1,7 @@
 import 'package:edupals/core/base/base_button.dart';
+import 'package:edupals/core/components/loading_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
@@ -21,7 +23,8 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
           ).padding(const EdgeInsets.only(
               bottom: AppValues.double20, top: AppValues.double20)),
           ChallengeProgressBar(
-            progress: controller.getProgress,
+            totalQuestionNumber: controller.questionList?.length ?? 0,
+            currentQuestionNumber: controller.currentIndex.value + 1,
             onBack: () => controller.onBack(),
           ),
           controller.questionList?.isNotEmpty == true
@@ -81,19 +84,29 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
         ],
       ));
 
+  Widget get pageBody {
+    return Obx(() {
+      switch (controller.viewState) {
+        case ViewState.loading:
+          return const LoadingView();
+        case ViewState.noData:
+          return const NoDataView(message: "There is no question for you...");
+        default:
+          return Expanded(
+            child: challengeBody.padding(const EdgeInsets.only(
+                top: AppValues.double30,
+                left: AppValues.double30,
+                right: AppValues.double30)),
+          );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        Obx(() => controller.questionList?.isEmpty == true
-            ? const NoDataView(message: "There is no questions for you ...")
-            : Expanded(child: challengeBody))
-      ],
+      children: [pageBody],
     )
-        .padding(const EdgeInsets.only(
-            top: AppValues.double30,
-            left: AppValues.double30,
-            right: AppValues.double30))
         .scaffoldWrapper(backgroundColor: Colors.transparent)
         .constraintsWrapper(width: 800, color: Colors.transparent)
         .addBackgroundImage();

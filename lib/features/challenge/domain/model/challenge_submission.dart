@@ -38,6 +38,7 @@ class ChallengeSubmission {
   String? userId;
   String? createdAt;
   String? updatedAt;
+  String? title;
   Challenge? challenge;
   List<SubmissionAnswersAttribute>? submissionAnswersAttributes;
   List<SubmissionAnswer>? submissionAnswers;
@@ -54,6 +55,7 @@ class ChallengeSubmission {
     this.userId,
     this.createdAt,
     this.updatedAt,
+    this.title,
     this.challenge,
     this.submissionAnswersAttributes,
     this.submissionAnswers,
@@ -72,6 +74,7 @@ class ChallengeSubmission {
         userId: json["user_id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        title: json["title"],
         challenge: json["challenge"] == null
             ? null
             : Challenge.fromJson(json["challenge"]),
@@ -89,11 +92,13 @@ class ChallengeSubmission {
 
   Map<String, dynamic> toJson() => {
         "challenge_id": challengeId,
+        "title": title,
         "submission_answers_attributes": submissionAnswersAttributes == null
             ? []
             : List<SubmissionAnswersAttribute>.from(
                 submissionAnswersAttributes!.map((x) => x.toJson())),
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }
 
 class SubmissionAnswersAttribute {
@@ -114,5 +119,6 @@ class SubmissionAnswersAttribute {
   Map<String, dynamic> toJson() => {
         "question_id": questionId,
         "answer": answer,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null");
 }

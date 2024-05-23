@@ -33,7 +33,8 @@ class AccountView extends GetView<ProfileController> {
       children: [
         Row(
           children: [
-            Column(
+            Expanded(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -46,8 +47,7 @@ class AccountView extends GetView<ProfileController> {
                     style: MyTextStyle.m,
                   ).padding(const EdgeInsets.only(top: AppValues.double10)),
               ],
-            ),
-            const Spacer(),
+            )),
             Text(
               "${value?.buttonText}",
               style: MyTextStyle.xs.medium.c(value?.type != "danger"

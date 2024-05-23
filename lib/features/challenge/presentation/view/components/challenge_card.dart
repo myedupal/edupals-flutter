@@ -47,7 +47,7 @@ class ChallengeCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppValues.double10, vertical: 5)),
             Text(
-              "10 questions",
+              "${challenge?.challengeQuestionsCount ?? 0} questions",
               style: MyTextStyle.xs.bold.c(AppColors.white),
             )
                 .capsulise(

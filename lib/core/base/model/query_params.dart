@@ -95,7 +95,7 @@ class QueryParams {
         "from_start_at": fromStartAt,
         "to_start_at": toStartAt,
         "challenge_id": challengeId,
-        "challenge_submission_id": challengeSubmissionId,
+        "submission_id": challengeSubmissionId,
         "has_mcq_questions": hasMcqQuestions,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");

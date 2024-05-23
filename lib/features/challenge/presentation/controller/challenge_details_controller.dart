@@ -1,4 +1,5 @@
 import 'package:edupals/core/base/base_controller.dart';
+import 'package:edupals/core/base/base_snackbar.dart';
 import 'package:edupals/core/base/model/query_params.dart';
 import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
@@ -29,7 +30,7 @@ class ChallengeDetailsController extends BaseController {
 
   @override
   void onInit() {
-    challengeTitle.value = routeArgument.title ?? "";
+    challengeTitle.value = routeArgument.pageTitle ?? "";
     if (routeArgument.challengeId?.isEmpty == false) {
       getChallenge(id: routeArgument.challengeId ?? "");
     }
@@ -78,9 +79,12 @@ class ChallengeDetailsController extends BaseController {
         ? await challengeSubmissionRepo.submitChallengeSubmission(
             id: currentChallengeSubmission.value?.id ?? "",
             onSuccess: (value) {
+              currentChallengeSubmission.value = value;
               Get.toNamed(Routes.challengeComplete, arguments: value);
             },
-            onError: (error) {})
+            onError: (error) {
+              BaseSnackBar.show(message: "Error: ${error.message}");
+            })
         : Get.back();
   }
 
@@ -93,7 +97,9 @@ class ChallengeDetailsController extends BaseController {
         onSuccess: (value) {
           submissionAnswerList.add(value);
         },
-        onError: (error) {});
+        onError: (error) {
+          BaseSnackBar.show(message: "Error: ${error.message}");
+        });
   }
 
   Future<void> updateSubmissionAnswer() async {
@@ -111,9 +117,11 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> getChallenge({required String id}) async {
+    setLoading();
     await challengeRepo.getChallenge(
         id: id,
         onSuccess: (value) {
+          value?.questions?.isEmpty == true ? setNoData() : setSuccess();
           questionList?.value = value?.questions ?? [];
           getChallengeSubmissions(challengeId: id);
         },
@@ -121,9 +129,11 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> getQuestions({QueryParams? queryParams}) async {
+    setLoading();
     await questionsRepo.getQuestions(
         queryParams: queryParams,
         onSuccess: (value) {
+          value.data?.isEmpty == true ? setNoData() : setSuccess();
           questionList?.value = value.data ?? [];
           createChallengeSubmission();
         },
@@ -131,9 +141,11 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> getChallengeSubmissions({required String challengeId}) async {
+    setLoading();
     await challengeSubmissionRepo.getChallengeSubmissions(
         queryParams: QueryParams(challengeId: challengeId),
         onSuccess: (value) {
+          setSuccess();
           if (value?.isNotEmpty == true) {
             currentChallengeSubmission.value = value?.first;
             getChallengeSubmission();
@@ -156,12 +168,21 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> createChallengeSubmission({String? challengeId}) async {
+    setLoading();
     await challengeSubmissionRepo.createChallengeSubmission(
-        challengeSubmission: ChallengeSubmission(challengeId: challengeId),
+        challengeSubmission: ChallengeSubmission(
+            challengeId: challengeId,
+            title: challengeId == null
+                ? "${routeArgument.subjectTitle}|Year ${routeArgument.questionQueryParams?.year?.first}"
+                : currentChallengeSubmission.value?.title),
         onSuccess: (value) {
+          setSuccess();
           currentChallengeSubmission.value = value;
         },
-        onError: (error) {});
+        onError: (error) {
+          setSuccess();
+          BaseSnackBar.show(message: "Error: ${error.message}");
+        });
   }
 
   void onSelectAnswer({required String answer}) {
