@@ -18,10 +18,19 @@ class UpdateProfileForm extends StatelessWidget {
 
     switch (updateType) {
       case UpdateAccountType.profile:
-        form = BaseInput(
-          label: "New Username",
-          controller: controller.usernameController,
-        ).padding(const EdgeInsets.only(bottom: AppValues.double20));
+        form = Column(
+          children: [
+            BaseInput(
+              label: "New Username",
+              controller: controller.usernameController,
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            BaseInput(
+              label: "New Phone Number",
+              keyboardType: KeyboardType.number,
+              controller: controller.phoneNumberController,
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+          ],
+        );
         break;
       case UpdateAccountType.password:
         form = Column(

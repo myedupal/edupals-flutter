@@ -25,6 +25,7 @@ class SuccessDialog extends StatelessWidget {
         Text(
           message ?? "",
           style: MyTextStyle.m.medium,
+          textAlign: TextAlign.center,
         ).padding(const EdgeInsets.only(
             top: AppValues.double20, bottom: AppValues.double10)),
         BaseButton(

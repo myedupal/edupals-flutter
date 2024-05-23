@@ -258,8 +258,7 @@ class QuestionsListController extends BaseController {
   void processData() {
     topicList?.value = [];
     if (isYearly) {
-      questionsList.sort((a, b) =>
-          int.parse(a.number ?? "1").compareTo(int.parse(b.number ?? "1")));
+      questionsList.sort((a, b) => (a.number ?? 0).compareTo(b.number ?? 0));
     } else {
       for (int i = 0; i < (questionsList.length); i++) {
         if (questionsList[i].topics?.isEmpty == true) {
@@ -287,7 +286,7 @@ class QuestionsListController extends BaseController {
       return topicComparison;
     }
 
-    return a.number?.compareTo(b.number ?? "") ?? 0;
+    return a.number?.compareTo(b.number ?? 0) ?? 0;
   }
 }
 

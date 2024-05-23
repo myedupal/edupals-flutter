@@ -25,7 +25,8 @@ class UserWrapper {
   Map<String, dynamic> toJson() => {
         "user": user?.toJson(),
         "account": account?.toJson(),
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null" || value == "");
 }
 
 class User {

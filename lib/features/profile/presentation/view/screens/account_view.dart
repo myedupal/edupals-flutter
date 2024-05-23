@@ -44,10 +44,10 @@ class AccountView extends GetView<ProfileController> {
                 if (value?.sublabel?.isNotEmpty == true)
                   Text(
                     value?.sublabel ?? "",
-                    style: MyTextStyle.m,
+                    style: MyTextStyle.s,
                   ).padding(const EdgeInsets.only(top: AppValues.double10)),
               ],
-            )),
+            ).padding(const EdgeInsets.only(right: AppValues.double10))),
             Text(
               "${value?.buttonText}",
               style: MyTextStyle.xs.medium.c(value?.type != "danger"
@@ -80,7 +80,7 @@ class AccountView extends GetView<ProfileController> {
     final actionList = [
       KeyValue(
           label: "Profile",
-          sublabel: "Change your current username, display name",
+          sublabel: "Change your current display name and phone number",
           buttonText: "Edit Your profile",
           onAction: () {
             BaseDialog.customise(
@@ -98,8 +98,8 @@ class AccountView extends GetView<ProfileController> {
             children: [
               const ImageAssetView(
                 fileName: AppAssets.suiLogo,
-                width: AppValues.double100,
-                height: AppValues.double100,
+                width: AppValues.double90,
+                height: AppValues.double90,
               ),
               const Text(
                 "Sui Wallet Address",
@@ -109,6 +109,7 @@ class AccountView extends GetView<ProfileController> {
               Text(
                 "${mainController.suiAddress}",
                 style: MyTextStyle.s,
+                textAlign: TextAlign.center,
               ).capsulise(
                   radius: 10,
                   border: true,

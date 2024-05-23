@@ -1,7 +1,6 @@
 import 'package:edupals/core/base/base_horizontal_bar_chart.dart';
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
-import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -77,7 +76,7 @@ class PointsBreakdown extends GetView<DashboardController> {
                     double.parse("${pointReport.dailyChallengePoints ?? 0.0}"),
                     double.parse("${pointReport.dailyCheckInPoints ?? 0.0}"),
                   ],
-                  leftRatio: context.isPhonePortrait ? 0.20 : 0.25,
+                  leftRatio: 0.20,
                 )
             ],
           );

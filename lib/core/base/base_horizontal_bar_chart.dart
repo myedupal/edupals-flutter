@@ -50,13 +50,18 @@ class BaseHorizontalBarChart extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 for (var i = 0; i < (dylabels?.length ?? 0); i++)
-                  Text(
-                    dylabels?[i] ?? "",
-                    textAlign: TextAlign.end,
-                    style: MyTextStyle.xxs.bold.c(AppColors.white).h(1.2),
-                  ).padding(EdgeInsets.only(
-                    top: columnTopPadding + 5,
-                  )),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(
+                      top: columnTopPadding,
+                    ),
+                    height: AppValues.double25,
+                    child: Text(
+                      dylabels?[i] ?? "",
+                      textAlign: TextAlign.end,
+                      style: MyTextStyle.xxs.bold.c(AppColors.white).h(1.2),
+                    ),
+                  ),
               ],
             ).padding(const EdgeInsets.only(right: 10)),
           ),
