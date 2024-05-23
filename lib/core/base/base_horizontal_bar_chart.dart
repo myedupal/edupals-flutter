@@ -50,16 +50,13 @@ class BaseHorizontalBarChart extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 for (var i = 0; i < (dylabels?.length ?? 0); i++)
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: columnTopPadding,
-                    ),
-                    child: Text(
-                      dylabels?[i] ?? "",
-                      textAlign: TextAlign.end,
-                      style: MyTextStyle.xxs.bold.c(AppColors.white),
-                    ),
-                  ),
+                  Text(
+                    dylabels?[i] ?? "",
+                    textAlign: TextAlign.end,
+                    style: MyTextStyle.xxs.bold.c(AppColors.white).h(1.2),
+                  ).padding(EdgeInsets.only(
+                    top: columnTopPadding + 5,
+                  )),
               ],
             ).padding(const EdgeInsets.only(right: 10)),
           ),
@@ -106,28 +103,25 @@ class BaseHorizontalBarChart extends StatelessWidget {
                 Column(
                   children: [
                     for (var i = 0; i < (dylabels?.length ?? 0); i++)
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: columnTopPadding,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: ((data?[i] ?? 0) / (dxlabels?.last ?? 0)) *
-                                  rightWidth,
-                              height: AppValues.double25,
-                              decoration: const BoxDecoration(
-                                  color: AppColors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                            ),
-                            Text(
-                              "${data?[i].ceil() ?? 0}",
-                              style: MyTextStyle.xxs.c(AppColors.white),
-                            ).padding(const EdgeInsets.only(left: 5))
-                          ],
-                        ),
-                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: ((data?[i] ?? 0) / (dxlabels?.last ?? 0)) *
+                                rightWidth,
+                            height: AppValues.double25,
+                            decoration: const BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                          ),
+                          Text(
+                            "${data?[i].ceil() ?? 0}",
+                            style: MyTextStyle.xxs.c(AppColors.white),
+                          ).padding(const EdgeInsets.only(left: 5))
+                        ],
+                      ).padding(EdgeInsets.only(
+                        top: columnTopPadding,
+                      )),
                   ],
                 ).padding(
                     EdgeInsets.only(bottom: columnBottomPadding, left: 1)),

@@ -1,4 +1,5 @@
 import 'package:edupals/features/dashboard/domain/model/dashboard_report.dart';
+import 'package:edupals/features/dashboard/domain/model/point_report.dart';
 import 'package:edupals/features/dashboard/domain/repository/dashboard_report_repository.dart';
 import 'package:get/get.dart';
 
@@ -6,11 +7,13 @@ class DashboardController extends GetxController {
   final DashboardReportRepository dashboardReportRepo = Get.find();
   final Rx<DashboardReport?> dailyChallengeReport = Rx<DashboardReport?>(null);
   final Rx<DashboardReport?> mcqReport = Rx<DashboardReport?>(null);
+  final Rx<PointReport?> pointReport = Rx<PointReport?>(null);
 
   @override
   void onInit() {
     getDailyChallengeReport();
     getMcqReport();
+    getPointReport();
     super.onInit();
   }
 
@@ -26,6 +29,14 @@ class DashboardController extends GetxController {
     await dashboardReportRepo.getMcqReport(
         onSuccess: (value) {
           mcqReport.value = value;
+        },
+        onError: (error) {});
+  }
+
+  void getPointReport() async {
+    await dashboardReportRepo.getPointReport(
+        onSuccess: (value) {
+          pointReport.value = value;
         },
         onError: (error) {});
   }

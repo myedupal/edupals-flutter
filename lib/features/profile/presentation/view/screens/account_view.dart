@@ -81,7 +81,7 @@ class AccountView extends GetView<ProfileController> {
       KeyValue(
           label: "Profile",
           sublabel: "Change your current username, display name",
-          buttonText: "View Your profile",
+          buttonText: "Edit Your profile",
           onAction: () {
             BaseDialog.customise(
                 child: const UpdateProfileForm(

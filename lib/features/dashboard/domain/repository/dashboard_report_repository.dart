@@ -3,6 +3,7 @@ import 'package:edupals/core/network/dio_client.dart';
 import 'package:edupals/core/network/errors/failures.dart';
 import 'package:edupals/core/values/api_constants.dart';
 import 'package:edupals/features/dashboard/domain/model/dashboard_report.dart';
+import 'package:edupals/features/dashboard/domain/model/point_report.dart';
 import 'package:get/get.dart';
 
 class DashboardReportRepository {
@@ -34,6 +35,21 @@ class DashboardReportRepository {
         .handleResponse(
           onSuccess: (value) =>
               onSuccess.call(DashboardReport.fromJson(value.data)),
+          onError: onError,
+        );
+  }
+
+  Future<void> getPointReport(
+      {required Function(PointReport?) onSuccess,
+      required Function(BaseFailure) onError}) async {
+    await dioClient
+        .get(
+          ApiConstants.getPointsReport,
+          authorization: true,
+        )
+        .handleResponse(
+          onSuccess: (value) =>
+              onSuccess.call(PointReport.fromJson(value.data)),
           onError: onError,
         );
   }

@@ -26,4 +26,5 @@ abstract class ApiConstants {
   static const getDailyChallengeReport =
       '$version/user/reports/daily_challenge';
   static const getMcqReport = '$version/user/reports/mcq';
+  static const getPointsReport = '$version/user/reports/points';
 }
