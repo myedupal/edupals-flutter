@@ -83,11 +83,12 @@ extension ExpandedWidget on Widget {
   Widget scaffoldWrapper(
           {bool? resizeToAvoidBottomInset = false,
           Color? backgroundColor = AppColors.white,
-          bool topSafe = true}) =>
+          bool topSafe = true,
+          bool bottomSafe = false}) =>
       Scaffold(
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         backgroundColor: backgroundColor,
-        body: SafeArea(bottom: false, top: topSafe, child: this),
+        body: SafeArea(bottom: bottomSafe, top: topSafe, child: this),
       );
 
   Widget ignorePointer([bool ignore = false]) =>

@@ -12,10 +12,12 @@ class DailyChallengeList extends StatelessWidget {
     super.key,
     this.challengeList,
     this.shrinkWrap = false,
+    this.physics,
   });
 
   final List<Challenge>? challengeList;
   final bool shrinkWrap;
+  final ScrollPhysics? physics;
 
   int getAxisCount(BuildContext context) {
     int? count = 3;
@@ -31,6 +33,7 @@ class DailyChallengeList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: shrinkWrap,
+      physics: physics,
       padding: const EdgeInsets.symmetric(horizontal: AppValues.double10),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: getAxisCount(context),

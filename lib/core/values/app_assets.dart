@@ -33,9 +33,12 @@ class AppAssets {
   static const sortFull = "${_svgImagePath}sort_full.svg";
   static const history = "${_svgImagePath}history.svg";
   static const imageError = "${_svgImagePath}image_error.svg";
-  static const totalPointsEarned = "${_svgImagePath}total_points_earned.svg";
+  static const blueCrown = "${_svgImagePath}blue_crown.svg";
+  static const orangeCrown = "${_svgImagePath}orange_crown.svg";
   static const suiLogo = "${_svgImagePath}sui_logo.svg";
   static const rightFullChevron = "${_svgImagePath}right_full_chevron.svg";
+  static const fire = "${_svgImagePath}fire.svg";
+  static const diamond = "${_svgImagePath}diamond.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";

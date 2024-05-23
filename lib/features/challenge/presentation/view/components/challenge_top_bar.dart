@@ -1,4 +1,6 @@
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -12,6 +14,7 @@ class ChallengeTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainController mainController = Get.find();
     return Row(
       children: [
         Expanded(
@@ -29,28 +32,44 @@ class ChallengeTopBar extends StatelessWidget {
                 .onTap(() {
               Get.back();
             }),
-            Row(children: [
-              Text(
-                "Today's Challenge",
-                style: MyTextStyle.s.bold,
-              )
-            ]).capsulise(
-                radius: 100,
-                color: AppColors.white,
-                padding: const EdgeInsets.symmetric(
-                    vertical: AppValues.double10,
-                    horizontal: AppValues.double15)),
+            if (!context.isPhonePortrait)
+              Row(children: [
+                const ImageAssetView(
+                  fileName: AppAssets.orangeCrown,
+                  width: AppValues.double25,
+                  height: AppValues.double25,
+                ).padding(const EdgeInsets.only(right: AppValues.double5)),
+                Text(
+                  "Today's Challenge",
+                  style: MyTextStyle.s.bold,
+                )
+              ]).topBarWidgetCapsule(color: AppColors.white),
           ],
         )),
-        if (!context.isPhone)
-          Row(
-            children: [
-              Text(
-                "0 PTS",
-                style: MyTextStyle.xs.extraBold,
-              )
-            ],
-          ).topBarWidgetCapsule(color: AppColors.white)
+        // if (!context.isPhone)
+        Row(
+          children: [
+            const ImageAssetView(
+              fileName: AppAssets.diamond,
+            ).padding(const EdgeInsets.only(right: AppValues.double5)),
+            Text(
+              "${mainController.currentUser.value?.points ?? 0} PTS",
+              style: MyTextStyle.xs.extraBold,
+            ),
+            const SizedBox(
+              width: AppValues.double10,
+            ),
+            const ImageAssetView(
+              fileName: AppAssets.fire,
+            ).padding(const EdgeInsets.only(right: AppValues.double5)),
+            Text(
+              "${mainController.currentUser.value?.dailyStreak ?? 0} Streak",
+              style: MyTextStyle.xs.extraBold,
+            )
+          ],
+        )
+            .padding(const EdgeInsets.symmetric(horizontal: AppValues.double5))
+            .topBarWidgetCapsule(color: AppColors.white)
       ],
     ).capsulise(
         radius: 100,

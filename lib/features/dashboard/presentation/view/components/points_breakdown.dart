@@ -39,7 +39,7 @@ class PointsBreakdown extends StatelessWidget {
             )),
         Row(
           children: [
-            const ImageAssetView(fileName: AppAssets.totalPointsEarned),
+            const ImageAssetView(fileName: AppAssets.blueCrown),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

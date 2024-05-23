@@ -48,7 +48,7 @@ class DashboardView extends StatelessWidget {
                 .padding(
                     const EdgeInsets.symmetric(vertical: AppValues.double10))
           ],
-        )
+        ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double5))
       ],
     );
   }
