@@ -54,22 +54,25 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
                                   right: AppValues.double20))
                               .onTap(() {
                         if (controller
-                                .currentChallengeSubmission.value?.status ==
-                            "pending") {
+                                    .currentChallengeSubmission.value?.status ==
+                                "pending" &&
+                            !controller.isSubmissionLoading) {
                           controller.onSelectAnswer(answer: e);
                         }
                       })))
                 ],
               ).padding(const EdgeInsets.only(top: AppValues.double10)),
               BaseButton(
+                isLoading: controller.isSubmissionLoading,
                 text: controller.isSubmitted
                     ? controller.isLastQuestion
                         ? "Finish"
                         : "Next Question"
                     : "Submit",
-                enabled: controller.currentSelectedAnswer?.value.isNotEmpty ==
-                        true ||
-                    controller.isSubmitted,
+                enabled: (controller.currentSelectedAnswer?.value.isNotEmpty ==
+                            true ||
+                        controller.isSubmitted) &&
+                    !controller.isSubmissionLoading,
                 onClick: () {
                   controller.isSubmitted
                       ? controller.isLastQuestion

@@ -1,6 +1,7 @@
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/base_snackbar.dart';
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_submission.dart';
@@ -27,6 +28,7 @@ class ChallengeDetailsController extends BaseController {
   Rx<String>? currentSelectedAnswer = "".obs;
   RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
   Rx<String> challengeTitle = "".obs;
+  Rx<ViewState> submissionViewState = ViewState.success.obs;
 
   @override
   void onInit() {
@@ -95,6 +97,7 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> createSubmissionAnswer() async {
+    setSubmissionLoading();
     await submissionAnswerRepo.createSubmissionAnswer(
         submissionAnswer: SubmissionAnswer(
             questionId: currentQuestion?.id,
@@ -102,13 +105,16 @@ class ChallengeDetailsController extends BaseController {
             answer: currentSelectedAnswer?.value),
         onSuccess: (value) {
           submissionAnswerList.add(value);
+          setSubmissionSuccess();
         },
         onError: (error) {
+          setSubmissionSuccess();
           BaseSnackBar.show(message: "Error: ${error.message}");
         });
   }
 
   Future<void> updateSubmissionAnswer() async {
+    setSubmissionLoading();
     await submissionAnswerRepo.updateSubmissionAnswer(
         id: currentSubmissionAnswer?.id ?? "",
         submissionAnswer: SubmissionAnswer(
@@ -118,8 +124,11 @@ class ChallengeDetailsController extends BaseController {
           final submissionIndex = submissionAnswerList
               .indexWhere((element) => element?.id == value?.id);
           submissionAnswerList[submissionIndex] = value;
+          setSubmissionSuccess();
         },
-        onError: (error) {});
+        onError: (error) {
+          setSubmissionSuccess();
+        });
   }
 
   Future<void> getChallenge({required String id}) async {
@@ -221,5 +230,17 @@ class ChallengeDetailsController extends BaseController {
   void onBack() {
     currentIndex.value > 0 ? currentIndex -= 1 : Get.back();
     presetAnswer();
+  }
+
+  void setSubmissionLoading() {
+    submissionViewState.value = ViewState.loading;
+  }
+
+  void setSubmissionSuccess() {
+    submissionViewState.value = ViewState.success;
+  }
+
+  bool get isSubmissionLoading {
+    return submissionViewState.value == ViewState.loading;
   }
 }
