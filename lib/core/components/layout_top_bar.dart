@@ -1,5 +1,6 @@
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/profile_picture.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -14,7 +15,6 @@ class LayoutTopBar extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
-    final MainController mainController = Get.find();
     return Row(
       children: [
         if (!context.isPhone)
@@ -39,14 +39,7 @@ class LayoutTopBar extends GetView<MainController> {
         const Spacer(),
         Row(
           children: [
-            Obx(() => ImageAssetView(
-                  fileName: mainController
-                          .currentUser.value?.oauth2ProfilePictureUrl ??
-                      "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  fit: BoxFit.cover,
-                  width: AppValues.double25,
-                  height: AppValues.double25,
-                ).clip()),
+            const ProfilePicture(),
             Text(
               "Profile",
               style: MyTextStyle.xs.bold.c(AppColors.white),

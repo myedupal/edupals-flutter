@@ -167,11 +167,16 @@ class QuestionFilterSegmentController extends GetxController {
         selectedSeason.value == null);
   }
 
+  String get getTitle {
+    return questionFilterType == QuestionFilterType.mcq
+        ? "${selectedSubject.value?.label ?? ""}|Paper ${selectedPaper.value?.label ?? ""}|${selectedSeason.value?.label ?? ""} Season|Year ${selectedYears?.first.key}|Zone ${selectedZone.value?.key}"
+        : "${selectedRevisionType.value?.label ?? ""}|${selectedSubject.value?.label ?? ""}|Paper ${selectedPaper.value?.label ?? ""}|${selectedSeason.value?.label ?? ""} Season";
+  }
+
   QuestionBankArgument? get compiledValue {
     final QuestionBankArgument argument = QuestionBankArgument(
         revisionType: selectedRevisionType.value?.key,
-        title:
-            "${selectedRevisionType.value?.label ?? ""}|${selectedSubject.value?.label ?? ""}|Paper ${selectedPaper.value?.label ?? ""}|${selectedSeason.value?.label ?? ""} Season",
+        title: getTitle,
         queryParams: QueryParams(
           page: 1,
           items: 100,

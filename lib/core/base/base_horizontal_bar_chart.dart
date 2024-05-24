@@ -74,7 +74,7 @@ class BaseHorizontalBarChart extends StatelessWidget {
                       children: [
                         Expanded(
                             child: SizedBox(
-                          width: rightWidth + 10,
+                          width: rightWidth - 10,
                           child: Row(
                             children: [
                               for (var i = 0;
@@ -112,7 +112,7 @@ class BaseHorizontalBarChart extends StatelessWidget {
                         children: [
                           Container(
                             width: ((data?[i] ?? 0) / (dxlabels?.last ?? 0)) *
-                                rightWidth,
+                                (rightWidth - 15),
                             height: AppValues.double25,
                             decoration: const BoxDecoration(
                                 color: AppColors.white,

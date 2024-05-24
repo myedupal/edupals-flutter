@@ -23,9 +23,9 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
           ).padding(const EdgeInsets.only(
               bottom: AppValues.double20, top: AppValues.double20)),
           ChallengeProgressBar(
+            time: "0s",
             totalQuestionNumber: controller.questionList?.length ?? 0,
             currentQuestionNumber: controller.currentIndex.value + 1,
-            onBack: () => controller.onBack(),
           ),
           controller.questionList?.isNotEmpty == true
               ? Expanded(
@@ -61,27 +61,20 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
                         }
                       })))
                 ],
-              ).padding(const EdgeInsets.only(top: AppValues.double10)),
-              BaseButton(
-                isLoading: controller.isSubmissionLoading,
-                text: controller.isSubmitted
-                    ? controller.isLastQuestion
-                        ? "Finish"
-                        : "Next Question"
-                    : "Submit",
-                enabled: (controller.currentSelectedAnswer?.value.isNotEmpty ==
-                            true ||
-                        controller.isSubmitted) &&
-                    !controller.isSubmissionLoading,
-                onClick: () {
-                  controller.isSubmitted
-                      ? controller.isLastQuestion
-                          ? controller.finishChallenge()
-                          : controller.nextQuestion()
-                      : controller.onSubmitAnswer();
-                },
-                fullWidth: true,
-              ).padding(const EdgeInsets.only(bottom: AppValues.double30))
+              ).padding(EdgeInsets.only(
+                  top: AppValues.double10,
+                  bottom: controller.isChallengeFinish
+                      ? AppValues.double0
+                      : AppValues.double30)),
+              if (controller.isChallengeFinish)
+                BaseButton(
+                  isLoading: controller.isSubmissionLoading,
+                  text: "Finish",
+                  onClick: () {
+                    controller.finishChallenge();
+                  },
+                  fullWidth: true,
+                ).padding(const EdgeInsets.only(bottom: AppValues.double30))
             ],
           )
         ],

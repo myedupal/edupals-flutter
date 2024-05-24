@@ -1,6 +1,8 @@
 import 'package:edupals/core/base/base_horizontal_bar_chart.dart';
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/profile_picture.dart';
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -21,16 +23,9 @@ class PointsBreakdown extends GetView<DashboardController> {
       children: [
         Obx(() => Row(
               children: [
-                ImageAssetView(
-                  fileName: mainController
-                          .currentUser.value?.oauth2ProfilePictureUrl ??
-                      "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  fit: BoxFit.cover,
-                  width: AppValues.double30,
-                  height: AppValues.double30,
-                )
-                    .clip()
-                    .padding(const EdgeInsets.only(right: AppValues.double5)),
+                const ProfilePicture(
+                  size: AppValues.double30,
+                ).padding(const EdgeInsets.only(right: AppValues.double5)),
                 Text(
                   "${mainController.currentUser.value?.name}",
                   style: MyTextStyle.m.bold.c(AppColors.white),
@@ -68,15 +63,16 @@ class PointsBreakdown extends GetView<DashboardController> {
                 BaseHorizontalBarChart(
                   dylabels: const ["MCQ", "Daily Challenge", "Daily Check In"],
                   dxlabels: List<int>.generate(
-                      7,
+                      8,
                       (index) => ((index) *
-                          ((pointReport.totalPoints ?? 0) / 7).ceil())),
+                          ((pointReport.totalPoints ?? 20) / 8).round())),
                   data: [
                     double.parse("${pointReport.mcqPoints ?? 0.0}"),
                     double.parse("${pointReport.dailyChallengePoints ?? 0.0}"),
                     double.parse("${pointReport.dailyCheckInPoints ?? 0.0}"),
                   ],
-                  leftRatio: 0.20,
+                  leftRatio: context.isTabletLandscape ? 0.25 : 0.20,
+                  rightRatio: context.isTabletLandscape ? 0.75 : 0.80,
                 )
             ],
           );

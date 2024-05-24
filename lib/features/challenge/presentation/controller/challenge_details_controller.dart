@@ -55,6 +55,9 @@ class ChallengeDetailsController extends BaseController {
   bool get isLastQuestion =>
       currentIndex.value == (questionList?.length ?? 0) - 1;
 
+  bool get isChallengeFinish =>
+      submissionAnswerList.length == questionList?.length;
+
   bool get isSubmitted =>
       currentSubmissionAnswer != null &&
       currentSelectedAnswer?.value == currentSubmissionAnswer?.answer;
@@ -77,6 +80,7 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> finishChallenge() async {
+    setSubmissionLoading();
     (currentChallengeSubmission.value?.status == "pending")
         ? await challengeSubmissionRepo.submitChallengeSubmission(
             id: currentChallengeSubmission.value?.id ?? "",
@@ -89,8 +93,10 @@ class ChallengeDetailsController extends BaseController {
               currentChallengeSubmission.value = value;
               submissionAnswerList.value = value?.submissionAnswers ?? [];
               presetAnswer();
+              setSubmissionSuccess();
             },
             onError: (error) {
+              setSubmissionSuccess();
               BaseSnackBar.show(message: "Error: ${error.message}");
             })
         : Get.back();
@@ -106,6 +112,7 @@ class ChallengeDetailsController extends BaseController {
         onSuccess: (value) {
           submissionAnswerList.add(value);
           setSubmissionSuccess();
+          nextQuestion();
         },
         onError: (error) {
           setSubmissionSuccess();
@@ -125,6 +132,7 @@ class ChallengeDetailsController extends BaseController {
               .indexWhere((element) => element?.id == value?.id);
           submissionAnswerList[submissionIndex] = value;
           setSubmissionSuccess();
+          nextQuestion();
         },
         onError: (error) {
           setSubmissionSuccess();
@@ -210,6 +218,7 @@ class ChallengeDetailsController extends BaseController {
 
   void onSelectAnswer({required String answer}) {
     currentSelectedAnswer?.value = answer;
+    onSubmitAnswer();
   }
 
   void presetAnswer() {

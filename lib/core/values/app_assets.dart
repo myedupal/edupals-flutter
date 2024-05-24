@@ -13,6 +13,7 @@ class AppAssets {
   static const economicsBg = "${_pngImagePath}economics_bg.png";
   static const physicsBg = "${_pngImagePath}physics_bg.png";
   static const scienceCombinedBg = "${_pngImagePath}science_combined_bg.png";
+  static const profilePlaceholder = "${_pngImagePath}profile_placeholder.png";
 
   static const google = "${_svgImagePath}google.svg";
   static const success = "${_svgImagePath}success.svg";
@@ -39,6 +40,9 @@ class AppAssets {
   static const rightFullChevron = "${_svgImagePath}right_full_chevron.svg";
   static const fire = "${_svgImagePath}fire.svg";
   static const diamond = "${_svgImagePath}diamond.svg";
+  static const darkOrangeCrown = "${_svgImagePath}dark_orange_crown.svg";
+  static const wrong = "${_svgImagePath}wrong.svg";
+  static const blueCircle = "${_svgImagePath}blue_circle.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";

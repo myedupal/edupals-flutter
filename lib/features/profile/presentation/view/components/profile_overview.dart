@@ -1,6 +1,6 @@
 import 'package:edupals/core/base/base_progress_indicator.dart';
 import 'package:edupals/core/base/main_controller.dart';
-import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/profile_picture.dart';
 import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -131,22 +131,15 @@ class ProfileOverview extends GetView<MainController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         [
-          Obx(() => ImageAssetView(
-                fileName: controller
-                        .currentUser.value?.oauth2ProfilePictureUrl ??
-                    "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                fit: BoxFit.cover,
-                width: AppValues.double70,
-                height: AppValues.double70,
-              )
-                  .clip()
-                  .capsulise(
-                      radius: 100,
-                      padding: const EdgeInsets.all(AppValues.double4),
-                      color: AppColors.accent500)
-                  .padding(EdgeInsets.only(
-                      bottom:
-                          context.isPhonePortrait ? AppValues.double10 : 0))),
+          const ProfilePicture(
+            size: AppValues.double70,
+          )
+              .capsulise(
+                  radius: 100,
+                  padding: const EdgeInsets.all(AppValues.double4),
+                  color: AppColors.accent500)
+              .padding(EdgeInsets.only(
+                  bottom: context.isPhonePortrait ? AppValues.double10 : 0)),
           Flexible(
               flex: context.isPhonePortrait ? 0 : 5,
               child: pointDisplay.padding(EdgeInsets.only(

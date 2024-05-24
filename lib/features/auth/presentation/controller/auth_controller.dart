@@ -51,6 +51,7 @@ class AuthController extends BaseController {
           onSuccess: (value) {
             setSuccess();
             mainController.setUser(user: value);
+            mainController.goAhead();
             Get.offAllNamed(Routes.homeAnimation);
           },
           onError: (error) {
@@ -69,6 +70,7 @@ class AuthController extends BaseController {
           setSuccess();
           mainController.setUser(
               user: value?.user, salt: value?.meta?.zkloginSalt);
+          mainController.goAhead();
           Get.offAllNamed(Routes.homeAnimation);
         },
         onError: (error) {
@@ -92,6 +94,7 @@ class AuthController extends BaseController {
               message: "Your account is registered successfully",
               buttonText: "Go to dashboard",
               action: () {
+                mainController.goAhead();
                 Get.offAllNamed(Routes.homeAnimation);
               },
             );
