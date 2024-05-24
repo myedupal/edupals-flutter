@@ -204,7 +204,7 @@ class ChallengeDetailsController extends BaseController {
         challengeSubmission: ChallengeSubmission(
             challengeId: challengeId,
             title: challengeId == null
-                ? "${routeArgument.subjectTitle}|Year ${routeArgument.questionQueryParams?.year?.first}"
+                ? "${routeArgument.subjectTitle}"
                 : currentChallengeSubmission.value?.title),
         onSuccess: (value) {
           setSuccess();
