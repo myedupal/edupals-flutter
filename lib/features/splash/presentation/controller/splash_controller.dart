@@ -54,6 +54,7 @@ class SplashController extends GetxController {
         onSuccess: (value) {
           mainController.setUser(
               user: value?.user, salt: value?.meta?.zkloginSalt);
+          mainController.goAhead();
           Get.offAllNamed(Routes.homeAnimation);
           html.window.history.pushState({}, '', '');
         },
