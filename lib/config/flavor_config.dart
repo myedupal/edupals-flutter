@@ -1,4 +1,5 @@
 import 'package:edupals/core/values/app_values.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 
@@ -59,11 +60,12 @@ class FlavorConfig {
     }
   }
 
-  static String get openAiKey => dotenv.env['OPENAI_API_KEY'] ?? 'MY_FALLBACK';
   static String get apiUrl => dotenv.env['API_URL'] ?? 'MY_FALLBACK';
-  static String get sentryDsn => dotenv.env['sentryDsn'] ?? 'MY_FALLBACK';
-  static String get redirectUrl => dotenv.env['REDIRECT_URL'] ?? 'MY_FALLBACK';
-  static String get websiteUrl => dotenv.env['WEBSITE_URL'] ?? 'MY_FALLBACK';
+  static String get sentryDsn => dotenv.env['SENTRY_DSN'] ?? 'MY_FALLBACK';
+  static String get redirectUrl =>
+      kIsWeb ? Uri.base.origin : dotenv.env['REDIRECT_URL'] ?? 'MY_FALLBACK';
+  static String get websiteUrl =>
+      kIsWeb ? Uri.base.origin : dotenv.env['WEBSITE_URL'] ?? 'MY_FALLBACK';
   static String get replaceUrl => "$websiteUrl/#id_token=";
   static String get googleClientId =>
       dotenv.env['GOOGLE_CLIENT_ID'] ?? 'MY_FALLBACK';
