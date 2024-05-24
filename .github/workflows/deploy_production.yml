@@ -22,6 +22,8 @@ jobs:
     secrets: 
       env_file: |
         API_URL=${{ secrets.PRODUCTION_API_URL }}
+        GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+        SENTRY_DSN=${{ secrets.SENTRY_DSN }}
     with:
       environment: production
 
