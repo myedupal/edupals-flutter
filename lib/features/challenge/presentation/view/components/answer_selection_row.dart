@@ -32,7 +32,7 @@ class AnswerSelectionRow extends StatelessWidget {
     }
 
     if (isWrong) {
-      textColor = AppColors.red600;
+      textColor = AppColors.pink500;
     }
 
     return textColor;
@@ -50,7 +50,7 @@ class AnswerSelectionRow extends StatelessWidget {
     }
 
     if (isWrong) {
-      backgroundColor = AppColors.red100;
+      backgroundColor = AppColors.pink50;
     }
 
     return backgroundColor;

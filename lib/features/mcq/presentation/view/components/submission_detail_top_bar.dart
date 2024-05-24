@@ -1,16 +1,16 @@
 import 'package:edupals/core/components/image_asset_view.dart';
-import 'package:edupals/core/components/point_streak_display.dart';
-import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
-import 'package:flutter/material.dart';
+import 'package:edupals/features/mcq/presentation/controller/submission_details_controller.dart';
+import 'package:edupals/features/mcq/presentation/view/components/submission_info.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class ChallengeTopBar extends StatelessWidget {
-  const ChallengeTopBar({super.key});
+class SubmissionDetailTopBar extends GetView<SubmissionDetailsController> {
+  const SubmissionDetailTopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +31,16 @@ class ChallengeTopBar extends StatelessWidget {
                 .onTap(() {
               Get.back();
             }),
-            if (!context.isPhonePortrait)
-              Row(children: [
-                const ImageAssetView(
-                  fileName: AppAssets.orangeCrown,
-                  width: AppValues.double25,
-                  height: AppValues.double25,
-                ).padding(const EdgeInsets.only(right: AppValues.double5)),
-                Text(
-                  "Today's Challenge",
-                  style: MyTextStyle.s.bold,
-                )
-              ]).topBarWidgetCapsule(color: AppColors.white),
+            Row(children: [
+              Text(
+                "Today's Challenge",
+                style: MyTextStyle.s.bold,
+              )
+            ]).topBarWidgetCapsule(color: AppColors.white),
           ],
         )),
-        // if (!context.isPhone)
-        const PointStreakDisplay()
+        Obx(() =>
+            SubmissionInfo(submission: controller.currentSubmission.value))
       ],
     ).capsulise(
         radius: 100,

@@ -55,7 +55,8 @@ class ChallengeCompleteView extends StatelessWidget {
           BaseButton(
               text: "Review Questions",
               onClick: () {
-                Get.back();
+                Get.toNamed(
+                    "${Routes.submissionDetails}/${challengeSubmission?.id}");
               }),
           Text(
             "Back to dashboard",

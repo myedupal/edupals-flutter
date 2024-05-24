@@ -61,6 +61,21 @@ class ChallengeSubmission {
     this.submissionAnswers,
   });
 
+  String? get getParsedTime {
+    final convertedSeconds = completionSeconds?.round() ?? 0;
+    int hours = convertedSeconds ~/ 3600;
+    int minutes = (convertedSeconds % 3600) ~/ 60;
+    int remainingSeconds = convertedSeconds % 60;
+
+    if (hours > 0) {
+      return '${hours}h ${minutes}m ${remainingSeconds}s';
+    } else if (minutes > 0) {
+      return '${minutes}m ${remainingSeconds}s';
+    } else {
+      return '${remainingSeconds}s';
+    }
+  }
+
   factory ChallengeSubmission.fromJson(Map<String, dynamic> json) =>
       ChallengeSubmission(
         id: json["id"],

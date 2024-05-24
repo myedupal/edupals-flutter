@@ -85,7 +85,7 @@ class ChallengeDetailsController extends BaseController {
         ? await challengeSubmissionRepo.submitChallengeSubmission(
             id: currentChallengeSubmission.value?.id ?? "",
             onSuccess: (value) {
-              Get.toNamed(Routes.challengeComplete, arguments: value)
+              Get.offAndToNamed(Routes.challengeComplete, arguments: value)
                   ?.then((value) {
                 currentIndex.value = 0;
                 presetAnswer();

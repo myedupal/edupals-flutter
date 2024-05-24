@@ -32,6 +32,8 @@ class AppColors {
   static const Color red700 = Color(0xFFD41A20);
   static const Color red800 = Color(0xFFA11418);
   static const Color red900 = Color(0xFF6E0D11);
+  static const Color pink50 = Color(0xFFFFECF5);
+  static const Color pink500 = Color(0xFFFF007A);
   static const Color accent50 = Color(0xFFEFF6FF);
   static const Color accent100 = Color(0xFFDBEAFE);
   static Color accent200 = const Color(0xFF007AFF).withAlpha(126);

@@ -1,5 +1,6 @@
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/point_streak_display.dart';
 import 'package:edupals/core/components/profile_picture.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
@@ -37,18 +38,13 @@ class LayoutTopBar extends GetView<MainController> {
           });
         }),
         const Spacer(),
-        Row(
-          children: [
-            const ProfilePicture(),
-            Text(
-              "Profile",
-              style: MyTextStyle.xs.bold.c(AppColors.white),
-            ).padding(
-                const EdgeInsets.symmetric(horizontal: AppValues.double10))
-          ],
-        ).topBarWidgetCapsule().onTap(() {
+        const PointStreakDisplay()
+            .padding(const EdgeInsets.only(right: AppValues.double10)),
+        const ProfilePicture(
+          size: AppValues.double30,
+        ).onTap(() {
           Get.toNamed(Routes.profile);
-        })
+        }),
       ],
     ).capsulise(
         radius: 100,

@@ -4,7 +4,7 @@ import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
 import 'package:edupals/features/mcq/presentation/controller/mcq_controller.dart';
-import 'package:edupals/features/mcq/presentation/view/components/challenge_column.dart';
+import 'package:edupals/features/mcq/presentation/view/components/submission_column.dart';
 import 'package:edupals/features/question-bank/domain/model/question_filter_argument.dart';
 import 'package:edupals/features/question-bank/presentation/controller/question_filter_segment_controller.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/question_filter_segment.dart';
@@ -42,7 +42,9 @@ class MCQView extends GetView<MCQController> {
                     for (int i = 0;
                         i < (controller.submissionList?.length ?? 0);
                         i++)
-                      const ChallengeColumn().padding(
+                      SubmissionColumn(
+                        submission: controller.submissionList?[i],
+                      ).padding(
                           const EdgeInsets.only(bottom: AppValues.double20)),
                   ],
                 ).padding(
