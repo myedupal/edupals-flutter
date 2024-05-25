@@ -21,6 +21,7 @@ class QuestionFilterSegment extends StatelessWidget {
     this.ableSelectRevision = true,
     this.ableSelectSubject = true,
     this.filterArgument,
+    this.buttonText,
   });
 
   final Function(QuestionBankArgument?)? emitData;
@@ -28,6 +29,7 @@ class QuestionFilterSegment extends StatelessWidget {
   final bool ableSelectSubject;
   final String? controllerTag;
   final QuestionFilterArgument? filterArgument;
+  final String? buttonText;
 
   void showRevisionDialog(QuestionFilterSegmentController controller) {
     BaseDialog.customise(
@@ -255,7 +257,7 @@ class QuestionFilterSegment extends StatelessWidget {
                               "yearly"))
               .padding(const EdgeInsets.only(bottom: AppValues.double20)),
           BaseButton(
-              text: "Search Questions",
+              text: buttonText ?? "Search Questions",
               onClick: () {
                 if (controller.compiledValue != null) {
                   emitData?.call(controller.compiledValue);

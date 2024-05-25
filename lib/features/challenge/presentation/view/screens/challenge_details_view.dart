@@ -7,12 +7,12 @@ import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
-import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/presentation/controller/challenge_details_controller.dart';
 import 'package:edupals/features/challenge/presentation/view/components/answer_selection_row.dart';
 import 'package:edupals/features/challenge/presentation/view/components/challenge_image_display.dart';
 import 'package:edupals/features/challenge/presentation/view/components/challenge_progress_bar.dart';
+import 'package:edupals/features/challenge/presentation/view/components/challenge_title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,11 +37,7 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
 
   Widget get challengeBody => Obx(() => Column(
         children: [
-          Text(
-            "${controller.mainTitle}",
-            style: MyTextStyle.xxxl.bold,
-          ).padding(const EdgeInsets.only(
-              bottom: AppValues.double20, top: AppValues.double20)),
+          const ChallengeTitle(),
           const ChallengeProgressBar(),
           controller.questionList?.isNotEmpty == true
               ? Expanded(

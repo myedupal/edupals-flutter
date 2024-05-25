@@ -1,6 +1,9 @@
+import 'package:edupals/core/components/shimmer.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
+import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
@@ -16,6 +19,7 @@ class MCQView extends GetView<MCQController> {
   const MCQView({super.key});
 
   Widget get filterBody => QuestionFilterSegment(
+      buttonText: "START MY EXAM",
       ableSelectRevision: false,
       filterArgument: QuestionFilterArgument(
           revisionType: "yearly", questionFilterType: QuestionFilterType.mcq),
@@ -39,20 +43,39 @@ class MCQView extends GetView<MCQController> {
             style: MyTextStyle.xl.bold,
           ).padding(const EdgeInsets.only(
               top: AppValues.double10, bottom: AppValues.double20)),
-          Obx(() => Expanded(
-              flex: context.isPhonePortrait ? 0 : 10,
-              child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: controller.submissionList?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return Obx(
-                      () => SubmissionColumn(
-                        submission: controller.submissionList?[index],
-                      ).padding(
-                          const EdgeInsets.only(bottom: AppValues.double20)),
-                    );
-                  })))
+          Obx(() {
+            switch (controller.viewState) {
+              case ViewState.success:
+                return Expanded(
+                    flex: context.isPhonePortrait ? 0 : 10,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: controller.submissionList?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return Obx(
+                            () => SubmissionColumn(
+                              submission: controller.submissionList?[index],
+                            ).padding(const EdgeInsets.only(
+                                bottom: AppValues.double20)),
+                          );
+                        }));
+              case ViewState.noData:
+                return Container(
+                  width: double.infinity,
+                  height: AppValues.double100,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Currently you don't have submission yet.\nStart MCQ Challenge now!",
+                    style: MyTextStyle.s.medium,
+                    textAlign: TextAlign.center,
+                  ),
+                ).capsulise(radius: 10, color: AppColors.gray100);
+              default:
+                return const Shimmer.rounded(
+                    height: AppValues.double100, width: double.infinity);
+            }
+          }),
         ],
       );
 

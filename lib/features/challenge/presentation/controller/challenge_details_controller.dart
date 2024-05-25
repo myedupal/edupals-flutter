@@ -57,6 +57,25 @@ class ChallengeDetailsController extends BaseController {
     super.onInit();
   }
 
+  List<String> get getSubtitleList {
+    List<String> titleList = [];
+    if (currentChallengeSubmission.value?.challengeId == null) {
+      if (currentChallengeSubmission.value?.getYear != null) {
+        titleList.add("${currentChallengeSubmission.value?.getYear}");
+      }
+      if (currentChallengeSubmission.value?.getSeason != null) {
+        titleList.add("${currentChallengeSubmission.value?.getSeason}");
+      }
+      if (currentChallengeSubmission.value?.getZone != null) {
+        titleList.add("${currentChallengeSubmission.value?.getZone}");
+      }
+    } else {
+      titleList.add("All Chapters");
+      titleList.add("Daily Challenge");
+    }
+    return titleList;
+  }
+
   double get getProgress {
     return currentIndex / ((questionList?.length ?? 0) - 1);
   }
@@ -269,7 +288,7 @@ class ChallengeDetailsController extends BaseController {
   }
 
   void onBack() {
-    currentIndex.value > 0 ? currentIndex -= 1 : Get.back();
+    currentIndex.value > 0 ? currentIndex -= 1 : null;
     presetAnswer();
   }
 

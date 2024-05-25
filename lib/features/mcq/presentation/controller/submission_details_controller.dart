@@ -78,12 +78,12 @@ class SubmissionDetailsController extends BaseController {
     await challengeSubmissionRepo.getChallengeSubmission(
         id: submissionId ?? "",
         onSuccess: (value) {
-          setSuccess();
           currentSubmission.value = value;
           currentSubmission.value?.submissionAnswers?.sort((a, b) =>
               (a.question?.number ?? 0).compareTo(b.question?.number ?? 0));
           selectedQuestion.value =
               currentSubmission.value?.submissionAnswers?.first.question;
+          setSuccess();
         },
         onError: (error) {});
   }

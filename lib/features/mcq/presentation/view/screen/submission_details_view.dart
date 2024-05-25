@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/loading_view.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -116,50 +118,60 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
     );
   }
 
+  Widget get questionImageDisplay {
+    return Expanded(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Q${controller.selectedQuestion.value?.number ?? 1}",
+          style: MyTextStyle.xl.bold,
+        ),
+        Expanded(
+            child: ListView(
+          children: [
+            Column(
+              children: [
+                ...?controller.selectedQuestion.value?.questionImages?.map(
+                    (e) => ImageAssetView(fileName: e.image?.url ?? "").padding(
+                        const EdgeInsets.only(bottom: AppValues.double50)))
+              ],
+            ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20))
+          ],
+        )),
+        questionSwitcher
+      ],
+    ).padding(const EdgeInsets.only(top: AppValues.double20)));
+  }
+
+  Widget submissionBody(BuildContext context) {
+    return Obx(() {
+      switch (controller.viewState) {
+        case ViewState.success:
+          return Obx(() {
+            return Expanded(
+              child: [questionList(context), questionImageDisplay]
+                  .rowToColumn(
+                      isActive: context.isPhone,
+                      rowCrossAlignment: CrossAxisAlignment.start)
+                  .constraintsWrapper(width: 800)
+                  .padding(EdgeInsets.all(context.isPhone
+                      ? AppValues.double10
+                      : AppValues.double20)),
+            );
+          });
+        default:
+          return const LoadingView();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SubmissionDetailTopBar(),
-        Obx(() {
-          return Expanded(
-            child: [
-              questionList(context),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Q${controller.selectedQuestion.value?.number ?? 1}",
-                    style: MyTextStyle.xl.bold,
-                  ),
-                  Expanded(
-                      child: ListView(
-                    children: [
-                      Column(
-                        children: [
-                          ...?controller.selectedQuestion.value?.questionImages
-                              ?.map((e) =>
-                                  ImageAssetView(fileName: e.image?.url ?? "")
-                                      .padding(const EdgeInsets.only(
-                                          bottom: AppValues.double50)))
-                        ],
-                      ).padding(const EdgeInsets.symmetric(
-                          vertical: AppValues.double20))
-                    ],
-                  )),
-                  questionSwitcher
-                ],
-              ).padding(const EdgeInsets.only(top: AppValues.double20)))
-            ]
-                .rowToColumn(
-                    isActive: context.isPhone,
-                    rowCrossAlignment: CrossAxisAlignment.start)
-                .constraintsWrapper(width: 800)
-                .padding(EdgeInsets.all(
-                    context.isPhone ? AppValues.double10 : AppValues.double20)),
-          );
-        })
+        submissionBody(context),
       ],
     ).padding(const EdgeInsets.all(AppValues.double10)).scaffoldWrapper();
   }
