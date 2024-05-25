@@ -38,8 +38,9 @@ class LayoutTopBar extends GetView<MainController> {
           });
         }),
         const Spacer(),
-        const PointStreakDisplay()
-            .padding(const EdgeInsets.only(right: AppValues.double10)),
+        if (!context.isPhone)
+          const PointStreakDisplay()
+              .padding(const EdgeInsets.only(right: AppValues.double10)),
         const ProfilePicture(
           size: AppValues.double30,
         ).onTap(() {

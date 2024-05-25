@@ -25,12 +25,13 @@ class MCQView extends GetView<MCQController> {
           Get.toNamed(Routes.challengeDetails,
               arguments: ChallengeArgument(
                   questionQueryParams: value.queryParams,
-                  pageTitle: "MCQ",
+                  mainTitle:
+                      "${value.subject?.label ?? ""} ${value.paper ?? ""}",
                   subjectTitle: value.title));
         }
       });
 
-  Widget get historyList => Column(
+  Widget historyList(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -38,7 +39,8 @@ class MCQView extends GetView<MCQController> {
             style: MyTextStyle.xl.bold,
           ).padding(const EdgeInsets.only(
               top: AppValues.double10, bottom: AppValues.double20)),
-          Expanded(
+          Obx(() => Expanded(
+              flex: context.isPhonePortrait ? 0 : 10,
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
@@ -50,35 +52,43 @@ class MCQView extends GetView<MCQController> {
                       ).padding(
                           const EdgeInsets.only(bottom: AppValues.double20)),
                     );
-                  }))
+                  })))
         ],
       );
+
+  Widget pageBody(BuildContext context) => [
+        Flexible(
+            flex: context.isPhonePortrait ? 0 : 7,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "MCQ",
+                  style: MyTextStyle.xl1.bold,
+                ),
+                filterBody,
+              ],
+            ).padding(EdgeInsets.only(
+                right: context.isPhonePortrait
+                    ? AppValues.double0
+                    : AppValues.double40,
+                bottom: AppValues.double20))),
+        Flexible(
+            flex: context.isPhonePortrait ? 0 : 4, child: historyList(context))
+      ]
+          .rowToColumn(
+              isActive: context.isPhonePortrait,
+              rowCrossAlignment: CrossAxisAlignment.start)
+          .padding(const EdgeInsets.symmetric(horizontal: AppValues.double10));
 
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => MCQController());
-    return [
-      Flexible(
-          flex: context.isPhonePortrait ? 0 : 7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "MCQ",
-                style: MyTextStyle.xl1.bold,
-              ),
-              filterBody,
-            ],
-          ).padding(EdgeInsets.only(
-              right: context.isPhonePortrait
-                  ? AppValues.double0
-                  : AppValues.double40,
-              bottom: AppValues.double20))),
-      Flexible(flex: 4, child: historyList)
-    ]
-        .rowToColumn(
-            isActive: context.isPhonePortrait,
-            rowCrossAlignment: CrossAxisAlignment.start)
-        .padding(const EdgeInsets.symmetric(horizontal: AppValues.double10));
+    return context.isPhonePortrait
+        ? ListView(
+            shrinkWrap: true,
+            children: [Expanded(child: pageBody(context))],
+          )
+        : pageBody(context);
   }
 }

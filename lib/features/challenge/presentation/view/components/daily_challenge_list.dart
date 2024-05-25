@@ -47,7 +47,8 @@ class DailyChallengeList extends StatelessWidget {
           onClick: () {
             Get.toNamed(Routes.challengeDetails,
                 arguments: ChallengeArgument(
-                    challengeId: challenge?.id, pageTitle: "Daily Challenge"));
+                    challengeId: challenge?.id,
+                    mainTitle: "${challenge?.subject?.name}"));
           },
         );
       },

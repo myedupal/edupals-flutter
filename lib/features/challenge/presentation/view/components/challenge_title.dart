@@ -11,7 +11,7 @@ class ChallengeTitle extends GetView<ChallengeDetailsController> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      "${controller.challengeTitle}",
+      "${controller.mainTitle}",
       style: MyTextStyle.xxxl.bold,
     ).padding(const EdgeInsets.only(
         bottom: AppValues.double20, top: AppValues.double20));

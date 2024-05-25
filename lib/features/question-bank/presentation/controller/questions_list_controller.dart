@@ -305,6 +305,21 @@ class MyStopWatch extends Stopwatch {
     return (elapsedMilliseconds / 1000).round() + _starterSeconds;
   }
 
+  String? get getParsedTime {
+    final convertedSeconds = elapsedSeconds?.round() ?? 0;
+    int hours = convertedSeconds ~/ 3600;
+    int minutes = (convertedSeconds % 3600) ~/ 60;
+    int remainingSeconds = convertedSeconds % 60;
+
+    if (hours > 0) {
+      return '${hours}h ${minutes}m ${remainingSeconds}s';
+    } else if (minutes > 0) {
+      return '${minutes}m ${remainingSeconds}s';
+    } else {
+      return '${remainingSeconds}s';
+    }
+  }
+
   set seconds(int timeInSeconds) {
     _starterSeconds = timeInSeconds;
   }

@@ -59,6 +59,7 @@ class AppPages {
         name: Routes.challengeComplete, page: () => ChallengeCompleteView()),
     GetPage(
         name: Routes.challengeDetails,
+        fullscreenDialog: true,
         page: () => const ChallengeDetailsView(),
         binding: ChallengeDetailsBinding()),
     GetPage(

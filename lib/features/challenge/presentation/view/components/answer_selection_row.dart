@@ -101,8 +101,7 @@ class AnswerSelectionRow extends StatelessWidget {
             radius: 10,
             border: true,
             borderColor: getBorderColor,
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppValues.double20, vertical: AppValues.double20),
+            padding: const EdgeInsets.symmetric(vertical: AppValues.double20),
             color: getBackgroundColor)
         .padding(const EdgeInsets.only(bottom: AppValues.double20));
   }

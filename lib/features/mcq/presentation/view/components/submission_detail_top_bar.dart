@@ -12,43 +12,63 @@ import 'package:get/get.dart';
 class SubmissionDetailTopBar extends GetView<SubmissionDetailsController> {
   const SubmissionDetailTopBar({super.key});
 
+  Widget get titleDisplay => Row(
+        children: [
+          const ImageAssetView(
+            fileName: AppAssets.backIcon,
+            height: AppValues.double12,
+          )
+              .capsulise(
+                  radius: 100,
+                  color: AppColors.gray900,
+                  padding: const EdgeInsets.all(AppValues.double12))
+              .padding(const EdgeInsets.only(right: AppValues.double10))
+              .onTap(() {
+            Get.back();
+          }),
+          Expanded(
+              child: Obx(() => SizedBox(
+                    height: AppValues.double50,
+                    child: ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              ...controller.getTitleList
+                                  .map((e) => TitleDivider(
+                                        title: e,
+                                        displayDivider:
+                                            e != controller.getTitleList.last,
+                                      ))
+                            ],
+                          ),
+                        ).topBarWidgetCapsule(color: AppColors.white)
+                      ],
+                    ),
+                  ))),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-            child: Row(
+        if (context.isPhone) titleDisplay,
+        Row(
           children: [
-            const ImageAssetView(
-              fileName: AppAssets.backIcon,
-              height: AppValues.double12,
-            )
-                .capsulise(
-                    radius: 100,
-                    color: AppColors.gray900,
-                    padding: const EdgeInsets.all(AppValues.double12))
-                .padding(const EdgeInsets.only(right: AppValues.double10))
-                .onTap(() {
-              Get.back();
-            }),
-            Obx(() => IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      ...controller.getTitleList.map((e) => TitleDivider(
-                            title: e,
-                            displayDivider: e != controller.getTitleList.last,
-                          ))
-                    ],
-                  ),
-                ).topBarWidgetCapsule(color: AppColors.white)),
+            if (!context.isPhone) Expanded(child: titleDisplay),
+            Obx(() => Expanded(
+                flex: context.isPhone ? 1 : 0,
+                child: SubmissionInfo(
+                    submission: controller.currentSubmission.value)))
           ],
-        )),
-        Obx(() =>
-            SubmissionInfo(submission: controller.currentSubmission.value))
+        ).capsulise(
+            radius: 100,
+            color: AppColors.gray100,
+            padding: const EdgeInsets.all(AppValues.double10))
       ],
-    ).capsulise(
-        radius: 100,
-        color: AppColors.gray100,
-        padding: const EdgeInsets.all(AppValues.double10));
+    );
   }
 }

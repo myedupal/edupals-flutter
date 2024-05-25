@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:edupals/core/base/base_controller.dart';
 import 'package:edupals/core/base/base_snackbar.dart';
 import 'package:edupals/core/base/model/query_params.dart';
@@ -11,6 +13,7 @@ import 'package:edupals/features/challenge/domain/repository/challenge_submissio
 import 'package:edupals/features/challenge/domain/repository/submission_answer_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
 import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
+import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
 import 'package:get/get.dart';
 
 class ChallengeDetailsController extends BaseController {
@@ -27,12 +30,24 @@ class ChallengeDetailsController extends BaseController {
   RxInt currentIndex = 0.obs;
   Rx<String>? currentSelectedAnswer = "".obs;
   RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
-  Rx<String> challengeTitle = "".obs;
+  Rx<String> mainTitle = "".obs;
   Rx<ViewState> submissionViewState = ViewState.success.obs;
+  // Timer State
+  MyStopWatch stopwatch = MyStopWatch();
+  late Timer _timer;
+  RxString formattedTime = '0s'.obs;
+
+  @override
+  void onClose() {
+    if (stopwatch.isRunning) {
+      stopStopwatch();
+    }
+    super.onClose();
+  }
 
   @override
   void onInit() {
-    challengeTitle.value = routeArgument.pageTitle ?? "";
+    mainTitle.value = routeArgument.mainTitle ?? "";
     if (routeArgument.challengeId?.isEmpty == false) {
       getChallenge(id: routeArgument.challengeId ?? "");
     }
@@ -71,6 +86,19 @@ class ChallengeDetailsController extends BaseController {
       (answer == currentSubmissionAnswer?.answer) &&
       currentSubmissionAnswer?.isCorrect == false;
 
+  // Timer Function
+  void startStopwatch() {
+    stopwatch.start();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      formattedTime.value = stopwatch.getParsedTime ?? "0s";
+    });
+  }
+
+  void stopStopwatch() {
+    stopwatch.stop();
+    _timer.cancel();
+  }
+
   Future<void> onSubmitAnswer() async {
     if (currentSubmissionAnswer == null) {
       createSubmissionAnswer();
@@ -92,6 +120,7 @@ class ChallengeDetailsController extends BaseController {
               });
               currentChallengeSubmission.value = value;
               submissionAnswerList.value = value?.submissionAnswers ?? [];
+              stopStopwatch();
               presetAnswer();
               setSubmissionSuccess();
             },
@@ -179,6 +208,8 @@ class ChallengeDetailsController extends BaseController {
           setSuccess();
           if (value?.isNotEmpty == true) {
             currentChallengeSubmission.value = value?.first;
+            formattedTime.value =
+                currentChallengeSubmission.value?.getParsedTime ?? "0s";
             getChallengeSubmission();
           } else {
             createChallengeSubmission(challengeId: challengeId);
@@ -208,6 +239,7 @@ class ChallengeDetailsController extends BaseController {
                 : currentChallengeSubmission.value?.title),
         onSuccess: (value) {
           setSuccess();
+          startStopwatch();
           currentChallengeSubmission.value = value;
         },
         onError: (error) {

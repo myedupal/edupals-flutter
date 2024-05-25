@@ -97,7 +97,7 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
                         isCorrect: false,
                         isWrong: controller.isWrong(answer: e),
                         isActive: controller.isCorrect(answer: e))
-                    .padding(const EdgeInsets.only(right: AppValues.double20))))
+                    .padding(const EdgeInsets.only(right: AppValues.double10))))
           ],
         )),
         const ImageAssetView(
@@ -156,7 +156,8 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
                     isActive: context.isPhone,
                     rowCrossAlignment: CrossAxisAlignment.start)
                 .constraintsWrapper(width: 800)
-                .padding(const EdgeInsets.all(AppValues.double20)),
+                .padding(EdgeInsets.all(
+                    context.isPhone ? AppValues.double10 : AppValues.double20)),
           );
         })
       ],

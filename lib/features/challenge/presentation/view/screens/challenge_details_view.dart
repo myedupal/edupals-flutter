@@ -1,8 +1,12 @@
 import 'package:edupals/core/base/base_button.dart';
+import 'package:edupals/core/base/base_dialog.dart';
+import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/loading_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/core/values/app_assets.dart';
+import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/presentation/controller/challenge_details_controller.dart';
@@ -15,18 +19,30 @@ import 'package:get/get.dart';
 class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
   const ChallengeDetailsView({super.key});
 
+  void displayWarning() {
+    if (controller.currentChallengeSubmission.value?.status == "pending") {
+      BaseDialog.showError(
+        title: "Are you sure to quit?",
+        subtitle: "You will lose your current progress",
+        buttonText: "Quit now",
+        action: () {
+          Get.back();
+          Get.back();
+        },
+      );
+    } else {
+      Get.back();
+    }
+  }
+
   Widget get challengeBody => Obx(() => Column(
         children: [
           Text(
-            "${controller.challengeTitle}",
+            "${controller.mainTitle}",
             style: MyTextStyle.xxxl.bold,
           ).padding(const EdgeInsets.only(
               bottom: AppValues.double20, top: AppValues.double20)),
-          ChallengeProgressBar(
-            time: "0s",
-            totalQuestionNumber: controller.questionList?.length ?? 0,
-            currentQuestionNumber: controller.currentIndex.value + 1,
-          ),
+          const ChallengeProgressBar(),
           controller.questionList?.isNotEmpty == true
               ? Expanded(
                   child: ListView(
@@ -91,8 +107,8 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
           return Expanded(
             child: challengeBody.padding(const EdgeInsets.only(
                 top: AppValues.double30,
-                left: AppValues.double30,
-                right: AppValues.double30)),
+                left: AppValues.double15,
+                right: AppValues.double15)),
           );
       }
     });
@@ -100,11 +116,31 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [pageBody],
-    )
-        .scaffoldWrapper(backgroundColor: Colors.transparent)
-        .constraintsWrapper(width: 800, color: Colors.transparent)
-        .addBackgroundImage();
+    return Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Column(
+          children: [pageBody],
+        )
+            .scaffoldWrapper(backgroundColor: Colors.transparent)
+            .constraintsWrapper(width: 700, color: Colors.transparent)
+            .addBackgroundImage(),
+        Positioned(
+            right: AppValues.double40,
+            top: AppValues.double40,
+            child: const ImageAssetView(
+              fileName: AppAssets.cross,
+              width: AppValues.double15,
+              height: AppValues.double15,
+            )
+                .capsulise(
+                    radius: 100,
+                    color: AppColors.gray100,
+                    padding: const EdgeInsets.all(AppValues.double15))
+                .onTap(() {
+              displayWarning();
+            }))
+      ],
+    );
   }
 }

@@ -48,9 +48,8 @@ class SubmissionInfo extends StatelessWidget {
       ],
     )
         .padding(const EdgeInsets.symmetric(horizontal: AppValues.double5))
-        .capsulise(
-            radius: 100,
-            color: AppColors.white,
-            padding: const EdgeInsets.all(AppValues.double10));
+        .topBarWidgetCapsule(
+          color: AppColors.white,
+        );
   }
 }

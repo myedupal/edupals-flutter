@@ -177,6 +177,8 @@ class QuestionFilterSegmentController extends GetxController {
     final QuestionBankArgument argument = QuestionBankArgument(
         revisionType: selectedRevisionType.value?.key,
         title: getTitle,
+        subject: selectedSubject.value,
+        paper: "Paper ${selectedPaper.value?.label ?? ""}",
         queryParams: QueryParams(
           page: 1,
           items: 100,

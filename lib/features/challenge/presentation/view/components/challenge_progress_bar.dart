@@ -12,14 +12,7 @@ import 'package:get/get.dart';
 class ChallengeProgressBar extends GetView<ChallengeDetailsController> {
   const ChallengeProgressBar({
     super.key,
-    required this.currentQuestionNumber,
-    required this.totalQuestionNumber,
-    required this.time,
   });
-
-  final int currentQuestionNumber;
-  final int totalQuestionNumber;
-  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -40,30 +33,31 @@ class ChallengeProgressBar extends GetView<ChallengeDetailsController> {
           controller.onBack();
         }),
         Expanded(
-            child: Row(
-          children: [
-            Text(
-              time,
-              style: MyTextStyle.s.bold,
-            ).padding(
-                const EdgeInsets.symmetric(horizontal: AppValues.double10)),
-            Expanded(
-                child: BaseProgressIndicator(
-                    color: AppColors.accent500,
-                    backgoundColor: AppColors.gray100,
-                    fixedPercentage:
-                        currentQuestionNumber / totalQuestionNumber)),
-            Text(
-              "$currentQuestionNumber / $totalQuestionNumber",
-              style: MyTextStyle.s.bold,
-            ).padding(
-                const EdgeInsets.symmetric(horizontal: AppValues.double10))
-          ],
-        ).capsulise(
-          radius: 100,
-          color: AppColors.white,
-          padding: const EdgeInsets.all(AppValues.double12),
-        )),
+            child: Obx(() => Row(
+                  children: [
+                    Text(
+                      controller.formattedTime.value,
+                      style: MyTextStyle.s.bold,
+                    ).padding(const EdgeInsets.symmetric(
+                        horizontal: AppValues.double10)),
+                    Expanded(
+                        child: BaseProgressIndicator(
+                            color: AppColors.accent500,
+                            backgoundColor: AppColors.gray100,
+                            fixedPercentage:
+                                (controller.currentIndex.value + 1) /
+                                    (controller.questionList?.length ?? 0))),
+                    Text(
+                      "${controller.currentIndex.value + 1} / ${controller.questionList?.length ?? 0}",
+                      style: MyTextStyle.s.bold,
+                    ).padding(const EdgeInsets.symmetric(
+                        horizontal: AppValues.double10))
+                  ],
+                ).capsulise(
+                  radius: 100,
+                  color: AppColors.white,
+                  padding: const EdgeInsets.all(AppValues.double12),
+                ))),
         const ImageAssetView(
           fileName: AppAssets.rightChevron,
           height: AppValues.double15,
