@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:edupals/core/base/base_dialog.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/title_divider.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -37,21 +38,6 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
       ],
     ));
   }
-
-  Widget titleRow({String? title, bool displayDivider = true}) => Row(
-        children: [
-          Text(
-            title ?? "",
-            style: MyTextStyle.s.bold,
-          ).padding(const EdgeInsets.symmetric(
-              vertical: AppValues.double5, horizontal: AppValues.double5)),
-          if (displayDivider)
-            const VerticalDivider(
-              thickness: 1,
-              color: AppColors.gray400,
-            )
-        ],
-      );
 
   Widget get generateQuestion => Row(
         children: [
@@ -119,7 +105,7 @@ class QuestionsListTopBar extends GetView<QuestionsListController> {
                   child: Row(children: [
                 ...?titleList?.mapIndexed(
                   (i, e) {
-                    return titleRow(
+                    return TitleDivider(
                         title: e,
                         displayDivider: i != (titleList?.length ?? 0) - 1);
                   },

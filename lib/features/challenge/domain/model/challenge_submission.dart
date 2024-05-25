@@ -1,5 +1,6 @@
 import 'package:edupals/features/challenge/domain/model/challenge.dart';
 import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
+import 'package:get/get.dart';
 
 class ChallengeSubmissionWrapper {
   ChallengeSubmission? challengeSubmission;
@@ -42,6 +43,8 @@ class ChallengeSubmission {
   Challenge? challenge;
   List<SubmissionAnswersAttribute>? submissionAnswersAttributes;
   List<SubmissionAnswer>? submissionAnswers;
+  int? totalSubmittedAnswers;
+  int? totalCorrectQuestions;
 
   ChallengeSubmission({
     this.id,
@@ -59,6 +62,8 @@ class ChallengeSubmission {
     this.challenge,
     this.submissionAnswersAttributes,
     this.submissionAnswers,
+    this.totalCorrectQuestions,
+    this.totalSubmittedAnswers,
   });
 
   String? get getParsedTime {
@@ -74,6 +79,45 @@ class ChallengeSubmission {
     } else {
       return '${remainingSeconds}s';
     }
+  }
+
+  int? get totalWrongAnswers {
+    return (totalSubmittedAnswers ?? 0) - (totalCorrectQuestions ?? 0);
+  }
+
+  String? get getYear {
+    return title
+        ?.split("|")
+        .firstWhereOrNull((element) => element.contains("Year"));
+  }
+
+  String? get getZone {
+    return title
+        ?.split("|")
+        .firstWhereOrNull((element) => element.contains("Zone"));
+  }
+
+  String? get getSeason {
+    return title
+        ?.split("|")
+        .firstWhereOrNull((element) => element.contains("Season"));
+  }
+
+  String? get getPaper {
+    return title
+        ?.split("|")
+        .firstWhereOrNull((element) => element.contains("Paper"));
+  }
+
+  String? get getSubject {
+    return title?.split("|").firstWhereOrNull((element) => ![
+          "Season",
+          "Paper",
+          "Zone",
+          "Year",
+          "Yearly",
+          "Topical"
+        ].contains(element));
   }
 
   factory ChallengeSubmission.fromJson(Map<String, dynamic> json) =>
@@ -103,6 +147,8 @@ class ChallengeSubmission {
             ? []
             : List<SubmissionAnswer>.from(json["submission_answers"]!
                 .map((x) => SubmissionAnswer.fromJson(x))),
+        totalCorrectQuestions: json["total_correct_answers"],
+        totalSubmittedAnswers: json["total_submitted_answers"],
       );
 
   Map<String, dynamic> toJson() => {

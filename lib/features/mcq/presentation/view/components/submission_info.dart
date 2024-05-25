@@ -36,9 +36,15 @@ class SubmissionInfo extends StatelessWidget {
         displayRow(
             icon: AppAssets.blueCircle,
             title: submission?.getParsedTime ?? "0s"),
-        displayRow(icon: AppAssets.darkOrangeCrown, title: "30/40").padding(
-            const EdgeInsets.symmetric(horizontal: AppValues.double10)),
-        displayRow(icon: AppAssets.wrong, title: "3 to improve"),
+        displayRow(
+                icon: AppAssets.darkOrangeCrown,
+                title:
+                    "${submission?.totalCorrectQuestions ?? 0}/${submission?.totalSubmittedAnswers ?? 0}")
+            .padding(
+                const EdgeInsets.symmetric(horizontal: AppValues.double10)),
+        displayRow(
+            icon: AppAssets.wrong,
+            title: "${submission?.totalWrongAnswers ?? 0} to improve"),
       ],
     )
         .padding(const EdgeInsets.symmetric(horizontal: AppValues.double5))

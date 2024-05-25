@@ -1,8 +1,8 @@
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/title_divider.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
-import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/mcq/presentation/controller/submission_details_controller.dart';
 import 'package:edupals/features/mcq/presentation/view/components/submission_info.dart';
@@ -31,12 +31,16 @@ class SubmissionDetailTopBar extends GetView<SubmissionDetailsController> {
                 .onTap(() {
               Get.back();
             }),
-            Row(children: [
-              Text(
-                "Today's Challenge",
-                style: MyTextStyle.s.bold,
-              )
-            ]).topBarWidgetCapsule(color: AppColors.white),
+            Obx(() => IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      ...controller.getTitleList.map((e) => TitleDivider(
+                            title: e,
+                            displayDivider: e != controller.getTitleList.last,
+                          ))
+                    ],
+                  ),
+                ).topBarWidgetCapsule(color: AppColors.white)),
           ],
         )),
         Obx(() =>

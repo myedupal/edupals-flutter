@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_divider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/base/base_input.dart';
@@ -71,25 +72,25 @@ class LoginForm extends GetView<AuthController> {
                 });
           }
         }),
-        // const BaseDivider()
-        //     .padding(const EdgeInsets.symmetric(vertical: AppValues.double20)),
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     const Text(
-        //       "Don't have an account?",
-        //       style: MyTextStyle.xs,
-        //     ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-        //     BaseButton(
-        //       text: "Register",
-        //       onClick: () {
-        //         controller.onChangeAuthStep(step: AuthStep.register);
-        //       },
-        //       fullWidth: true,
-        //       type: ButtonType.white,
-        //     )
-        //   ],
-        // ),
+        const BaseDivider()
+            .padding(const EdgeInsets.symmetric(vertical: AppValues.double20)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Don't have an account?",
+              style: MyTextStyle.xs,
+            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            BaseButton(
+              text: "Register",
+              onClick: () {
+                controller.onChangeAuthStep(step: AuthStep.register);
+              },
+              fullWidth: true,
+              type: ButtonType.white,
+            )
+          ],
+        ),
       ],
     );
   }

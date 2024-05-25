@@ -1,3 +1,4 @@
+import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -29,34 +30,36 @@ class MCQView extends GetView<MCQController> {
         }
       });
 
-  Widget get historyList => ListView(
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Text(
-              "Past Attempt",
-              style: MyTextStyle.xl.bold,
-            ).padding(const EdgeInsets.only(top: AppValues.double10)),
-            Obx(() => Column(
-                  children: [
-                    for (int i = 0;
-                        i < (controller.submissionList?.length ?? 0);
-                        i++)
-                      SubmissionColumn(
-                        submission: controller.submissionList?[i],
+  Widget get historyList => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Past Attempt",
+            style: MyTextStyle.xl.bold,
+          ).padding(const EdgeInsets.only(
+              top: AppValues.double10, bottom: AppValues.double20)),
+          Expanded(
+              child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller.submissionList?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    return Obx(
+                      () => SubmissionColumn(
+                        submission: controller.submissionList?[index],
                       ).padding(
                           const EdgeInsets.only(bottom: AppValues.double20)),
-                  ],
-                ).padding(
-                    const EdgeInsets.symmetric(vertical: AppValues.double20))),
-          ]);
+                    );
+                  }))
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => MCQController());
     return [
       Flexible(
-          flex: context.isPhone ? 0 : 7,
+          flex: context.isPhonePortrait ? 0 : 7,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -67,12 +70,14 @@ class MCQView extends GetView<MCQController> {
               filterBody,
             ],
           ).padding(EdgeInsets.only(
-              right: context.isPhone ? AppValues.double0 : AppValues.double40,
+              right: context.isPhonePortrait
+                  ? AppValues.double0
+                  : AppValues.double40,
               bottom: AppValues.double20))),
-      Flexible(flex: context.isPhone ? 0 : 4, child: historyList)
+      Flexible(flex: 4, child: historyList)
     ]
         .rowToColumn(
-            isActive: context.isPhone,
+            isActive: context.isPhonePortrait,
             rowCrossAlignment: CrossAxisAlignment.start)
         .padding(const EdgeInsets.symmetric(horizontal: AppValues.double10));
   }

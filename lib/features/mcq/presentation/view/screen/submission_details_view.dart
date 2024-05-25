@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
-import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -37,14 +36,11 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
 
   Widget questionList(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          right: context.isPhonePortrait ? 0 : AppValues.double40),
-      width: context.isPhonePortrait ? null : AppValues.double50,
-      height: context.isPhonePortrait ? AppValues.double50 : null,
+      margin: EdgeInsets.only(right: context.isPhone ? 0 : AppValues.double40),
+      width: context.isPhone ? null : AppValues.double50,
+      height: context.isPhone ? AppValues.double50 : null,
       child: ListView(
-        scrollDirection:
-            context.isPhonePortrait ? Axis.horizontal : Axis.vertical,
-        shrinkWrap: true,
+        scrollDirection: context.isPhone ? Axis.horizontal : Axis.vertical,
         children: [
           ...?controller.currentSubmission.value?.submissionAnswers?.mapIndexed(
             (i, e) => Text(
@@ -60,10 +56,10 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
                     color: getQuestionBackgroundColor(e, i),
                     padding: const EdgeInsets.all(AppValues.double10))
                 .padding(EdgeInsets.only(
-                    right: context.isPhonePortrait
+                    right: context.isPhone
                         ? AppValues.double10
                         : AppValues.double0,
-                    bottom: context.isPhonePortrait
+                    bottom: context.isPhone
                         ? AppValues.double0
                         : AppValues.double10))
                 .onTap(() {
@@ -156,7 +152,9 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
                 ],
               ).padding(const EdgeInsets.only(top: AppValues.double20)))
             ]
-                .rowToColumn(isActive: context.isPhonePortrait)
+                .rowToColumn(
+                    isActive: context.isPhone,
+                    rowCrossAlignment: CrossAxisAlignment.start)
                 .constraintsWrapper(width: 800)
                 .padding(const EdgeInsets.all(AppValues.double20)),
           );

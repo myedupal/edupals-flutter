@@ -1,3 +1,4 @@
+import 'package:edupals/core/components/title_divider.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -23,7 +24,7 @@ class SubmissionColumn extends StatelessWidget {
           children: [
             Flexible(
                 child: Text(
-              "Challenge",
+              "${submission?.getSubject ?? ""} ${submission?.getPaper ?? ""}",
               style: MyTextStyle.m.bold,
             )),
             Text(
@@ -44,7 +45,32 @@ class SubmissionColumn extends StatelessWidget {
             })
           ],
         ).padding(const EdgeInsets.only(bottom: AppValues.double10)),
+        IntrinsicHeight(
+          child: Row(
+            children: [
+              if (submission?.getYear != null)
+                TitleDivider(
+                  title: submission?.getYear ?? "",
+                  titleStyle: MyTextStyle.xs,
+                  displayDivider: submission?.getSeason != null,
+                ),
+              if (submission?.getSeason != null)
+                TitleDivider(
+                  title: submission?.getSeason ?? "",
+                  titleStyle: MyTextStyle.xs,
+                  displayDivider: submission?.getZone != null,
+                ),
+              if (submission?.getZone != null)
+                TitleDivider(
+                  title: submission?.getZone ?? "",
+                  titleStyle: MyTextStyle.xs,
+                  displayDivider: false,
+                )
+            ],
+          ),
+        ),
         SubmissionInfo(submission: submission)
+            .padding(const EdgeInsets.only(top: AppValues.double20))
       ],
     ).capsulise(
         radius: 10,

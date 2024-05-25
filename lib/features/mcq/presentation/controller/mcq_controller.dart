@@ -8,7 +8,7 @@ class MCQController extends BaseController {
   final ChallengeSubmissionRepository challengeSubmissionRepo = Get.find();
   RxList<ChallengeSubmission>? submissionList = <ChallengeSubmission>[].obs;
   QueryParams? submissionListParams =
-      QueryParams(page: 1, items: 100, status: "submitted", mcq: true);
+      QueryParams(page: 1, items: 100, status: "submitted", mcq: false);
 
   @override
   void onInit() {

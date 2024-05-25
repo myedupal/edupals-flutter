@@ -21,6 +21,27 @@ class SubmissionDetailsController extends BaseController {
     super.onInit();
   }
 
+  List<String> get getTitleList {
+    List<String> titleList = [];
+    if (currentSubmission.value?.challengeId == null) {
+      titleList.add(
+          "${currentSubmission.value?.getYear ?? ""} ${currentSubmission.value?.getSubject ?? ""} ${currentSubmission.value?.getPaper ?? ""}");
+      if (currentSubmission.value?.getSeason != null) {
+        titleList.add("${currentSubmission.value?.getSeason}");
+      }
+      if (currentSubmission.value?.getZone != null) {
+        titleList.add("${currentSubmission.value?.getZone}");
+      }
+    } else {
+      titleList.add(currentSubmission
+              .value?.submissionAnswers?.first.question?.subject?.name ??
+          "");
+      titleList.add("All Chapters");
+      titleList.add("Daily Challenge");
+    }
+    return titleList;
+  }
+
   List<SubmissionAnswer>? get submissionAnswers =>
       currentSubmission.value?.submissionAnswers;
 
