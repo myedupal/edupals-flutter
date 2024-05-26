@@ -83,6 +83,7 @@ class ImageAssetView extends StatelessWidget {
           width: width,
           height: height,
           child: Lottie.asset(
+            frameRate: FrameRate.max,
             fileName,
             fit: BoxFit.cover,
             repeat: true,

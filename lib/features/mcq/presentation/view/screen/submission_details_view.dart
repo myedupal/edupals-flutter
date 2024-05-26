@@ -148,18 +148,15 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
     return Obx(() {
       switch (controller.viewState) {
         case ViewState.success:
-          return Obx(() {
-            return Expanded(
-              child: [questionList(context), questionImageDisplay]
-                  .rowToColumn(
-                      isActive: context.isPhone,
-                      rowCrossAlignment: CrossAxisAlignment.start)
-                  .constraintsWrapper(width: 800)
-                  .padding(EdgeInsets.all(context.isPhone
-                      ? AppValues.double10
-                      : AppValues.double20)),
-            );
-          });
+          return Expanded(
+            child: [questionList(context), questionImageDisplay]
+                .rowToColumn(
+                    isActive: context.isPhone,
+                    rowCrossAlignment: CrossAxisAlignment.start)
+                .constraintsWrapper(width: 800)
+                .padding(EdgeInsets.all(
+                    context.isPhone ? AppValues.double10 : AppValues.double20)),
+          );
         default:
           return const LoadingView();
       }
