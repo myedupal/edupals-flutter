@@ -46,20 +46,18 @@ class MCQView extends GetView<MCQController> {
           Obx(() {
             switch (controller.viewState) {
               case ViewState.success:
-                return Expanded(
-                    flex: context.isPhonePortrait ? 0 : 10,
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: controller.submissionList?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return Obx(
-                            () => SubmissionColumn(
-                              submission: controller.submissionList?[index],
-                            ).padding(const EdgeInsets.only(
-                                bottom: AppValues.double20)),
-                          );
-                        }));
+                return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: controller.submissionList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return Obx(
+                        () => SubmissionColumn(
+                          submission: controller.submissionList?[index],
+                        ).padding(
+                            const EdgeInsets.only(bottom: AppValues.double20)),
+                      );
+                    });
               case ViewState.noData:
                 return Container(
                   width: double.infinity,
@@ -80,7 +78,7 @@ class MCQView extends GetView<MCQController> {
       );
 
   Widget pageBody(BuildContext context) => [
-        Flexible(
+        Expanded(
             flex: context.isPhonePortrait ? 0 : 7,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +94,7 @@ class MCQView extends GetView<MCQController> {
                     ? AppValues.double0
                     : AppValues.double40,
                 bottom: AppValues.double20))),
-        Flexible(
+        Expanded(
             flex: context.isPhonePortrait ? 0 : 4, child: historyList(context))
       ]
           .rowToColumn(
