@@ -15,11 +15,10 @@ class LoadingView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (!context.isPhone)
-            ImageAssetView(
-              fileName: AppAssets.questionLoadingLottie,
-              width: Get.dynamicWidth * 0.3,
-            ),
+          ImageAssetView(
+            fileName: AppAssets.questionLoadingLottie,
+            width: Get.dynamicWidth * 0.3,
+          ),
           Text(
             "We are preparing the best for you...",
             style: MyTextStyle.l.bold,

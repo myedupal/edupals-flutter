@@ -65,6 +65,7 @@ class ImageAssetView extends StatelessWidget {
             height: AppValues.double100,
             width: double.infinity,
           ),
+          httpHeaders: const {'Access-Control-Allow-Origin': '*'},
           imageUrl: fileName,
           fit: fit,
           height: height,
