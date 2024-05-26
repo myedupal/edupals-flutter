@@ -43,6 +43,8 @@ class AppAssets {
   static const darkOrangeCrown = "${_svgImagePath}dark_orange_crown.svg";
   static const wrong = "${_svgImagePath}wrong.svg";
   static const blueCircle = "${_svgImagePath}blue_circle.svg";
+  static const questionLoadingStatic = "${_svgImagePath}question_loading.svg";
+  static const noDataStatic = "${_svgImagePath}no_data.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";
