@@ -9,6 +9,7 @@ import 'package:edupals/features/auth/presentation/view/components/login_form.da
 import 'package:edupals/features/auth/presentation/view/components/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthView extends GetView<AuthController> {
   const AuthView({super.key});
@@ -20,19 +21,29 @@ class AuthView extends GetView<AuthController> {
         const Text(
           "Home",
           style: MyTextStyle.xs,
-        ).padding(const EdgeInsets.only(right: AppValues.double20)),
+        ).padding(const EdgeInsets.only(right: AppValues.double20)).onTap(() {
+          launchUrl(Uri.parse("https://myedupals.com"));
+        }),
         const Text(
           "FAQ",
           style: MyTextStyle.xs,
-        ).padding(const EdgeInsets.only(right: AppValues.double20)),
+        ).padding(const EdgeInsets.only(right: AppValues.double20)).onTap(() {
+          launchUrl(Uri.parse("https://myedupals.com"));
+        }),
         const Text(
           "Privacy Policy",
           style: MyTextStyle.xs,
-        ).padding(const EdgeInsets.only(right: AppValues.double20)),
+        ).padding(const EdgeInsets.only(right: AppValues.double20)).onTap(() {
+          launchUrl(
+              Uri.parse("https://myedupals.com/policies/terms-of-service"));
+        }),
         const Text(
           "Terms",
           style: MyTextStyle.xs,
-        ),
+        ).onTap(() {
+          launchUrl(
+              Uri.parse("https://myedupals.com/policies/terms-of-service"));
+        }),
       ],
     ).padding(const EdgeInsets.only(top: AppValues.double30));
   }

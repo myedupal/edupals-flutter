@@ -9,6 +9,7 @@ import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
 import 'package:edupals/features/challenge/presentation/view/components/answer_selection_row.dart';
+import 'package:edupals/features/challenge/presentation/view/components/challenge_image_display.dart';
 import 'package:edupals/features/mcq/presentation/controller/submission_details_controller.dart';
 import 'package:edupals/features/mcq/presentation/view/components/submission_detail_top_bar.dart';
 import 'package:flutter/material.dart';
@@ -127,14 +128,19 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
           "Q${controller.selectedQuestion.value?.number ?? 1}",
           style: MyTextStyle.xl.bold,
         ),
+        Text(
+          "* Tap image to zoom in",
+          style: MyTextStyle.xxs.c(AppColors.gray600),
+        ),
         Expanded(
             child: ListView(
           children: [
             Column(
               children: [
                 ...?controller.selectedQuestion.value?.questionImages?.map(
-                    (e) => ImageAssetView(fileName: e.image?.url ?? "").padding(
-                        const EdgeInsets.only(bottom: AppValues.double50)))
+                    (e) => ChallengeImageDisplay(imageUrl: e.image?.url ?? "")
+                        .padding(
+                            const EdgeInsets.only(bottom: AppValues.double50)))
               ],
             ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20))
           ],

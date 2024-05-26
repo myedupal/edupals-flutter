@@ -7,6 +7,7 @@ import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
+import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/challenge/presentation/controller/challenge_details_controller.dart';
 import 'package:edupals/features/challenge/presentation/view/components/answer_selection_row.dart';
@@ -44,13 +45,20 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
                   child: ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    ChallengeImageDisplay(
-                      imageUrl: controller
-                          .currentQuestion?.questionImages?.first.image?.url,
+                    ...?controller.currentQuestion?.questionImages?.map(
+                      (e) {
+                        return ChallengeImageDisplay(
+                          imageUrl: e.image?.url,
+                        );
+                      },
                     )
                   ],
                 ))
               : Container(),
+          Text(
+            "* Tap image to zoom in",
+            style: MyTextStyle.xxs.c(AppColors.gray600),
+          ),
           Column(
             children: [
               Row(
@@ -122,8 +130,8 @@ class ChallengeDetailsView extends GetView<ChallengeDetailsController> {
             .constraintsWrapper(width: 700, color: Colors.transparent)
             .addBackgroundImage(),
         Positioned(
-            right: AppValues.double40,
-            top: AppValues.double40,
+            right: AppValues.double20,
+            top: AppValues.double15,
             child: const ImageAssetView(
               fileName: AppAssets.cross,
               width: AppValues.double15,

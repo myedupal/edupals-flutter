@@ -25,6 +25,14 @@ extension ExpandedWidget on Widget {
         child: this,
       );
 
+  Widget onRippleTap(VoidCallback onClick) => InkWell(
+        splashFactory: InkRipple.splashFactory,
+        onTap: () {
+          onClick();
+        },
+        child: this,
+      );
+
   Widget capsulise(
           {EdgeInsetsGeometry? padding,
           double? radius = 100,
