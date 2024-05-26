@@ -50,8 +50,6 @@ class QuestionFilterSegmentController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    selectedRevisionType.value = revisionType.first;
-    getSubjects();
     mainController.selectedCurriculum.stream.listen((value) {
       getSubjects(isReset: true);
       resetFilter();
@@ -64,17 +62,19 @@ class QuestionFilterSegmentController extends GetxController {
     if (value?.subject != null) {
       selectedSubject.value = value?.subject;
       getTopics();
-      getSubjects();
     }
 
     if (value?.revisionType != null) {
       selectedRevisionType.value = revisionType
           .firstWhere((element) => element.key == value?.revisionType);
+    } else {
+      selectedRevisionType.value = revisionType.first;
     }
 
     if (value?.questionFilterType != null) {
       questionFilterType = value?.questionFilterType;
     }
+    getSubjects();
   }
 
   void resetFilter() {

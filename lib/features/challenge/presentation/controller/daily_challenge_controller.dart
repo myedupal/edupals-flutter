@@ -17,8 +17,8 @@ class DailyChallengeController extends BaseController {
     setLoading();
     await challengeRepo.getChallenges(
         // queryParams: QueryParams(
-        //     fromStartAt: "2024-03-01T00:00:00+08:00",
-        //     toStartAt: "2024-03-31T00:00:00+08:00"),
+        // fromStartAt: "2024-03-01T00:00:00+08:00",
+        // toStartAt: "2024-03-31T00:00:00+08:00"),
         onSuccess: (value) {
           if (value?.isEmpty == true) {
             setNoData();

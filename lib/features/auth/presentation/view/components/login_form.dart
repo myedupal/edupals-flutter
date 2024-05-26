@@ -65,7 +65,7 @@ class LoginForm extends GetView<AuthController> {
             html.window.location.href = mainController.googleLoginUrl;
           } else {
             Get.to(const GoogleSignInView())?.then((value) => {
-                  debugPrint("JWT $value"),
+                  // debugPrint("JWT $value"),
                   // Handle Login
                   if (value is String)
                     controller.loginWithGoogle(idToken: value)

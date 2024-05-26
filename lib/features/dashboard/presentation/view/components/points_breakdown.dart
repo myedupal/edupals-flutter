@@ -65,7 +65,11 @@ class PointsBreakdown extends GetView<DashboardController> {
                   dxlabels: List<int>.generate(
                       8,
                       (index) => ((index) *
-                          ((pointReport.totalPoints ?? 20) / 8).round())),
+                          ((((pointReport.totalPoints ?? 8) < 10)
+                                      ? 8
+                                      : (pointReport.totalPoints ?? 8)) /
+                                  8)
+                              .round())),
                   data: [
                     double.parse("${pointReport.mcqPoints ?? 0.0}"),
                     double.parse("${pointReport.dailyChallengePoints ?? 0.0}"),
