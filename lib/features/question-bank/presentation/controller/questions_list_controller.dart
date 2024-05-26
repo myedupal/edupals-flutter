@@ -222,6 +222,7 @@ class QuestionsListController extends BaseController {
           subjectId: questionListParams?.subjectId,
           activityType: currentArgument.value?.revisionType,
           topicIds: questionListParams?.topicId,
+          // This will cause issue because current using paper_name
           paperIds: [questionListParams?.paperId ?? ""],
           metadata: questionListParams,
           examId: questionListParams?.examId?.first,
@@ -257,8 +258,7 @@ class QuestionsListController extends BaseController {
   void processData() {
     topicList?.value = [];
     if (isYearly) {
-      questionsList.sort((a, b) =>
-          int.parse(a.number ?? "1").compareTo(int.parse(b.number ?? "1")));
+      questionsList.sort((a, b) => (a.number ?? 0).compareTo(b.number ?? 0));
     } else {
       for (int i = 0; i < (questionsList.length); i++) {
         if (questionsList[i].topics?.isEmpty == true) {
@@ -286,7 +286,7 @@ class QuestionsListController extends BaseController {
       return topicComparison;
     }
 
-    return a.number?.compareTo(b.number ?? "") ?? 0;
+    return a.number?.compareTo(b.number ?? 0) ?? 0;
   }
 }
 
@@ -303,6 +303,21 @@ class MyStopWatch extends Stopwatch {
 
   get elapsedSeconds {
     return (elapsedMilliseconds / 1000).round() + _starterSeconds;
+  }
+
+  String? get getParsedTime {
+    final convertedSeconds = elapsedSeconds?.round() ?? 0;
+    int hours = convertedSeconds ~/ 3600;
+    int minutes = (convertedSeconds % 3600) ~/ 60;
+    int remainingSeconds = convertedSeconds % 60;
+
+    if (hours > 0) {
+      return '${hours}h ${minutes}m ${remainingSeconds}s';
+    } else if (minutes > 0) {
+      return '${minutes}m ${remainingSeconds}s';
+    } else {
+      return '${remainingSeconds}s';
+    }
   }
 
   set seconds(int timeInSeconds) {

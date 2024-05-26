@@ -5,7 +5,10 @@ import 'package:edupals/core/repositories/local_repository.dart';
 import 'package:edupals/core/services/secure_storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:edupals/features/auth/domain/repository/auth_repository.dart';
+import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
+import 'package:edupals/features/challenge/domain/repository/challenge_submission_repository.dart';
 import 'package:edupals/features/dashboard/domain/repository/curriculum_repository.dart';
+import 'package:edupals/features/dashboard/domain/repository/dashboard_report_repository.dart';
 import 'package:edupals/features/exam-builder/domain/repository/user_exam_repository.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
@@ -35,6 +38,12 @@ class BaseBinding extends Bindings {
         fenix: true);
     Get.lazyPut<ActivityRepository>(() => ActivityRepository(), fenix: true);
     Get.lazyPut<UserExamRepository>(() => UserExamRepository(), fenix: true);
+    Get.lazyPut<ChallengeRepository>(() => ChallengeRepository(), fenix: true);
+    Get.lazyPut<ChallengeSubmissionRepository>(
+        () => ChallengeSubmissionRepository(),
+        fenix: true);
+    Get.lazyPut<DashboardReportRepository>(() => DashboardReportRepository(),
+        fenix: true);
     Get.lazyPut<UserAccountRepository>(() => UserAccountRepository(),
         fenix: true);
     // Controller

@@ -11,4 +11,5 @@ abstract class Routes {
   static const challengeDetails = '/challengeDetails';
   static const examBuilderDetails = '/examBuilderDetails';
   static const profile = '/profile';
+  static const submissionDetails = '/submissionDetails';
 }

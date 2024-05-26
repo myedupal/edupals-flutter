@@ -63,7 +63,7 @@ class SubmissionAnswer {
         answer: json["answer"],
         isCorrect: json["is_correct"],
         score: json["score"],
-        challengeSubmissionId: json["challenge_submission_id"],
+        challengeSubmissionId: json["submission_id"],
         questionId: json["question_id"],
         userId: json["user_id"],
         evaluatedAt: json["evaluated_at"],
@@ -77,7 +77,7 @@ class SubmissionAnswer {
 
   Map<String, dynamic> toJson() => {
         "answer": answer,
-        "challenge_submission_id": challengeSubmissionId,
+        "submission_id": challengeSubmissionId,
         "question_id": questionId,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");

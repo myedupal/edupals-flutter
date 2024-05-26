@@ -19,6 +19,14 @@ class UpdateProfileController extends BaseController {
 
   UpdateAccountType? updateType;
 
+  @override
+  void onInit() {
+    usernameController.text = mainController.currentUser.value?.name ?? "";
+    phoneNumberController.text =
+        mainController.currentUser.value?.phoneNumber ?? "";
+    super.onInit();
+  }
+
   void onSetUpdateType({UpdateAccountType? value}) {
     updateType = value;
   }
@@ -33,6 +41,7 @@ class UpdateProfileController extends BaseController {
     setLoading();
     final user = User(
       name: usernameController.text,
+      phoneNumber: phoneNumberController.text,
     );
     userAccountRepo.updateAccount(
         user: user,

@@ -9,6 +9,11 @@ class AppAssets {
   static const mockQuestion = "${_pngImagePath}mock_question.png";
   static const staticConfetti = "${_pngImagePath}static_confetti.png";
   static const badgeMockup = "${_pngImagePath}badge_mockup.png";
+  static const biologyBg = "${_pngImagePath}biology_bg.png";
+  static const economicsBg = "${_pngImagePath}economics_bg.png";
+  static const physicsBg = "${_pngImagePath}physics_bg.png";
+  static const scienceCombinedBg = "${_pngImagePath}science_combined_bg.png";
+  static const profilePlaceholder = "${_pngImagePath}profile_placeholder.png";
 
   static const google = "${_svgImagePath}google.svg";
   static const success = "${_svgImagePath}success.svg";
@@ -29,13 +34,28 @@ class AppAssets {
   static const sortFull = "${_svgImagePath}sort_full.svg";
   static const history = "${_svgImagePath}history.svg";
   static const imageError = "${_svgImagePath}image_error.svg";
+  static const blueCrown = "${_svgImagePath}blue_crown.svg";
+  static const orangeCrown = "${_svgImagePath}orange_crown.svg";
+  static const suiLogo = "${_svgImagePath}sui_logo.svg";
+  static const rightFullChevron = "${_svgImagePath}right_full_chevron.svg";
+  static const fire = "${_svgImagePath}fire.svg";
+  static const diamond = "${_svgImagePath}diamond.svg";
+  static const darkOrangeCrown = "${_svgImagePath}dark_orange_crown.svg";
+  static const wrong = "${_svgImagePath}wrong.svg";
+  static const blueCircle = "${_svgImagePath}blue_circle.svg";
+  static const questionLoadingStatic = "${_svgImagePath}question_loading.svg";
+  static const noDataStatic = "${_svgImagePath}no_data.svg";
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";
   static const questionLoadingLottie = "${_lottiePath}question_loading.json";
   static const noDataLottie = "${_lottiePath}no_data.json";
 
-  String getPath({required String name}) {
+  String getSvgPath({required String name}) {
     return "$_svgImagePath$name.svg";
+  }
+
+  String getPngPath({required String name}) {
+    return "$_pngImagePath$name.png";
   }
 }

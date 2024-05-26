@@ -1,3 +1,4 @@
+import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/routing.dart';
@@ -14,6 +15,12 @@ class ChallengeCompleteView extends StatelessWidget {
 
   final ChallengeSubmission? challengeSubmission = Get.arguments;
 
+  String? get getTitle {
+    return challengeSubmission?.challenge != null
+        ? "challenge for ${challengeSubmission?.challenge?.title}"
+        : "MCQ for ${challengeSubmission?.title?.split("|")[1]}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,9 +32,10 @@ class ChallengeCompleteView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const ImageAssetView(
+          ImageAssetView(
             fileName: AppAssets.appIcon,
-            width: AppValues.double60,
+            width: context.isPhone ? AppValues.double40 : AppValues.double60,
+            height: context.isPhone ? AppValues.double40 : AppValues.double60,
           ).capsulise(
               radius: 100,
               padding: const EdgeInsets.all(AppValues.double30),
@@ -36,14 +44,20 @@ class ChallengeCompleteView extends StatelessWidget {
             height: AppValues.double50,
           ),
           Text(
-            "Hurray! You've completed challenge for ${challengeSubmission?.challenge?.title}",
-            style: MyTextStyle.xl2.bold,
+            "Hurray! You've completed $getTitle",
+            style:
+                context.isPhone ? MyTextStyle.xxxl.bold : MyTextStyle.xl2.bold,
             textAlign: TextAlign.center,
-          ),
+          ).padding(const EdgeInsets.symmetric(horizontal: AppValues.double20)),
           const SizedBox(
             height: AppValues.double50,
           ),
-          // BaseButton(text: "Upgrade now to see your result", onClick: () {}),
+          BaseButton(
+              text: "Review Questions",
+              onClick: () {
+                Get.toNamed(
+                    "${Routes.submissionDetails}/${challengeSubmission?.id}");
+              }),
           Text(
             "Back to dashboard",
             style: MyTextStyle.s.bold.c(AppColors.accent500),

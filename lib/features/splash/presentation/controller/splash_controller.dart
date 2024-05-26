@@ -37,6 +37,7 @@ class SplashController extends GetxController {
     } else {
       Future.delayed(const Duration(seconds: 2), () {
         if (isLoggedIn.value) {
+          mainController.goAhead();
           Get.offAllNamed(Routes.homeAnimation);
         } else {
           Get.offAllNamed(Routes.loginAnimation);
@@ -53,6 +54,7 @@ class SplashController extends GetxController {
         onSuccess: (value) {
           mainController.setUser(
               user: value?.user, salt: value?.meta?.zkloginSalt);
+          mainController.goAhead();
           Get.offAllNamed(Routes.homeAnimation);
           html.window.history.pushState({}, '', '');
         },

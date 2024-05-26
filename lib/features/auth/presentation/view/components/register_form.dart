@@ -22,6 +22,10 @@ class RegisterForm extends GetView<AuthController> {
           controller: controller.nameController,
         ).padding(const EdgeInsets.only(bottom: AppValues.double15)),
         BaseInput(
+          label: "Phone Number",
+          controller: controller.phoneNumberController,
+        ).padding(const EdgeInsets.only(bottom: AppValues.double15)),
+        BaseInput(
           label: "Email Address",
           controller: controller.emailController,
         ).padding(const EdgeInsets.only(bottom: AppValues.double15)),

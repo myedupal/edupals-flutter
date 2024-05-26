@@ -5,6 +5,7 @@ import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,15 +16,16 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
+    return Expanded(
+        child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ImageAssetView(
-            fileName: AppAssets.noDataLottie,
-            width: Get.dynamicWidth * 0.25,
+            fileName: (!(kIsWeb && context.isPhone))
+                ? AppAssets.noDataLottie
+                : AppAssets.noDataStatic,
+            width: Get.dynamicWidth * 0.3,
           ),
           Text(
             message ?? "",
@@ -37,6 +39,6 @@ class NoDataView extends StatelessWidget {
               }).padding(const EdgeInsets.only(top: AppValues.double20))
         ],
       ),
-    );
+    ));
   }
 }

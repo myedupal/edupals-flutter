@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void mainGlobal() async {
@@ -15,6 +16,12 @@ void mainGlobal() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: FlavorConfig.fileName);
   await clearSecureStorageOnReinstall();
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = FlavorConfig.sentryDsn;
+      options.environment = FlavorConfig.title;
+    },
+  );
   runApp(const MyApp());
 }
 

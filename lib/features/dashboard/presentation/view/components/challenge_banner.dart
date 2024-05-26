@@ -55,7 +55,10 @@ class ChallengeBanner extends StatelessWidget {
                   horizontal: AppValues.double20, vertical: AppValues.double12))
           .onTap(() {
         Get.toNamed(Routes.dailyChallenge);
-      })
+      }).padding(EdgeInsets.only(
+              bottom: context.isPhonePortrait
+                  ? AppValues.double20
+                  : AppValues.double0))
     ];
     return widgetList
         .rowToColumn(isActive: context.isPhonePortrait)

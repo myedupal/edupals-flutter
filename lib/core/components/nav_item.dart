@@ -30,7 +30,7 @@ class NavItem extends StatelessWidget {
             child: ImageAssetView(
                 height: AppValues.double18,
                 color: isActive ? AppColors.accent500 : AppColors.gray900,
-                fileName: AppAssets().getPath(
+                fileName: AppAssets().getSvgPath(
                     name: name?.replaceAll(" ", "_").toLowerCase() ?? "")),
           ),
           Text(

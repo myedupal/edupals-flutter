@@ -18,6 +18,7 @@ class AuthController extends BaseController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
 
   bool validLoginInput() {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -30,6 +31,7 @@ class AuthController extends BaseController {
   bool validRegisterInput() {
     if (emailController.text.isEmpty ||
         passwordController.text.isEmpty ||
+        phoneNumberController.text.isEmpty ||
         nameController.text.isEmpty) {
       BaseDialog.showError(subtitle: "All fields are required.");
       return false;
@@ -39,6 +41,11 @@ class AuthController extends BaseController {
 
   void onChangeAuthStep({required AuthStep step}) {
     currentStep.value = step;
+  }
+
+  void navigateHome() {
+    mainController.goAhead();
+    Get.offAllNamed(Routes.homeAnimation);
   }
 
   Future<void> login() async {
@@ -51,7 +58,7 @@ class AuthController extends BaseController {
           onSuccess: (value) {
             setSuccess();
             mainController.setUser(user: value);
-            Get.offAllNamed(Routes.homeAnimation);
+            navigateHome();
           },
           onError: (error) {
             setSuccess();
@@ -69,7 +76,7 @@ class AuthController extends BaseController {
           setSuccess();
           mainController.setUser(
               user: value?.user, salt: value?.meta?.zkloginSalt);
-          Get.offAllNamed(Routes.homeAnimation);
+          navigateHome();
         },
         onError: (error) {
           setSuccess();
@@ -82,9 +89,11 @@ class AuthController extends BaseController {
       setLoading();
       await authRepo.register(
           user: User(
-              name: nameController.value.text,
-              email: emailController.value.text,
-              password: passwordController.value.text),
+            name: nameController.value.text,
+            email: emailController.value.text,
+            password: passwordController.value.text,
+            phoneNumber: phoneNumberController.value.text,
+          ),
           onSuccess: (value) {
             setSuccess();
             BaseDialog.showSuccess(
@@ -92,7 +101,7 @@ class AuthController extends BaseController {
               message: "Your account is registered successfully",
               buttonText: "Go to dashboard",
               action: () {
-                Get.offAllNamed(Routes.homeAnimation);
+                navigateHome();
               },
             );
           },

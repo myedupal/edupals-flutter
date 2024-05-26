@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 class DailyChallengeController extends BaseController {
   final ChallengeRepository challengeRepo = Get.find();
   RxList<Challenge>? challengeList = <Challenge>[].obs;
-  RxList<String>? subjectList = <String>[].obs;
 
   @override
   void onInit() {
@@ -15,25 +14,19 @@ class DailyChallengeController extends BaseController {
   }
 
   Future<void> getChallenges() async {
+    setLoading();
     await challengeRepo.getChallenges(
         // queryParams: QueryParams(
-        // fromStartAt: "2024-03-01T00:00:00+08:00",
-        // toStartAt: "2024-03-31T00:00:00+08:00"),
+        //     fromStartAt: "2024-03-01T00:00:00+08:00",
+        //     toStartAt: "2024-03-31T00:00:00+08:00"),
         onSuccess: (value) {
-          challengeList?.value = value ?? [];
-          filterSubjects();
+          if (value?.isEmpty == true) {
+            setNoData();
+          } else {
+            setSuccess();
+            challengeList?.value = value ?? [];
+          }
         },
         onError: (error) {});
-  }
-
-  void filterSubjects() {
-    for (int i = 0; i < (challengeList?.length ?? 0); i++) {
-      final subjectName = challengeList?[i].subject?.name;
-      final subject =
-          subjectList?.firstWhereOrNull((element) => element == subjectName);
-      if (subject == null) {
-        subjectList?.add(subjectName ?? "");
-      }
-    }
   }
 }

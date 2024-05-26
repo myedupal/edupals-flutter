@@ -1,19 +1,27 @@
+import 'dart:async';
+
 import 'package:edupals/core/base/base_controller.dart';
+import 'package:edupals/core/base/base_snackbar.dart';
 import 'package:edupals/core/base/model/query_params.dart';
+import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/routes/routing.dart';
+import 'package:edupals/features/challenge/domain/model/challenge_argument.dart';
 import 'package:edupals/features/challenge/domain/model/challenge_submission.dart';
 import 'package:edupals/features/challenge/domain/model/submission_answer.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_repository.dart';
 import 'package:edupals/features/challenge/domain/repository/challenge_submission_repository.dart';
 import 'package:edupals/features/challenge/domain/repository/submission_answer_repository.dart';
 import 'package:edupals/features/question-bank/domain/model/question.dart';
+import 'package:edupals/features/question-bank/domain/repository/user_questions_repository.dart';
+import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
 import 'package:get/get.dart';
 
 class ChallengeDetailsController extends BaseController {
   final ChallengeRepository challengeRepo = Get.find();
+  final UserQuestionsRepository questionsRepo = Get.find();
   final SubmissionAnswerRepository submissionAnswerRepo = Get.find();
   final ChallengeSubmissionRepository challengeSubmissionRepo = Get.find();
-  final String challengeId = Get.parameters["id"] ?? '';
+  final ChallengeArgument routeArgument = Get.arguments;
   RxList<Question>? questionList = <Question>[].obs;
   RxList<SubmissionAnswersAttribute>? answeredList =
       <SubmissionAnswersAttribute>[].obs;
@@ -22,11 +30,50 @@ class ChallengeDetailsController extends BaseController {
   RxInt currentIndex = 0.obs;
   Rx<String>? currentSelectedAnswer = "".obs;
   RxList<SubmissionAnswer?> submissionAnswerList = <SubmissionAnswer>[].obs;
+  Rx<String> mainTitle = "".obs;
+  Rx<ViewState> submissionViewState = ViewState.success.obs;
+  // Timer State
+  MyStopWatch stopwatch = MyStopWatch();
+  late Timer _timer;
+  RxString formattedTime = '0s'.obs;
+
+  @override
+  void onClose() {
+    if (stopwatch.isRunning) {
+      stopStopwatch();
+    }
+    super.onClose();
+  }
 
   @override
   void onInit() {
-    getChallenge(id: challengeId);
+    mainTitle.value = routeArgument.mainTitle ?? "";
+    if (routeArgument.challengeId?.isEmpty == false) {
+      getChallenge(id: routeArgument.challengeId ?? "");
+    }
+    if (routeArgument.questionQueryParams != null) {
+      getQuestions(queryParams: routeArgument.questionQueryParams);
+    }
     super.onInit();
+  }
+
+  List<String> get getSubtitleList {
+    List<String> titleList = [];
+    if (currentChallengeSubmission.value?.challengeId == null) {
+      if (currentChallengeSubmission.value?.getYear != null) {
+        titleList.add("${currentChallengeSubmission.value?.getYear}");
+      }
+      if (currentChallengeSubmission.value?.getSeason != null) {
+        titleList.add("${currentChallengeSubmission.value?.getSeason}");
+      }
+      if (currentChallengeSubmission.value?.getZone != null) {
+        titleList.add("${currentChallengeSubmission.value?.getZone}");
+      }
+    } else {
+      titleList.add("All Chapters");
+      titleList.add("Daily Challenge");
+    }
+    return titleList;
   }
 
   double get getProgress {
@@ -42,6 +89,9 @@ class ChallengeDetailsController extends BaseController {
   bool get isLastQuestion =>
       currentIndex.value == (questionList?.length ?? 0) - 1;
 
+  bool get isChallengeFinish =>
+      submissionAnswerList.length == questionList?.length;
+
   bool get isSubmitted =>
       currentSubmissionAnswer != null &&
       currentSelectedAnswer?.value == currentSubmissionAnswer?.answer;
@@ -55,6 +105,19 @@ class ChallengeDetailsController extends BaseController {
       (answer == currentSubmissionAnswer?.answer) &&
       currentSubmissionAnswer?.isCorrect == false;
 
+  // Timer Function
+  void startStopwatch() {
+    stopwatch.start();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      formattedTime.value = stopwatch.getParsedTime ?? "0s";
+    });
+  }
+
+  void stopStopwatch() {
+    stopwatch.stop();
+    _timer.cancel();
+  }
+
   Future<void> onSubmitAnswer() async {
     if (currentSubmissionAnswer == null) {
       createSubmissionAnswer();
@@ -64,17 +127,31 @@ class ChallengeDetailsController extends BaseController {
   }
 
   Future<void> finishChallenge() async {
+    setSubmissionLoading();
     (currentChallengeSubmission.value?.status == "pending")
         ? await challengeSubmissionRepo.submitChallengeSubmission(
             id: currentChallengeSubmission.value?.id ?? "",
             onSuccess: (value) {
-              Get.toNamed(Routes.challengeComplete, arguments: value);
+              Get.offAndToNamed(Routes.challengeComplete, arguments: value)
+                  ?.then((value) {
+                currentIndex.value = 0;
+                presetAnswer();
+              });
+              currentChallengeSubmission.value = value;
+              submissionAnswerList.value = value?.submissionAnswers ?? [];
+              stopStopwatch();
+              presetAnswer();
+              setSubmissionSuccess();
             },
-            onError: (error) {})
+            onError: (error) {
+              setSubmissionSuccess();
+              BaseSnackBar.show(message: "Error: ${error.message}");
+            })
         : Get.back();
   }
 
   Future<void> createSubmissionAnswer() async {
+    setSubmissionLoading();
     await submissionAnswerRepo.createSubmissionAnswer(
         submissionAnswer: SubmissionAnswer(
             questionId: currentQuestion?.id,
@@ -82,11 +159,17 @@ class ChallengeDetailsController extends BaseController {
             answer: currentSelectedAnswer?.value),
         onSuccess: (value) {
           submissionAnswerList.add(value);
+          setSubmissionSuccess();
+          nextQuestion();
         },
-        onError: (error) {});
+        onError: (error) {
+          setSubmissionSuccess();
+          BaseSnackBar.show(message: "Error: ${error.message}");
+        });
   }
 
   Future<void> updateSubmissionAnswer() async {
+    setSubmissionLoading();
     await submissionAnswerRepo.updateSubmissionAnswer(
         id: currentSubmissionAnswer?.id ?? "",
         submissionAnswer: SubmissionAnswer(
@@ -96,26 +179,56 @@ class ChallengeDetailsController extends BaseController {
           final submissionIndex = submissionAnswerList
               .indexWhere((element) => element?.id == value?.id);
           submissionAnswerList[submissionIndex] = value;
+          setSubmissionSuccess();
+          nextQuestion();
         },
-        onError: (error) {});
+        onError: (error) {
+          setSubmissionSuccess();
+        });
   }
 
   Future<void> getChallenge({required String id}) async {
+    setLoading();
     await challengeRepo.getChallenge(
         id: id,
         onSuccess: (value) {
+          value?.questions?.isEmpty == true ? setNoData() : setSuccess();
           questionList?.value = value?.questions ?? [];
           getChallengeSubmissions(challengeId: id);
         },
         onError: (error) {});
   }
 
+  Future<void> getQuestions({QueryParams? queryParams}) async {
+    setLoading();
+    QueryParams? updatedQueryParams = queryParams;
+    updatedQueryParams?.sortBy = "number";
+    updatedQueryParams?.sortOrder = "asc";
+    updatedQueryParams?.questionType = "mcq";
+    await questionsRepo.getQuestions(
+        queryParams: queryParams,
+        onSuccess: (value) {
+          if (value.data?.isEmpty == true) {
+            setNoData();
+          } else {
+            setSuccess();
+            questionList?.value = value.data ?? [];
+            createChallengeSubmission();
+          }
+        },
+        onError: (error) {});
+  }
+
   Future<void> getChallengeSubmissions({required String challengeId}) async {
+    setLoading();
     await challengeSubmissionRepo.getChallengeSubmissions(
         queryParams: QueryParams(challengeId: challengeId),
         onSuccess: (value) {
+          setSuccess();
           if (value?.isNotEmpty == true) {
             currentChallengeSubmission.value = value?.first;
+            formattedTime.value =
+                currentChallengeSubmission.value?.getParsedTime ?? "0s";
             getChallengeSubmission();
           } else {
             createChallengeSubmission(challengeId: challengeId);
@@ -135,17 +248,28 @@ class ChallengeDetailsController extends BaseController {
         onError: (error) {});
   }
 
-  Future<void> createChallengeSubmission({required String challengeId}) async {
+  Future<void> createChallengeSubmission({String? challengeId}) async {
+    setLoading();
     await challengeSubmissionRepo.createChallengeSubmission(
-        challengeSubmission: ChallengeSubmission(challengeId: challengeId),
+        challengeSubmission: ChallengeSubmission(
+            challengeId: challengeId,
+            title: challengeId == null
+                ? "${routeArgument.subjectTitle}"
+                : currentChallengeSubmission.value?.title),
         onSuccess: (value) {
+          setSuccess();
+          startStopwatch();
           currentChallengeSubmission.value = value;
         },
-        onError: (error) {});
+        onError: (error) {
+          setSuccess();
+          BaseSnackBar.show(message: "Error: ${error.message}");
+        });
   }
 
   void onSelectAnswer({required String answer}) {
     currentSelectedAnswer?.value = answer;
+    onSubmitAnswer();
   }
 
   void presetAnswer() {
@@ -164,7 +288,19 @@ class ChallengeDetailsController extends BaseController {
   }
 
   void onBack() {
-    currentIndex.value > 0 ? currentIndex -= 1 : Get.back();
+    currentIndex.value > 0 ? currentIndex -= 1 : null;
     presetAnswer();
+  }
+
+  void setSubmissionLoading() {
+    submissionViewState.value = ViewState.loading;
+  }
+
+  void setSubmissionSuccess() {
+    submissionViewState.value = ViewState.success;
+  }
+
+  bool get isSubmissionLoading {
+    return submissionViewState.value == ViewState.loading;
   }
 }

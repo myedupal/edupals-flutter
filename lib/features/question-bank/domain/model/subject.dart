@@ -1,3 +1,4 @@
+import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
 import 'package:edupals/features/question-bank/domain/model/paper.dart';
 
@@ -32,6 +33,7 @@ class Subject {
   String? name;
   String? code;
   String? curriculumId;
+  ExamsFilteringWrapper? examsFiltering;
   Curriculum? curriculum;
   List<Paper>? papers;
 
@@ -41,8 +43,14 @@ class Subject {
     this.code,
     this.curriculumId,
     this.curriculum,
+    this.examsFiltering,
     this.papers,
   });
+
+  String? get getBackgroundImage {
+    return AppAssets()
+        .getPngPath(name: "${name?.replaceAll(" ", "_").toLowerCase()}_bg");
+  }
 
   factory Subject.fromJson(Map<String, dynamic> json) => Subject(
         id: json["id"],
@@ -52,6 +60,9 @@ class Subject {
         curriculum: json["curriculum"] == null
             ? null
             : Curriculum.fromJson(json["curriculum"]),
+        examsFiltering: json["exams_filtering"] == null
+            ? null
+            : ExamsFilteringWrapper.fromJson(json["exams_filtering"]),
         papers: json["papers"] == null
             ? []
             : List<Paper>.from(json["papers"]!.map((x) => Paper.fromJson(x))),
@@ -66,5 +77,71 @@ class Subject {
         "papers": papers == null
             ? []
             : List<dynamic>.from(papers!.map((x) => x.toJson())),
+      };
+}
+
+class ExamsFilteringWrapper {
+  ExamsFiltering? all;
+  ExamsFiltering? mcq;
+
+  ExamsFilteringWrapper({
+    this.all,
+    this.mcq,
+  });
+
+  factory ExamsFilteringWrapper.fromJson(Map<String, dynamic> json) =>
+      ExamsFilteringWrapper(
+        all: json["all"] == null ? null : ExamsFiltering.fromJson(json["all"]),
+        mcq: json["mcq"] == null ? null : ExamsFiltering.fromJson(json["mcq"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "all": all?.toJson(),
+        "mcq": mcq?.toJson(),
+      };
+}
+
+class ExamsFiltering {
+  List<String>? papers;
+  List<String>? zones;
+  List<String>? seasons;
+  List<int>? years;
+  List<dynamic>? levels;
+
+  ExamsFiltering({
+    this.papers,
+    this.zones,
+    this.seasons,
+    this.years,
+    this.levels,
+  });
+
+  factory ExamsFiltering.fromJson(Map<String, dynamic> json) => ExamsFiltering(
+        papers: json["papers"] == null
+            ? []
+            : List<String>.from(json["papers"]!.map((x) => x)),
+        zones: json["zones"] == null
+            ? []
+            : List<String>.from(json["zones"]!.map((x) => x)),
+        seasons: json["seasons"] == null
+            ? []
+            : List<String>.from(json["seasons"]!.map((x) => x)),
+        years: json["years"] == null
+            ? []
+            : List<int>.from(json["years"]!.map((x) => x)),
+        levels: json["levels"] == null
+            ? []
+            : List<dynamic>.from(json["levels"]!.map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "papers":
+            papers == null ? [] : List<dynamic>.from(papers!.map((x) => x)),
+        "zones": zones == null ? [] : List<dynamic>.from(zones!.map((x) => x)),
+        "seasons":
+            seasons == null ? [] : List<dynamic>.from(seasons!.map((x) => x)),
+        "years": years == null ? [] : List<dynamic>.from(years!.map((x) => x)),
+        "levels":
+            levels == null ? [] : List<dynamic>.from(levels!.map((x) => x)),
       };
 }

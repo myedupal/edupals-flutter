@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 extension CustomExtension on BuildContext {
   bool get isPhonePortrait => isPhone || isPortrait;
+  bool get isTabletLandscape => isTablet && isLandscape;
 }
 
 extension CustomGet on GetInterface {

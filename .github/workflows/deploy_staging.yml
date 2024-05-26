@@ -24,6 +24,8 @@ jobs:
     secrets: 
       env_file: |
         API_URL=${{ secrets.STAGING_API_URL }}
+        GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+        SENTRY_DSN=${{ secrets.SENTRY_DSN }}
     with:
       environment: staging
 

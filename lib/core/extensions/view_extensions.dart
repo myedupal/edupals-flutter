@@ -18,7 +18,7 @@ extension ExpandedWidget on Widget {
       );
 
   Widget onTap(VoidCallback onClick) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
+        behavior: HitTestBehavior.translucent,
         onTap: () {
           onClick();
         },
@@ -83,11 +83,12 @@ extension ExpandedWidget on Widget {
   Widget scaffoldWrapper(
           {bool? resizeToAvoidBottomInset = false,
           Color? backgroundColor = AppColors.white,
-          bool topSafe = true}) =>
+          bool topSafe = true,
+          bool bottomSafe = false}) =>
       Scaffold(
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         backgroundColor: backgroundColor,
-        body: SafeArea(bottom: false, top: topSafe, child: this),
+        body: SafeArea(bottom: bottomSafe, top: topSafe, child: this),
       );
 
   Widget ignorePointer([bool ignore = false]) =>
@@ -140,14 +141,19 @@ extension ExpandedWidget on Widget {
       padding: const EdgeInsets.symmetric(
           horizontal: AppValues.double15, vertical: AppValues.double12));
 
-  Widget imageBackground({EdgeInsets? padding}) => Container(
-      padding: padding ?? const EdgeInsets.all(AppValues.double20),
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(AppAssets.dashboardChallengeBg))),
-      child: this);
+  Widget imageBackground(
+          {EdgeInsets? padding, double? radius, String? image}) =>
+      Container(
+          padding: padding ?? const EdgeInsets.all(AppValues.double20),
+          decoration: BoxDecoration(
+              color: AppColors.gray900,
+              borderRadius: BorderRadius.all(Radius.circular(radius ?? 10)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(image ?? AppAssets.dashboardChallengeBg),
+                onError: (exception, stackTrace) {},
+              )),
+          child: this);
 }
 
 extension ListWidgetExtension on List<Widget> {

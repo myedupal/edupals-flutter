@@ -33,7 +33,7 @@ class QuestionWrapper {
 
 class Question {
   String? id;
-  String? number;
+  int? number;
   String? questionType;
   String? text;
   String? examId;

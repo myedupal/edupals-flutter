@@ -18,6 +18,7 @@ abstract class AppValues {
   static const double double26 = 26;
   static const double double28 = 28;
   static const double double30 = 30;
+  static const double double35 = 35;
   static const double double40 = 40;
   static const double double50 = 50;
   static const double double55 = 55;

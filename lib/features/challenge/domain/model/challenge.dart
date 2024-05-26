@@ -47,6 +47,7 @@ class Challenge {
   Subject? subject;
   List<ChallengeQuestion>? challengeQuestions;
   List<Question>? questions;
+  int? challengeQuestionsCount;
 
   Challenge({
     this.id,
@@ -65,6 +66,7 @@ class Challenge {
     this.subject,
     this.challengeQuestions,
     this.questions,
+    this.challengeQuestionsCount,
   });
 
   factory Challenge.fromJson(Map<String, dynamic> json) => Challenge(
@@ -91,6 +93,7 @@ class Challenge {
             ? []
             : List<Question>.from(
                 json["questions"].map((x) => Question.fromJson(x))),
+        challengeQuestionsCount: json["challenge_questions_count"],
       );
 
   Map<String, dynamic> toJson() => {

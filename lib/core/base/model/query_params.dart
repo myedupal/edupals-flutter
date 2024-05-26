@@ -1,28 +1,31 @@
 class QueryParams {
-  QueryParams({
-    this.page,
-    this.items,
-    this.active,
-    this.sortBy,
-    this.sortOrder,
-    this.status,
-    this.query,
-    this.fromDate,
-    this.toDate,
-    this.isActive,
-    this.examId,
-    this.paperId,
-    this.season,
-    this.subjectId,
-    this.topicId,
-    this.year,
-    this.zone,
-    this.curriculumId,
-    this.fromStartAt,
-    this.toStartAt,
-    this.challengeId,
-    this.challengeSubmissionId,
-  });
+  QueryParams(
+      {this.page,
+      this.items,
+      this.active,
+      this.sortBy,
+      this.sortOrder,
+      this.status,
+      this.query,
+      this.fromDate,
+      this.toDate,
+      this.isActive,
+      this.examId,
+      this.paperId,
+      this.paperName,
+      this.season,
+      this.subjectId,
+      this.topicId,
+      this.year,
+      this.zone,
+      this.curriculumId,
+      this.fromStartAt,
+      this.toStartAt,
+      this.challengeId,
+      this.challengeSubmissionId,
+      this.hasMcqQuestions,
+      this.questionType,
+      this.mcq});
 
   int? page;
   int? items;
@@ -35,6 +38,7 @@ class QueryParams {
   List<String>? topicId;
   String? subjectId;
   String? paperId;
+  String? paperName;
   List<String>? examId;
   List<String>? zone;
   List<String>? season;
@@ -46,6 +50,9 @@ class QueryParams {
   String? toStartAt;
   String? challengeId;
   String? challengeSubmissionId;
+  bool? hasMcqQuestions;
+  String? questionType;
+  bool? mcq;
 
   factory QueryParams.fromJson(Map<String, dynamic> json) => QueryParams(
         page: int.parse(json["page"] ?? "1"),
@@ -65,6 +72,7 @@ class QueryParams {
             : null,
         fromStartAt: json["from_start_at"],
         toStartAt: json["to_start_at"],
+        mcq: json["mcq"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -80,6 +88,7 @@ class QueryParams {
         "to_date": toDate,
         // Question List
         "paper_id": paperId,
+        "paper_name": paperName,
         "exam_id[]": examId?.isNotEmpty == true ? examId : null,
         "topic_id[]": topicId?.isNotEmpty == true ? topicId : null,
         "year[]": year?.isNotEmpty == true ? year : null,
@@ -90,7 +99,10 @@ class QueryParams {
         "from_start_at": fromStartAt,
         "to_start_at": toStartAt,
         "challenge_id": challengeId,
-        "challenge_submission_id": challengeSubmissionId,
+        "submission_id": challengeSubmissionId,
+        "has_mcq_questions": hasMcqQuestions,
+        "question_type": questionType,
+        "mcq": mcq,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null");
 

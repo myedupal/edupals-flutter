@@ -1,5 +1,7 @@
 import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/point_streak_display.dart';
+import 'package:edupals/core/components/profile_picture.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/core/values/app_assets.dart';
@@ -36,24 +38,14 @@ class LayoutTopBar extends GetView<MainController> {
           });
         }),
         const Spacer(),
-        Row(
-          children: [
-            const ImageAssetView(
-              fileName:
-                  "https://images.pexels.com/photos/264905/pexels-photo-264905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-              fit: BoxFit.cover,
-              width: AppValues.double25,
-              height: AppValues.double25,
-            ).clip(),
-            Text(
-              "LV.1",
-              style: MyTextStyle.xs.bold.c(AppColors.white),
-            ).padding(
-                const EdgeInsets.symmetric(horizontal: AppValues.double10))
-          ],
-        ).topBarWidgetCapsule().onTap(() {
+        if (!context.isPhone)
+          const PointStreakDisplay()
+              .padding(const EdgeInsets.only(right: AppValues.double10)),
+        const ProfilePicture(
+          size: AppValues.double30,
+        ).onTap(() {
           Get.toNamed(Routes.profile);
-        })
+        }),
       ],
     ).capsulise(
         radius: 100,

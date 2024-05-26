@@ -18,7 +18,7 @@ class ProfileTopBar extends StatelessWidget {
             const EdgeInsets.only(
                 left: AppValues.double10, right: AppValues.double20)),
         const Spacer(),
-        Text("Back to dashboard", style: MyTextStyle.s.bold.c(AppColors.white))
+        Text("Back", style: MyTextStyle.s.bold.c(AppColors.white))
             .topBarCapsule()
             .onTap(() {
           Get.back();

@@ -1,8 +1,8 @@
 import 'package:edupals/core/components/image_asset_view.dart';
+import 'package:edupals/core/components/loading_view.dart';
 import 'package:edupals/core/components/no_data_view.dart';
 import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
-import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
 import 'package:edupals/core/values/app_values.dart';
 import 'package:edupals/features/question-bank/presentation/controller/questions_list_controller.dart';
@@ -20,21 +20,7 @@ class QuestionsListView extends GetView<QuestionsListController> {
     return Obx(() {
       switch (controller.viewState) {
         case ViewState.loading:
-          return Column(
-            children: [
-              SizedBox(
-                height: Get.width * 0.1,
-              ),
-              ImageAssetView(
-                fileName: AppAssets.questionLoadingLottie,
-                width: Get.width * 0.25,
-              ),
-              Text(
-                "We are preparing the best for you...",
-                style: MyTextStyle.l.bold,
-              )
-            ],
-          );
+          return const LoadingView();
         case ViewState.noData:
           return const NoDataView(message: "There is no question for you...");
         default:

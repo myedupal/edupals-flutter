@@ -21,6 +21,7 @@ class QuestionFilterSegment extends StatelessWidget {
     this.ableSelectRevision = true,
     this.ableSelectSubject = true,
     this.filterArgument,
+    this.buttonText,
   });
 
   final Function(QuestionBankArgument?)? emitData;
@@ -28,6 +29,7 @@ class QuestionFilterSegment extends StatelessWidget {
   final bool ableSelectSubject;
   final String? controllerTag;
   final QuestionFilterArgument? filterArgument;
+  final String? buttonText;
 
   void showRevisionDialog(QuestionFilterSegmentController controller) {
     BaseDialog.customise(
@@ -65,7 +67,7 @@ class QuestionFilterSegment extends StatelessWidget {
       title: "paper",
       childRatio: 1.5,
       numberOfColumn: 4,
-      selectionList: controller.paperList ?? [],
+      selectionList: controller.paperList,
       emitData: (data) {
         controller.onSelectPaper(value: data?.first);
       },
@@ -212,7 +214,10 @@ class QuestionFilterSegment extends StatelessWidget {
                 label: "Season",
                 isRequired: true,
                 data: controller.selectedSeason.value,
-              ).onTap(() => showSeasonDialog(controller)))
+              ).onTap(() => controller.selectedSubject.value == null
+                      ? controller.triggerError(
+                          error: "You have to select subject first")
+                      : showSeasonDialog(controller)))
             ],
           ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
           if (controller.selectedRevisionType.value?.key == "topical") ...[
@@ -242,13 +247,17 @@ class QuestionFilterSegment extends StatelessWidget {
               controller.onRemoveYear(id);
             },
           )
-              .onTap(() => showYearDialog(
-                  controller: controller,
-                  isMultipleSelect:
-                      controller.selectedRevisionType.value?.key != "yearly"))
+              .onTap(() => controller.selectedSubject.value == null
+                  ? controller.triggerError(
+                      error: "You have to select subject first")
+                  : showYearDialog(
+                      controller: controller,
+                      isMultipleSelect:
+                          controller.selectedRevisionType.value?.key !=
+                              "yearly"))
               .padding(const EdgeInsets.only(bottom: AppValues.double20)),
           BaseButton(
-              text: "Search Questions",
+              text: buttonText ?? "Search Questions",
               onClick: () {
                 if (controller.compiledValue != null) {
                   emitData?.call(controller.compiledValue);
