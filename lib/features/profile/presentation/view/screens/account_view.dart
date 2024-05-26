@@ -107,7 +107,8 @@ class AccountView extends GetView<ProfileController> {
               ).padding(const EdgeInsets.only(
                   top: AppValues.double20, bottom: AppValues.double20)),
               Text(
-                "${mainController.suiAddress}",
+                mainController.suiAddress ??
+                    "You currently don't have a wallet address yet",
                 style: MyTextStyle.s,
                 textAlign: TextAlign.center,
               ).capsulise(

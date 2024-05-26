@@ -1,5 +1,6 @@
 import 'package:edupals/core/base/base_progress_indicator.dart';
 import 'package:edupals/core/base/main_controller.dart';
+import 'package:edupals/core/components/point_streak_display.dart';
 import 'package:edupals/core/components/profile_picture.dart';
 import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
@@ -130,32 +131,34 @@ class ProfileOverview extends GetView<MainController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        [
-          const ProfilePicture(
-            size: AppValues.double70,
-          )
-              .capsulise(
-                  radius: 100,
-                  padding: const EdgeInsets.all(AppValues.double4),
-                  color: AppColors.accent500)
-              .padding(EdgeInsets.only(
-                  bottom: context.isPhonePortrait ? AppValues.double10 : 0)),
-          Flexible(
-              flex: context.isPhonePortrait ? 0 : 5,
-              child: pointDisplay.padding(EdgeInsets.only(
-                  bottom: context.isPhonePortrait ? AppValues.double10 : 0))),
-          Flexible(flex: context.isPhonePortrait ? 0 : 5, child: badgeDisplay)
-        ]
-            .rowToColumn(
-                columnCrossAlignment: CrossAxisAlignment.center,
-                isActive: context.isPhonePortrait,
-                rowMainAlignment: MainAxisAlignment.start)
-            .capsulise(
-                radius: 10,
-                color: AppColors.accent200,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppValues.double10,
-                    vertical: AppValues.double15)),
+        Row(
+          children: [
+            const ProfilePicture(
+              size: AppValues.double40,
+            )
+                .capsulise(
+                    radius: 100,
+                    padding: const EdgeInsets.all(AppValues.double4),
+                    color: AppColors.accent500)
+                .padding(const EdgeInsets.only(right: AppValues.double10)),
+            // Flexible(
+            //     flex: context.isPhonePortrait ? 0 : 5,
+            //     child: pointDisplay.padding(EdgeInsets.only(
+            //         bottom: context.isPhonePortrait ? AppValues.double10 : 0))),
+            Expanded(
+                flex: 5,
+                child: PointStreakDisplay(
+                  rowMainAlignment: MainAxisAlignment.spaceEvenly,
+                  backgroundColor: AppColors.white10,
+                  textColor: AppColors.white,
+                ))
+            // Flexible(flex: context.isPhonePortrait ? 0 : 5, child: badgeDisplay)
+          ],
+        ).capsulise(
+            radius: 10,
+            color: AppColors.accent200,
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppValues.double10, vertical: AppValues.double15)),
         Obx(() => [
               Row(
                 mainAxisSize: MainAxisSize.min,

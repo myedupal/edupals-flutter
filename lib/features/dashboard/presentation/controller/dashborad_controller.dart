@@ -1,9 +1,11 @@
+import 'package:edupals/core/base/main_controller.dart';
 import 'package:edupals/features/dashboard/domain/model/dashboard_report.dart';
 import 'package:edupals/features/dashboard/domain/model/point_report.dart';
 import 'package:edupals/features/dashboard/domain/repository/dashboard_report_repository.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
+  final MainController mainController = Get.find();
   final DashboardReportRepository dashboardReportRepo = Get.find();
   final Rx<DashboardReport?> dailyChallengeReport = Rx<DashboardReport?>(null);
   final Rx<DashboardReport?> mcqReport = Rx<DashboardReport?>(null);
@@ -11,6 +13,14 @@ class DashboardController extends GetxController {
 
   @override
   void onInit() {
+    mainController.selectedNavIndex.stream.listen((value) {
+      if (mainController.currentNavName == "Dashboard") {
+        getDailyChallengeReport();
+        getMcqReport();
+        getPointReport();
+        mainController.getUser();
+      }
+    });
     getDailyChallengeReport();
     getMcqReport();
     getPointReport();

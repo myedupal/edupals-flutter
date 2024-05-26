@@ -30,9 +30,10 @@ class DashboardColumn extends StatelessWidget {
                 (childWidget ??
                     Text(
                       childValue ?? "",
+                      overflow: TextOverflow.ellipsis,
                       style: context.isPhonePortrait
                           ? MyTextStyle.xl.medium
-                          : MyTextStyle.xl1.medium,
+                          : MyTextStyle.xl1.medium.h(1),
                     )),
               ],
             )
