@@ -14,6 +14,7 @@ class BaseTextStyle extends TextStyle {
           leadingDistribution: TextLeadingDistribution.even,
           decoration: decoration,
           fontFamily: fontFamily,
+          letterSpacing: 0,
         );
 }
 
