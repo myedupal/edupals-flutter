@@ -108,7 +108,7 @@ class MCQView extends GetView<MCQController> {
     return context.isPhonePortrait
         ? ListView(
             shrinkWrap: true,
-            children: [Expanded(child: pageBody(context))],
+            children: [pageBody(context)],
           )
         : pageBody(context);
   }
