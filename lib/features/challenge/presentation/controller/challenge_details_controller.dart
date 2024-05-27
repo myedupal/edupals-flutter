@@ -222,7 +222,7 @@ class ChallengeDetailsController extends BaseController {
   Future<void> getChallengeSubmissions({required String challengeId}) async {
     setLoading();
     await challengeSubmissionRepo.getChallengeSubmissions(
-        queryParams: QueryParams(challengeId: challengeId),
+        queryParams: QueryParams(challengeId: challengeId, status: "submitted"),
         onSuccess: (value) {
           setSuccess();
           if (value?.isNotEmpty == true) {
