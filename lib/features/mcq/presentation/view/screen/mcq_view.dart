@@ -46,18 +46,20 @@ class MCQView extends GetView<MCQController> {
           Obx(() {
             switch (controller.viewState) {
               case ViewState.success:
-                return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: controller.submissionList?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return Obx(
-                        () => SubmissionColumn(
-                          submission: controller.submissionList?[index],
-                        ).padding(
-                            const EdgeInsets.only(bottom: AppValues.double20)),
-                      );
-                    });
+                return Expanded(
+                    flex: context.isPhonePortrait ? 0 : 10,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: controller.submissionList?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return Obx(
+                            () => SubmissionColumn(
+                              submission: controller.submissionList?[index],
+                            ).padding(const EdgeInsets.only(
+                                bottom: AppValues.double20)),
+                          );
+                        }));
               case ViewState.noData:
                 return Container(
                   width: double.infinity,

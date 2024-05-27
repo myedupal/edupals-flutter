@@ -79,6 +79,15 @@ class SubmissionDetailsController extends BaseController {
         id: submissionId ?? "",
         onSuccess: (value) {
           currentSubmission.value = value;
+          if (value?.challengeId != null) {
+            for (int i = 0;
+                i < (currentSubmission.value?.submissionAnswers?.length ?? 0);
+                i++) {
+              currentSubmission.value?.submissionAnswers?[i].question?.number =
+                  i + 1;
+            }
+          }
+
           currentSubmission.value?.submissionAnswers?.sort((a, b) =>
               (a.question?.number ?? 0).compareTo(b.question?.number ?? 0));
           selectedQuestion.value =
