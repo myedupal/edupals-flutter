@@ -22,7 +22,7 @@ class NoDataView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ImageAssetView(
-            fileName: AppAssets.noDataLottie,
+            fileName: AppAssets.questionLoadingLottie,
             width: Get.dynamicWidth * 0.3,
           ),
           Text(

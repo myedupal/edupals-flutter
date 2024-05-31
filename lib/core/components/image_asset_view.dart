@@ -86,7 +86,6 @@ class ImageAssetView extends StatelessWidget {
           width: width,
           height: height,
           child: Lottie.asset(
-            frameRate: FrameRate.max,
             addRepaintBoundary: true,
             fileName,
             fit: BoxFit.cover,
@@ -106,8 +105,8 @@ class ImageAssetView extends StatelessWidget {
 
   Future<LottieComposition?> customDecoder(List<int> bytes) {
     return LottieComposition.decodeZip(bytes, filePicker: (files) {
-      return files.firstWhereOrNull(
-          (f) => f.name.startsWith('animations/') && f.name.endsWith('.json'));
+      var dotlottieExp = RegExp('animations/.*.json');
+      return files.firstWhere((e) => dotlottieExp.hasMatch(e.name));
     });
   }
 
