@@ -63,12 +63,12 @@ class PointsBreakdown extends GetView<DashboardController> {
                 BaseHorizontalBarChart(
                   dylabels: const ["MCQ", "Daily Challenge", "Daily Check In"],
                   dxlabels: List<int>.generate(
-                      8,
+                      7,
                       (index) => ((index) *
-                          ((((pointReport.totalPoints ?? 8) < 10)
-                                      ? 8
-                                      : (pointReport.totalPoints ?? 8)) /
-                                  8)
+                          ((((pointReport.totalPoints ?? 7) < 10)
+                                      ? 7
+                                      : (pointReport.totalPoints ?? 7)) /
+                                  6)
                               .round())),
                   data: [
                     double.parse("${pointReport.mcqPoints ?? 0.0}"),
