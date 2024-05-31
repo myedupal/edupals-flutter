@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:edupals/core/components/shimmer.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
@@ -80,14 +81,18 @@ class ImageAssetView extends StatelessWidget {
         );
       case 'json':
       case 'zip':
+      case 'lottie':
         return SizedBox(
           width: width,
           height: height,
           child: Lottie.asset(
             frameRate: FrameRate.max,
+            addRepaintBoundary: true,
             fileName,
             fit: BoxFit.cover,
             repeat: true,
+            renderCache: RenderCache.drawingCommands,
+            decoder: mimType == "lottie" ? customDecoder : null,
           ),
         );
       default:
@@ -97,6 +102,13 @@ class ImageAssetView extends StatelessWidget {
           color: color,
         );
     }
+  }
+
+  Future<LottieComposition?> customDecoder(List<int> bytes) {
+    return LottieComposition.decodeZip(bytes, filePicker: (files) {
+      return files.firstWhereOrNull(
+          (f) => f.name.startsWith('animations/') && f.name.endsWith('.json'));
+    });
   }
 
   @override

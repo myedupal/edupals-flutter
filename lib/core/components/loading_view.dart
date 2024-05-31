@@ -17,9 +17,7 @@ class LoadingView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ImageAssetView(
-            fileName: (!(kIsWeb && context.isPhone))
-                ? AppAssets.questionLoadingLottie
-                : AppAssets.questionLoadingStatic,
+            fileName: AppAssets.questionLoadingLottie,
             width: Get.dynamicWidth * 0.3,
           ),
           Text(
