@@ -48,7 +48,7 @@ class AppAssets {
 
   //Lottie
   static const errorLottie = "${_lottiePath}error.json";
-  static const questionLoadingLottie = "${_lottiePath}question_loading.lottie";
+  static const questionLoadingLottie = "${_lottiePath}question_loading.json";
   static const noDataLottie = "${_lottiePath}no_data.json";
 
   String getSvgPath({required String name}) {

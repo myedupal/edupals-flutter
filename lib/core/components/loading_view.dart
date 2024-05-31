@@ -2,7 +2,6 @@ import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/extensions/context_extensions.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_text_style.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
