@@ -63,7 +63,7 @@ jobs:
       #   run: flutter test
       
       - name: Build web
-        run: flutter build web -t lib/main_${{ inputs.environment == 'staging' && 'dev' || 'prod' }}.dart
+        run: flutter build web -t lib/main_${{ inputs.environment == 'staging' && 'dev' || 'prod' }}.dart --web-renderer canvaskit
         
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
