@@ -13,6 +13,7 @@ import 'package:edupals/features/exam-builder/domain/repository/user_exam_reposi
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
 import 'package:edupals/features/question-bank/domain/repository/activity_question_repository.dart';
+import 'package:edupals/features/splash/domain/repository/sui_repository.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:edupals/features/splash/presentation/controller/splash_controller.dart';
@@ -46,6 +47,7 @@ class BaseBinding extends Bindings {
         fenix: true);
     Get.lazyPut<UserAccountRepository>(() => UserAccountRepository(),
         fenix: true);
+    Get.lazyPut<SuiRepository>(() => SuiRepository(), fenix: true);
     // Controller
     Get.put<MainController>(MainController(), permanent: true);
   }

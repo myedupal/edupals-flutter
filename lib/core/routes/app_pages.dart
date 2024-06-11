@@ -17,6 +17,7 @@ import 'package:edupals/features/splash/presentation/binding/splash_binding.dart
 import 'package:edupals/core/routes/app_routes.dart';
 import 'package:edupals/features/auth/presentation/view/screens/auth_view.dart';
 import 'package:edupals/features/splash/presentation/view/splash_view.dart';
+import 'package:edupals/features/splash/presentation/view/zkp_view.dart';
 import 'package:get/get.dart';
 
 class AppPages {
@@ -77,6 +78,10 @@ class AppPages {
       name: "${Routes.submissionDetails}/:id",
       binding: SubmissionDetailsBinding(),
       page: () => const SubmissionDetailsView(),
+    ),
+    GetPage(
+      name: Routes.zkpView,
+      page: () => const ZkpView(),
     ),
   ];
 }

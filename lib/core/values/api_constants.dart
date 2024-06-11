@@ -27,4 +27,5 @@ abstract class ApiConstants {
       '$version/user/reports/daily_challenge';
   static const getMcqReport = '$version/user/reports/mcq';
   static const getPointsReport = '$version/user/reports/points';
+  static const getZkProof = 'https://prover-dev.mystenlabs.com/v1';
 }
