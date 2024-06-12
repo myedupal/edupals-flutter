@@ -8,12 +8,12 @@ import 'package:edupals/features/profile/presentation/view/screens/account_view.
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class UpdateProfileForm extends StatelessWidget {
+class UpdateProfileForm extends GetView<UpdateProfileController> {
   const UpdateProfileForm({super.key, this.updateType});
 
   final UpdateAccountType? updateType;
 
-  Widget getFormInput({required UpdateProfileController controller}) {
+  Widget get getFormInput {
     Widget form;
 
     switch (updateType) {
@@ -61,9 +61,8 @@ class UpdateProfileForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UpdateProfileController());
+    Get.put(UpdateProfileController());
     controller.onSetUpdateType(value: updateType);
-
     return ListView(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
@@ -76,7 +75,7 @@ class UpdateProfileForm extends StatelessWidget {
                     "Update ${updateType?.displayTitle}",
                     style: MyTextStyle.m.bold,
                   ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-                  getFormInput(controller: controller),
+                  getFormInput,
                   Row(
                     children: [
                       const Spacer(),
