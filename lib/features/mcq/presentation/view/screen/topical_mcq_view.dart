@@ -11,10 +11,9 @@ class TopicalMcqView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Column(
+    return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: AppValues.double100,
         ),
         ImageAssetView(
@@ -26,6 +25,6 @@ class TopicalMcqView extends StatelessWidget {
           style: MyTextStyle.l.bold,
         )
       ],
-    ));
+    );
   }
 }
