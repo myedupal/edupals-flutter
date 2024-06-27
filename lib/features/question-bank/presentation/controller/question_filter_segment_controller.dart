@@ -20,7 +20,7 @@ class QuestionFilterSegmentController extends GetxController {
   final MainController mainController = Get.find();
 
   // General State
-  QuestionFilterType? questionFilterType = QuestionFilterType.all;
+  Rx<QuestionFilterType?> questionFilterType = QuestionFilterType.all.obs;
   final RxList<Subject>? subjectList = <Subject>[].obs;
   final RxList<Topic>? topicList = <Topic>[].obs;
   final RxList<KeyValue> revisionType = [
@@ -72,7 +72,7 @@ class QuestionFilterSegmentController extends GetxController {
     }
 
     if (value?.questionFilterType != null) {
-      questionFilterType = value?.questionFilterType;
+      questionFilterType.value = value?.questionFilterType;
     }
     getSubjects();
   }
@@ -96,7 +96,7 @@ class QuestionFilterSegmentController extends GetxController {
     final filteredSubject = subjectList?.firstWhereOrNull(
         (element) => element.id == selectedSubject.value?.key);
     final ExamsFiltering? examAttribute =
-        questionFilterType == QuestionFilterType.mcq
+        questionFilterType.value == QuestionFilterType.mcq
             ? filteredSubject?.examsFiltering?.mcq
             : filteredSubject?.examsFiltering?.all;
     examAttribute?.years?.sort((a, b) => b.compareTo(a));
@@ -163,43 +163,46 @@ class QuestionFilterSegmentController extends GetxController {
 
   bool validateMonthly() {
     return (selectedSubject.value == null ||
-        selectedPaper.value == null ||
-        selectedSeason.value == null);
+            selectedPaper.value == null ||
+            selectedSeason.value == null ||
+            questionFilterType.value == QuestionFilterType.mcq
+        ? selectedTopics?.isNotEmpty == false
+        : false);
   }
 
   String get getTitle {
-    return questionFilterType == QuestionFilterType.mcq
+    return questionFilterType.value == QuestionFilterType.mcq
         ? "${selectedSubject.value?.label ?? ""}|Paper ${selectedPaper.value?.label ?? ""}|${selectedSeason.value?.label ?? ""} Season|Year ${selectedYears?.first.key}|Zone ${selectedZone.value?.key}"
         : "${selectedRevisionType.value?.label ?? ""}|${selectedSubject.value?.label ?? ""}|Paper ${selectedPaper.value?.label ?? ""}|${selectedSeason.value?.label ?? ""} Season";
   }
 
   QuestionBankArgument? get compiledValue {
-    final QuestionBankArgument argument = QuestionBankArgument(
-        revisionType: selectedRevisionType.value?.key,
-        title: getTitle,
-        subject: selectedSubject.value,
-        paper: "Paper ${selectedPaper.value?.label ?? ""}",
-        queryParams: QueryParams(
-          page: 1,
-          items: 100,
-          sortBy: "topic",
-          zone: selectedZone.value != null
-              ? [selectedZone.value?.key ?? ""]
-              : null,
-          subjectId: selectedSubject.value?.key,
-          paperName: selectedPaper.value?.key ?? "",
-          // paperId: selectedPaper.value?.key ?? "",
-          topicId: selectedTopics?.map((element) => element.key ?? "").toList(),
-          year: selectedYears?.map((element) => element.key ?? "").toList(),
-          season: selectedSeason.value != null
-              ? [selectedSeason.value?.key?.toCapitalized() ?? ""]
-              : null,
-        ));
-
     if (isYearly ? validateYearly() : validateMonthly()) {
       triggerError(error: "Please select all required field");
       return null;
     } else {
+      final QuestionBankArgument argument = QuestionBankArgument(
+          revisionType: selectedRevisionType.value?.key,
+          title: getTitle,
+          subject: selectedSubject.value,
+          paper: "Paper ${selectedPaper.value?.label ?? ""}",
+          queryParams: QueryParams(
+            page: 1,
+            items: 100,
+            sortBy: "topic",
+            zone: selectedZone.value != null
+                ? [selectedZone.value?.key ?? ""]
+                : null,
+            subjectId: selectedSubject.value?.key,
+            paperName: selectedPaper.value?.key ?? "",
+            // paperId: selectedPaper.value?.key ?? "",
+            topicId:
+                selectedTopics?.map((element) => element.key ?? "").toList(),
+            year: selectedYears?.map((element) => element.key ?? "").toList(),
+            season: selectedSeason.value != null
+                ? [selectedSeason.value?.key?.toCapitalized() ?? ""]
+                : null,
+          ));
       return argument;
     }
   }
@@ -215,7 +218,7 @@ class QuestionFilterSegmentController extends GetxController {
   Future<void> getSubjects({bool isReset = false}) async {
     await subjectRepo.getSubjects(
         queryParams: QueryParams(
-            hasMcqQuestions: questionFilterType == QuestionFilterType.mcq,
+            hasMcqQuestions: questionFilterType.value == QuestionFilterType.mcq,
             curriculumId: mainController.selectedCurriculum.value?.id),
         onSuccess: (value) {
           subjectList?.value = value ?? [];

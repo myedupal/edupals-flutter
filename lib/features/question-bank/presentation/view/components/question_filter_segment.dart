@@ -139,7 +139,7 @@ class QuestionFilterSegment extends StatelessWidget {
   Widget zoneWidget(QuestionFilterSegmentController controller) =>
       SelectionInput(
         label: "Zone",
-        isRequired: controller.isYearly,
+        isRequired: true,
         isMultiSelect: false,
         data: controller.selectedZone.value,
       ).onTap(() {
@@ -224,6 +224,7 @@ class QuestionFilterSegment extends StatelessWidget {
             SelectionInput(
               label: "Topics",
               isMultiSelect: true,
+              isRequired: true,
               dataList: [...?controller.selectedTopics],
               onRemove: (id) {
                 controller.onRemoveTopic(id);
@@ -237,7 +238,7 @@ class QuestionFilterSegment extends StatelessWidget {
           ],
           SelectionInput(
             label: "Years",
-            isRequired: controller.isYearly,
+            isRequired: true,
             isMultiSelect: !controller.isYearly,
             dataList: [...?controller.selectedYears],
             data: controller.selectedYears?.isNotEmpty == true

@@ -16,7 +16,10 @@ import 'package:edupals/features/history/domain/model/activity.dart';
 import 'package:edupals/features/history/domain/repository/activity_repository.dart';
 import 'package:edupals/features/history/presentation/controller/history_controller.dart';
 import 'package:edupals/features/mcq/presentation/view/screen/mcq_view.dart';
+import 'package:edupals/features/mcq/presentation/view/screen/topical_mcq_view.dart';
 import 'package:edupals/features/profile/domain/repository/user_account_repository.dart';
+import 'package:edupals/features/profile/presentation/view/components/update_profile_form.dart';
+import 'package:edupals/features/profile/presentation/view/screens/account_view.dart';
 import 'package:edupals/features/question-bank/presentation/view/components/selection_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +56,7 @@ class MainController extends GetxController {
     const DashboardView(),
     const ExploreView(),
     const MCQView(),
+    const TopicalMcqView(),
     // const QuestionBankView(),
     // const HistoryView(),
     // const ExamBuilderView(),
@@ -64,6 +68,7 @@ class MainController extends GetxController {
     "Dashboard",
     "Explore",
     "MCQ",
+    "Topical MCQs",
     // "Question Bank",
     // "Flash Cards",
     // "History",
@@ -162,12 +167,18 @@ class MainController extends GetxController {
         onError: (error) {});
   }
 
-  void setUser({User? user, String? salt}) async {
+  void setUser(
+      {User? user, String? salt, bool isFirstTimeLogin = false}) async {
     currentUser.value = user;
     await localRepo.setUser(jsonEncode(user?.toStore()));
     if (salt?.isEmpty == false) {
       userSalt = salt;
       await localRepo.setUserSalt(salt);
+    }
+    if (user?.phoneNumber == null && isFirstTimeLogin) {
+      BaseDialog.customise(
+          child: const UpdateProfileForm(
+              updateType: UpdateAccountType.firstTimeLogin));
     }
     refreshUser();
   }

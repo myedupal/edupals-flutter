@@ -47,6 +47,7 @@ class AppAssets {
   static const noDataStatic = "${_svgImagePath}no_data.svg";
 
   //Lottie
+  static const comingSoonLottie = "${_lottiePath}coming_soon.json";
   static const errorLottie = "${_lottiePath}error.json";
   static const questionLoadingLottie = "${_lottiePath}question_loading.json";
   static const noDataLottie = "${_lottiePath}no_data.json";

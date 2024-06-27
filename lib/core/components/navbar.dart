@@ -58,6 +58,7 @@ class Navbar extends GetView<MainController> {
                     ? Colors.transparent
                     : AppColors.white)
             .addBackgroundImage(
-                isDisplay: controller.selectedNavIndex.value != 0));
+                isDisplay:
+                    ![0, 3].contains(controller.selectedNavIndex.value)));
   }
 }

@@ -15,8 +15,20 @@ class UpdateProfileForm extends GetView<UpdateProfileController> {
 
   Widget get getFormInput {
     Widget form;
+    final Widget phoneNumberInput = BaseInput(
+      label: "New Phone Number",
+      keyboardType: KeyboardType.number,
+      controller: controller.phoneNumberController,
+    ).padding(const EdgeInsets.only(bottom: AppValues.double20));
 
     switch (updateType) {
+      case UpdateAccountType.firstTimeLogin:
+        form = Column(
+          children: [
+            phoneNumberInput
+                .padding(const EdgeInsets.only(bottom: AppValues.double20))
+          ],
+        );
       case UpdateAccountType.profile:
         form = Column(
           children: [
@@ -24,11 +36,7 @@ class UpdateProfileForm extends GetView<UpdateProfileController> {
               label: "New Username",
               controller: controller.usernameController,
             ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
-            BaseInput(
-              label: "New Phone Number",
-              keyboardType: KeyboardType.number,
-              controller: controller.phoneNumberController,
-            ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
+            phoneNumberInput,
           ],
         );
         break;

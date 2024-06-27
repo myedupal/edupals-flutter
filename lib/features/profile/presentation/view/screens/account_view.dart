@@ -17,7 +17,8 @@ enum UpdateAccountType {
   profile("Profile"),
   password("Password"),
   phoneNumber("Phone Number"),
-  email("Email Address");
+  email("Email Address"),
+  firstTimeLogin("General Info");
 
   const UpdateAccountType(this.displayTitle);
 

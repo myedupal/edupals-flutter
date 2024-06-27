@@ -75,7 +75,10 @@ class AuthController extends BaseController {
         onSuccess: (value) {
           setSuccess();
           mainController.setUser(
-              user: value?.user, salt: value?.meta?.zkloginSalt);
+            user: value?.user,
+            salt: value?.meta?.zkloginSalt,
+            isFirstTimeLogin: true,
+          );
           navigateHome();
         },
         onError: (error) {
