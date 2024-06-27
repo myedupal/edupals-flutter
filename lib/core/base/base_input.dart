@@ -14,6 +14,7 @@ class BaseInput extends StatefulWidget {
     super.key,
     this.value,
     this.label,
+    this.required = false,
     this.errorMessage = "",
     this.enabled = true,
     this.isUppercase = false,
@@ -27,6 +28,7 @@ class BaseInput extends StatefulWidget {
     this.maxLength,
   });
 
+  final bool required;
   final String? label;
   final String? value;
   final String errorMessage;
@@ -143,13 +145,23 @@ class _BaseInputState extends State<BaseInput> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (widget.label?.isNotEmpty == true)
-                Text(
-                  widget.label ?? "",
-                  style: MyTextStyle.xs.h(2).c(_focusNode.hasFocus
-                      ? AppColors.accent500
-                      : AppColors.gray600),
-                ),
+              if (widget.label?.isNotEmpty == true) ...[
+                Row(
+                  children: [
+                    Text(
+                      widget.label ?? "",
+                      style: MyTextStyle.xs.h(2).c(_focusNode.hasFocus
+                          ? AppColors.accent500
+                          : AppColors.gray600),
+                    ),
+                    if (widget.required)
+                      Text(
+                        "*",
+                        style: MyTextStyle.xs.copyWith(color: AppColors.red600),
+                      ),
+                  ],
+                )
+              ],
               TextField(
                 focusNode: _focusNode,
                 onTapOutside: (event) {

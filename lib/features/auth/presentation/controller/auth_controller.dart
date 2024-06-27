@@ -57,7 +57,10 @@ class AuthController extends BaseController {
               password: passwordController.value.text),
           onSuccess: (value) {
             setSuccess();
-            mainController.setUser(user: value);
+            mainController.setUser(
+              user: value,
+              isFirstTimeLogin: true,
+            );
             navigateHome();
           },
           onError: (error) {

@@ -176,9 +176,11 @@ class MainController extends GetxController {
       await localRepo.setUserSalt(salt);
     }
     if (user?.phoneNumber == null && isFirstTimeLogin) {
-      BaseDialog.customise(
-          child: const UpdateProfileForm(
-              updateType: UpdateAccountType.firstTimeLogin));
+      Future.delayed(const Duration(milliseconds: 500), () {
+        BaseDialog.customise(
+            child: const UpdateProfileForm(
+                updateType: UpdateAccountType.firstTimeLogin));
+      });
     }
     refreshUser();
   }

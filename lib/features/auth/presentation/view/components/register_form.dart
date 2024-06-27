@@ -18,18 +18,22 @@ class RegisterForm extends GetView<AuthController> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         BaseInput(
+          required: true,
           label: "Name",
           controller: controller.nameController,
         ).padding(const EdgeInsets.only(bottom: AppValues.double15)),
         BaseInput(
+          required: true,
           label: "Phone Number",
           controller: controller.phoneNumberController,
         ).padding(const EdgeInsets.only(bottom: AppValues.double15)),
         BaseInput(
+          required: true,
           label: "Email Address",
           controller: controller.emailController,
         ).padding(const EdgeInsets.only(bottom: AppValues.double15)),
         BaseInput(
+          required: true,
           label: "Password",
           controller: controller.passwordController,
           keyboardType: KeyboardType.password,

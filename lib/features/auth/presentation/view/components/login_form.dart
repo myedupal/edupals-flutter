@@ -26,10 +26,12 @@ class LoginForm extends GetView<AuthController> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         BaseInput(
+          required: true,
           label: "Email Address",
           controller: controller.emailController,
         ).padding(const EdgeInsets.only(bottom: AppValues.double20)),
         BaseInput(
+          required: true,
           label: "Password",
           controller: controller.passwordController,
           keyboardType: KeyboardType.password,
