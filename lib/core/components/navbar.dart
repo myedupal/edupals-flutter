@@ -50,7 +50,9 @@ class Navbar extends GetView<MainController> {
                       const EdgeInsets.symmetric(
                           horizontal: AppValues.double10))),
               if (context.isPhonePortrait) navChild(context),
-            ].rowToColumn(isActive: context.isPhonePortrait)),
+            ].rowToColumn(
+                    isActive: context.isPhonePortrait,
+                    columnCrossAlignment: CrossAxisAlignment.center)),
           ],
         )
             .scaffoldWrapper(
