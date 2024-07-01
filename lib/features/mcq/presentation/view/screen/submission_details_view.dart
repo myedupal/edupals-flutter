@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:edupals/core/base/base_button.dart';
 import 'package:edupals/core/components/image_asset_view.dart';
 import 'package:edupals/core/components/loading_view.dart';
 import 'package:edupals/core/enum/view_state.dart';
 import 'package:edupals/core/extensions/view_extensions.dart';
+import 'package:edupals/core/routes/routing.dart';
 import 'package:edupals/core/values/app_assets.dart';
 import 'package:edupals/core/values/app_colors.dart';
 import 'package:edupals/core/values/app_text_style.dart';
@@ -145,7 +147,13 @@ class SubmissionDetailsView extends GetView<SubmissionDetailsController> {
             ).padding(const EdgeInsets.symmetric(vertical: AppValues.double20))
           ],
         )),
-        questionSwitcher
+        questionSwitcher,
+        BaseButton(
+            fullWidth: true,
+            text: "Back to dashboard",
+            onClick: () {
+              Get.offAllNamed(Routes.homeAnimation);
+            }),
       ],
     ).padding(const EdgeInsets.only(top: AppValues.double20)));
   }

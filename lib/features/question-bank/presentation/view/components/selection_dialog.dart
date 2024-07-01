@@ -75,14 +75,17 @@ class SelectionDialog extends GetView<SelectionDialogController> {
         shrinkWrap: true,
         children: [
           ...?selectionList?.map((e) {
-            final selectedData = controller.selectedList
-                ?.firstWhereOrNull((element) => element.key == e.key);
-            return selectionColumn(
-                    title: e.label,
-                    subtitle: e.sublabel,
-                    isSelected: selectedData != null)
-                .onTap(() {
-              controller.selectData(value: e, isMultiSelect: isMultiSelect);
+            return Obx(() {
+              final selectedData = controller.selectedList
+                  ?.toList()
+                  .firstWhereOrNull((element) => element.key == e.key);
+              return selectionColumn(
+                      title: e.label,
+                      subtitle: e.sublabel,
+                      isSelected: selectedData != null)
+                  .onTap(() {
+                controller.selectData(value: e, isMultiSelect: isMultiSelect);
+              });
             });
           }),
         ],
@@ -93,7 +96,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SelectionDialogController());
+    Get.lazyPut(() => SelectionDialogController());
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +122,7 @@ class SelectionDialog extends GetView<SelectionDialogController> {
                   ),
               ],
             ))),
-        Obx(() => dataList),
+        dataList,
         Row(
           children: [
             const Spacer(),

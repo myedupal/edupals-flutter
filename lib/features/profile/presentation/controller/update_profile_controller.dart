@@ -81,6 +81,9 @@ class UpdateProfileController extends BaseController {
           "You have successfully updated ${updateType?.displayTitle?.toLowerCase()}!",
       action: () {
         Get.until((route) => Get.isDialogOpen == false);
+        if (updateType == UpdateAccountType.firstTimeLogin) {
+          mainController.checkValidCurriculum();
+        }
       },
     );
   }

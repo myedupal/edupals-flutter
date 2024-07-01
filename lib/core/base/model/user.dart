@@ -1,3 +1,5 @@
+import 'package:edupals/features/dashboard/domain/model/curriculum.dart';
+
 class UserWrapper {
   UserWrapper({
     this.user,
@@ -48,6 +50,7 @@ class User {
   int? dailyStreak;
   int? maximumStreak;
   String? selectedCurriculumId;
+  Curriculum? selectedCurriculum;
 
   User({
     this.id,
@@ -68,6 +71,7 @@ class User {
     this.dailyStreak,
     this.maximumStreak,
     this.selectedCurriculumId,
+    this.selectedCurriculum,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -87,6 +91,9 @@ class User {
         dailyStreak: json["daily_streak"],
         maximumStreak: json["maximum_streak"],
         selectedCurriculumId: json["selected_curriculum_id"],
+        selectedCurriculum: json["selected_curriculum"] == null
+            ? null
+            : Curriculum.fromJson(json["selected_curriculum"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -120,6 +127,7 @@ class User {
         "updated_at": updatedAt,
         "stripe_profile": stripeProfile,
         "selected_curriculum_id": selectedCurriculumId,
+        "selected_curriculum": selectedCurriculum?.toJson(),
       };
 }
 

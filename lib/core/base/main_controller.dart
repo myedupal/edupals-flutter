@@ -36,6 +36,7 @@ class MainController extends GetxController {
   final LocalRepository localRepo = Get.find();
   final CurriculumRepository curriculumRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
+  RxBool isFirstTimeLogin = false.obs;
 
   // Sui core state
   final suiClient =
@@ -100,7 +101,9 @@ class MainController extends GetxController {
   void goAhead() {
     getUserCurriculum();
     getCurriculums();
-    getUser();
+    if (!isFirstTimeLogin.value) {
+      getUser();
+    }
   }
 
   void onSetNavIndex(int index) {
@@ -123,8 +126,8 @@ class MainController extends GetxController {
     await curriculumRepo.getCurriculums(
         onSuccess: (value) {
           curriculumList?.value = value ?? [];
-          if (selectedCurriculum.value == null) {
-            setUserCurriculum(value: value?.first);
+          if (!isFirstTimeLogin.value && currentUser.value != null) {
+            checkValidCurriculum();
           }
         },
         onError: (error) {});
@@ -172,20 +175,34 @@ class MainController extends GetxController {
 
   void setUser(
       {User? user, String? salt, bool isFirstTimeLogin = false}) async {
+    this.isFirstTimeLogin.value = isFirstTimeLogin;
     currentUser.value = user;
     await localRepo.setUser(jsonEncode(user?.toStore()));
     if (salt?.isEmpty == false) {
       userSalt = salt;
       await localRepo.setUserSalt(salt);
     }
-    if (user?.phoneNumber == null && isFirstTimeLogin) {
-      Future.delayed(const Duration(milliseconds: 500), () {
-        BaseDialog.customise(
-            child: const UpdateProfileForm(
-                updateType: UpdateAccountType.firstTimeLogin));
-      });
+    if (isFirstTimeLogin) {
+      if (user?.phoneNumber == null) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          BaseDialog.customise(
+              child: const UpdateProfileForm(
+                  updateType: UpdateAccountType.firstTimeLogin));
+        });
+      } else {
+        checkValidCurriculum();
+      }
     }
     refreshUser();
+  }
+
+  void checkValidCurriculum() {
+    if (currentUser.value?.selectedCurriculum == null) {
+      if (curriculumList?.isNotEmpty == true && Get.isDialogOpen == false) {
+        selectedCurriculum.value = null;
+        showCurriculumDialog(dismissable: false);
+      }
+    }
   }
 
   void setJwtToken({required String token}) async {

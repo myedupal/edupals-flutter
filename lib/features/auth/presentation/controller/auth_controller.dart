@@ -107,6 +107,10 @@ class AuthController extends BaseController {
               message: "Your account is registered successfully",
               buttonText: "Go to dashboard",
               action: () {
+                mainController.setUser(
+                  user: value,
+                  isFirstTimeLogin: true,
+                );
                 navigateHome();
               },
             );
