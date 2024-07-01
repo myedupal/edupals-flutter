@@ -201,7 +201,7 @@ class MainController extends GetxController {
     if (currentUser.value?.selectedCurriculum == null) {
       if (curriculumList?.isNotEmpty == true && Get.isDialogOpen == false) {
         selectedCurriculum.value = null;
-        showCurriculumDialog(dismissable: true);
+        showCurriculumDialog(dismissable: false);
       }
     }
   }
