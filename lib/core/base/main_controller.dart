@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:edupals/config/flavor_config.dart';
 import 'package:edupals/core/base/base_dialog.dart';
+import 'package:edupals/core/base/base_snackbar.dart';
 import 'package:edupals/core/base/model/key_value.dart';
 import 'package:edupals/core/base/model/user.dart';
 import 'package:edupals/core/base/model/user_key.dart';
@@ -114,6 +115,8 @@ class MainController extends GetxController {
   Future<void> setUserCurriculum({Curriculum? value}) async {
     selectedCurriculum.value = value;
     await localRepo.setCurriculum(jsonEncode(value?.toJson()));
+    // Call Api selected_curriculum_id
+    updateUserAccount();
   }
 
   Future<void> getCurriculums() async {
@@ -188,6 +191,20 @@ class MainController extends GetxController {
   void setJwtToken({required String token}) async {
     jwt = token;
     await localRepo.setUserIdToken(token);
+  }
+
+  void updateUserAccount() {
+    final user = User(
+      selectedCurriculumId: selectedCurriculum.value?.id,
+    );
+    userAccountRepo.updateAccount(
+        user: user,
+        onSuccess: (value) {
+          currentUser.value = value;
+        },
+        onError: (error) {
+          BaseSnackBar.show(message: "Error: $error");
+        });
   }
 
   // Include logout

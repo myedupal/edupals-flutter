@@ -47,6 +47,7 @@ class User {
   dynamic stripeProfile;
   int? dailyStreak;
   int? maximumStreak;
+  String? selectedCurriculumId;
 
   User({
     this.id,
@@ -66,6 +67,7 @@ class User {
     this.stripeProfile,
     this.dailyStreak,
     this.maximumStreak,
+    this.selectedCurriculumId,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -84,6 +86,7 @@ class User {
         stripeProfile: json["stripe_profile"],
         dailyStreak: json["daily_streak"],
         maximumStreak: json["maximum_streak"],
+        selectedCurriculumId: json["selected_curriculum_id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -97,6 +100,7 @@ class User {
         "updated_at": updatedAt,
         "current_password": currentPassword,
         "password_confirmation": passwordConfirmation,
+        "selected_curriculum_id": selectedCurriculumId,
       }..removeWhere((dynamic key, dynamic value) =>
           key == null || value == null || value == "null" || value == "");
 
@@ -115,6 +119,7 @@ class User {
         "created_at": createdAt,
         "updated_at": updatedAt,
         "stripe_profile": stripeProfile,
+        "selected_curriculum_id": selectedCurriculumId,
       };
 }
 
