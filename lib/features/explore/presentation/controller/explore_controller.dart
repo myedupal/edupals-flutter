@@ -11,11 +11,17 @@ class ExploreController extends BaseController {
 
   @override
   void onInit() {
-    mainController.selectedCurriculum.stream.listen((value) {
-      getChallenges();
-    });
+    setupListeners();
     getChallenges();
     super.onInit();
+  }
+
+  void setupListeners() {
+    everAll([mainController.currentUser, mainController.selectedNavIndex], (_) {
+      if (mainController.currentNavName == "Explore") {
+        getChallenges();
+      }
+    });
   }
 
   Future<void> getChallenges() async {
