@@ -53,5 +53,6 @@ class Curriculum {
         "name": name,
         "board": board,
         "display_order": displayOrder,
-      };
+      }..removeWhere((dynamic key, dynamic value) =>
+          key == null || value == null || value == "null" || value == "");
 }

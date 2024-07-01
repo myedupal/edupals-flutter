@@ -37,6 +37,7 @@ class MainController extends GetxController {
   final CurriculumRepository curriculumRepo = Get.find();
   final ActivityRepository activityRepo = Get.find();
   RxBool isFirstTimeLogin = false.obs;
+  RxBool isFinishSetUser = false.obs;
 
   // Sui core state
   final suiClient =
@@ -99,7 +100,6 @@ class MainController extends GetxController {
   }
 
   void goAhead() {
-    getUserCurriculum();
     getCurriculums();
     if (!isFirstTimeLogin.value) {
       getUser();
@@ -110,14 +110,9 @@ class MainController extends GetxController {
     selectedNavIndex.value = index;
   }
 
-  // Get curriculum and set as global
-  Future<void> getUserCurriculum() async {
-    selectedCurriculum.value = await localRepo.getCurriculum();
-  }
-
   Future<void> setUserCurriculum({Curriculum? value}) async {
     selectedCurriculum.value = value;
-    await localRepo.setCurriculum(jsonEncode(value?.toJson()));
+    // await localRepo.setCurriculum(jsonEncode(value?.toJson()));
     // Call Api selected_curriculum_id
     updateUserAccount();
   }
@@ -126,7 +121,9 @@ class MainController extends GetxController {
     await curriculumRepo.getCurriculums(
         onSuccess: (value) {
           curriculumList?.value = value ?? [];
-          if (!isFirstTimeLogin.value && currentUser.value != null) {
+          if (!isFirstTimeLogin.value &&
+              currentUser.value != null &&
+              isFinishSetUser.value) {
             checkValidCurriculum();
           }
         },
@@ -157,7 +154,9 @@ class MainController extends GetxController {
 
   // Set user and token state
   void refreshUser() async {
-    currentUser.value = await localRepo.getUser();
+    final user = await localRepo.getUser();
+    currentUser.value = user;
+    selectedCurriculum.value = user?.selectedCurriculum;
     jwt = await localRepo.getUserIdToken();
     userSalt = await localRepo.getUserSalt();
     if (jwt?.isEmpty == false && userSalt?.isEmpty == false) {
@@ -177,22 +176,24 @@ class MainController extends GetxController {
       {User? user, String? salt, bool isFirstTimeLogin = false}) async {
     this.isFirstTimeLogin.value = isFirstTimeLogin;
     currentUser.value = user;
+    selectedCurriculum.value = user?.selectedCurriculum;
     await localRepo.setUser(jsonEncode(user?.toStore()));
     if (salt?.isEmpty == false) {
       userSalt = salt;
       await localRepo.setUserSalt(salt);
     }
-    if (isFirstTimeLogin) {
-      if (user?.phoneNumber == null) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          BaseDialog.customise(
-              child: const UpdateProfileForm(
-                  updateType: UpdateAccountType.firstTimeLogin));
-        });
-      } else {
-        checkValidCurriculum();
-      }
+    if (isFirstTimeLogin && user?.phoneNumber == null) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        BaseDialog.customise(
+          dismissable: false,
+          child: const UpdateProfileForm(
+              updateType: UpdateAccountType.firstTimeLogin),
+        );
+      });
+    } else {
+      checkValidCurriculum();
     }
+    isFinishSetUser.value = true;
     refreshUser();
   }
 
@@ -200,7 +201,7 @@ class MainController extends GetxController {
     if (currentUser.value?.selectedCurriculum == null) {
       if (curriculumList?.isNotEmpty == true && Get.isDialogOpen == false) {
         selectedCurriculum.value = null;
-        showCurriculumDialog(dismissable: false);
+        showCurriculumDialog(dismissable: true);
       }
     }
   }
@@ -234,6 +235,8 @@ class MainController extends GetxController {
   }
 
   void clearSession() {
+    currentUser.value == null;
+    isFinishSetUser.value = false;
     localRepo.clearStorage();
     Get.offAllNamed(Routes.loginAnimation);
   }
